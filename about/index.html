@@ -136,7 +136,15 @@ Blog：http://www.wiredtiger.org
   <h3 class="title">分类</h3>
   <ul class="entry">
   
-    <li><a href="/categories/MySQL/">MySQL</a><small>2</small></li>
+    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>2</small></li>
+  
+    <li><a href="/categories/MySQL/">MySQL</a><small>8</small></li>
+  
+    <li><a href="/categories/Nginx/">Nginx</a><small>1</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>1</small></li>
   
   </ul>
 </div>
@@ -147,7 +155,21 @@ Blog：http://www.wiredtiger.org
   <h3 class="title">标签</h3>
   <ul class="entry">
   
+    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+  
+    <li><a href="/tags/MySQL/">MySQL</a><small>6</small></li>
+  
     <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
+  
+    <li><a href="/tags/Nginx/">Nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
+  
+    <li><a href="/tags/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/tags/srs/">srs</a><small>1</small></li>
   
   </ul>
 </div>
@@ -157,7 +179,7 @@ Blog：http://www.wiredtiger.org
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/MySQL笔记/" style="font-size: 10px;">MySQL笔记</a>
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 15px;">MySQL笔记</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a>
   </div>
 </div>
 
@@ -180,11 +202,11 @@ Blog：http://www.wiredtiger.org
 </aside>
     <div class="clearfix"></div>
   </div>
-  <footer id="footer" class="inner"><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </script>
 <div class="aligncenter">
   
-  Copyright &copy; 2017  Lyln
+  Copyright &copy; 2018  Lyln
    | 
   <span id="busuanzi_container_site_pv">
     本站总访问量<span id="busuanzi_value_site_pv"></span>次
@@ -232,3 +254,10 @@ var disqus_shortname = 'lyln';
 
 </body>
 </html>
+
+<!-- click bloom -->
+{% if theme.fireworks %}
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="application/x-javascript" src="/js/fireworks.js"></script>
+{% endif %}

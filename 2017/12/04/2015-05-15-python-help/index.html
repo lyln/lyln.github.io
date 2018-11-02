@@ -3,13 +3,16 @@
 <head>
   <meta charset="utf-8">
   
-  <title>MySQL笔记 | 落影流年</title>
+  <title>python小技巧 | 落影流年</title>
   <meta name="author" content="Lyln">
+  
+  <meta name="description" content="dir查看对象的属性12&amp;gt;&amp;gt;&amp;gt; dir(re)[&#39;DEBUG&#39;, &#39;DOTALL&#39;, &#39;I&#39;, ...&#39;compile&#39;....]
+help查看模块方法的使用1&amp;gt;&amp;gt;&amp;gt;help(&#39;compile&#39;)">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="python小技巧"/>
   <meta property="og:site_name" content="落影流年"/>
 
   
@@ -49,38 +52,89 @@
 <div class="clearfix"></div>
 </header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-<h2 class="archive-title tag">MySQL笔记</h2>
+    <div id="main-col" class="alignleft"><div id="wrapper"><script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2017-12-04T15:35:44.000Z"><a href="/2017/12/04/2015-05-15-python-help/">2017-12-04</a></time>
+      
+      
+  
+    <h1 class="title">python小技巧</h1>
+  
 
+    </header>
+    <div class="entry">
+      
+        <p>dir查看对象的属性<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; dir(re)</div><div class="line">[<span class="string">'DEBUG'</span>, <span class="string">'DOTALL'</span>, <span class="string">'I'</span>, ...<span class="string">'compile'</span>....]</div></pre></td></tr></table></figure></p>
+<p>help查看模块方法的使用<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;<span class="built_in">help</span>(<span class="string">'compile'</span>)</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>命令行自动补全<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">cat ~/.pythonstartup </div><div class="line"><span class="comment"># python startup file</span></div><div class="line">import readline</div><div class="line">import rlcompleter</div><div class="line">import atexit</div><div class="line">import os</div><div class="line"><span class="comment"># tab completion</span></div><div class="line">readline.parse_and_bind(<span class="string">'tab: complete'</span>)</div><div class="line"><span class="comment"># history file</span></div><div class="line">histfile = os.path.join(os.environ[<span class="string">'HOME'</span>], <span class="string">'.pythonhistory'</span>)</div><div class="line">try:</div><div class="line">  readline.read_history_file(histfile)</div><div class="line">except IOError:</div><div class="line">    pass</div><div class="line">atexit.register(readline.write_history_file, histfile)</div><div class="line">del os, histfile, readline, rlcompleter</div><div class="line"></div><div class="line">vi /etc/profile</div><div class="line"><span class="built_in">export</span> PYTHONSTARTUP=/root/.pythonstartup</div><div class="line"><span class="built_in">source</span> /etc/profile</div></pre></td></tr></table></figure></p>
 
-  <div class="archive">
-    
-      <article class="post">
-        <div class="post-content">
-          <header>
-            <div class="icon"></div>
-            <time datetime="2017-12-03T14:11:08.000Z"><a href="/2017/12/03/2017-08-03-MySQL笔记之版本升级和权限管理/">2017-12-03</a></time>
-            
-              <h1 class="title"><a href="/2017/12/03/2017-08-03-MySQL笔记之版本升级和权限管理/">MySQL笔记之版本升级和权限管理</a></h1>
-            
-          </header>
-        </div>
-      </article>
-    
-      <article class="post">
-        <div class="post-content">
-          <header>
-            <div class="icon"></div>
-            <time datetime="2017-12-03T14:09:45.000Z"><a href="/2017/12/03/2017-08-02-MySQL笔记之介绍和安装/">2017-12-03</a></time>
-            
-              <h1 class="title"><a href="/2017/12/03/2017-08-02-MySQL笔记之介绍和安装/">MySQL笔记之介绍和安装</a></h1>
-            
-          </header>
-        </div>
-      </article>
-    
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Python/">Python</a>
   </div>
 
+        
+  
+  <div class="tags">
+    <a href="/tags/Python/">Python</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+
+
+<!--
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+-->
 </div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
@@ -189,7 +243,7 @@ var disqus_shortname = 'lyln';
   var dsq = document.createElement('script');
   dsq.type = 'text/javascript';
   dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
   (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 }());
 </script>

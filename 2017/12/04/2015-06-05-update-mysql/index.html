@@ -3,15 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>categories | 落影流年</title>
+  <title>Centos 升级mysql5.1到5.6 | 落影流年</title>
   <meta name="author" content="Lyln">
   
-  <meta name="description" content="sadfasdfs">
+  <meta name="description" content="系统：CentOS release 6.5 升级前mysql版本：5.1.73-log 升级后mysql版本：5.6.25 
+升级原因MySQL 5.1.x不支持四个字节的utf-8编码，只有5.5.x以后才支持
+准备123456mkdir /data/update_mysql备份my.cnf、/etc/init.d/mysqld备份整个数据库mysqldump -uroot -p -q --all-databases &amp;gt; alldatabases.sql备份数据目录tar -zxvf datadir.tar.gz /var/lib/mysql">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="categories"/>
+  <meta property="og:title" content="Centos 升级mysql5.1到5.6"/>
   <meta property="og:site_name" content="落影流年"/>
 
   
@@ -51,27 +53,47 @@
 <div class="clearfix"></div>
 </header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="page">
+    <div id="main-col" class="alignleft"><div id="wrapper"><script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<article class="post">
   
   <div class="post-content">
     <header>
       
+        <div class="icon"></div>
+        <time datetime="2017-12-04T15:35:44.000Z"><a href="/2017/12/04/2015-06-05-update-mysql/">2017-12-04</a></time>
+      
       
   
-    <h1 class="title">categories</h1>
+    <h1 class="title">Centos 升级mysql5.1到5.6</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>sadfasdfs</p>
+        <p>系统：CentOS release 6.5 <br><br>升级前mysql版本：5.1.73-log <br><br>升级后mysql版本：5.6.25 <br></p>
+<h4 id="升级原因"><a href="#升级原因" class="headerlink" title="升级原因"></a>升级原因</h4><p>MySQL 5.1.x不支持四个字节的utf-8编码，只有5.5.x以后才支持</p>
+<h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mkdir /data/update_mysql</div><div class="line">备份my.cnf、/etc/init.d/mysqld</div><div class="line">备份整个数据库</div><div class="line">mysqldump -uroot -p -q --all-databases &gt; alldatabases.sql</div><div class="line">备份数据目录</div><div class="line">tar -zxvf datadir.tar.gz /var/lib/mysql</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="停止mysql"><a href="#停止mysql" class="headerlink" title="停止mysql"></a>停止mysql</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/etc/init.d/mysqld stop</div></pre></td></tr></table></figure>
+<h4 id="升级mysql"><a href="#升级mysql" class="headerlink" title="升级mysql"></a>升级mysql</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">卸载原来的mysql</div><div class="line">yum remove mysql mysql-*  </div><div class="line">查看是否有残余</div><div class="line">yum list installed | grep mysql </div><div class="line">如果有，清除</div><div class="line">yum remove mysql-libs</div><div class="line"></div><div class="line">安装mysql</div><div class="line">mysql5.6的yum源</div><div class="line">http://dev.mysql.com/downloads/repo/yum/</div><div class="line">rpm -ivh http://repo.mysql.com/mysql-community-release-el6-5.noarch.rpm</div><div class="line"></div><div class="line">yum install mysql mysql-community-server.x86_64</div><div class="line">修改my.cnf</div><div class="line">basedir=/var/lib/mysql</div><div class="line"></div><div class="line">检查和更新数据表</div><div class="line">mysql_update</div><div class="line">mysql_update 详情参见 &lt;http://dev.mysql.com/doc/refman/5.6/en/mysql-upgrade.html&gt;</div></pre></td></tr></table></figure>
+<h4 id="notes"><a href="#notes" class="headerlink" title="notes:"></a>notes:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">* mysql备份导入时，报</div><div class="line">ERROR 1005 (HY000) at line 15607: Can<span class="string">'t create table '</span>dbname.tablename<span class="string">' (errno: 150)</span></div><div class="line"><span class="string">解决方法：</span></div><div class="line"><span class="string">备份时，设置FOREIGN_KEY_CHECKS=0。 FOREIGN_KEY_CHECKS会影响表的删除和修改。</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">* 修改sql_mode为空</span></div><div class="line"><span class="string">my.cnf添加sql_mode='</span><span class="string">'</span></div><div class="line"><span class="string">常用sql_mode的值有空、ANSI、STRICT_TRANS_TABLES、TRANDITIONAL，后两种通常称为严格模式。严格模式在存储引擎不支持事务，可能造成数据不一致。比如两条语句，第一条ok，第二条可能执行不成功。</span></div><div class="line"><span class="string">具体参考：&lt;https://dev.mysql.com/doc/refman/5.0/en/sql-mode.html&gt;</span></div></pre></td></tr></table></figure>
 
       
     </div>
     <footer>
       
         
+  
+  <div class="categories">
+    <a href="/categories/MySQL/">MySQL</a>
+  </div>
+
         
+  
+  <div class="tags">
+    <a href="/tags/MySQL/">MySQL</a>
+  </div>
+
         
   <div class="addthis addthis_toolbox addthis_default_style">
     
@@ -108,6 +130,15 @@
 </section>
 
 
+
+
+<!--
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+-->
 </div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
