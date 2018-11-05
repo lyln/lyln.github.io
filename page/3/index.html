@@ -1,0 +1,463 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>第 3 页 | 落影流年</title>
+  <meta name="author" content="Lyln">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="落影流年"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+</head>
+
+
+<!-- add Fork me on Github -->
+
+<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">落影流年</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2017-12-04T15:35:44.000Z"><a href="/2017/12/04/2015-11-21-mysql-stu03/">2017-12-04</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2017/12/04/2015-11-21-mysql-stu03/">MySQL5.7模拟role，5.6添加审计功能,SSL连接，多实例</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h4 id="mysql5-7可以模拟role"><a href="#mysql5-7可以模拟role" class="headerlink" title="mysql5.7可以模拟role"></a>mysql5.7可以模拟role</h4><p>1、创建tom，junior_dba用户<br>2、将tom加入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grant proxy on <span class="string">'junior_dba'</span>@<span class="string">'localhost'</span> to <span class="string">'tom'</span>@<span class="string">'localhost'</span>;</div></pre></td></tr></table></figure></p>
+<p>3、授予junior_dba权限后，tom将拥有和junior_dba相同的权限。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grant select on *.* to <span class="string">'junior_dba'</span>@<span class="string">'localhost'</span>;</div></pre></td></tr></table></figure></p>
+<p>4、登陆测试<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">show database;</div><div class="line">SELECT USER(), CURRENT_USER();</div></pre></td></tr></table></figure></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2017/12/04/2015-11-21-mysql-stu03/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2017-12-04T15:35:44.000Z"><a href="/2017/12/04/2015-05-15-python-help/">2017-12-04</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2017/12/04/2015-05-15-python-help/">python小技巧</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>dir查看对象的属性<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; dir(re)</div><div class="line">[<span class="string">'DEBUG'</span>, <span class="string">'DOTALL'</span>, <span class="string">'I'</span>, ...<span class="string">'compile'</span>....]</div></pre></td></tr></table></figure></p>
+<p>help查看模块方法的使用<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;<span class="built_in">help</span>(<span class="string">'compile'</span>)</div></pre></td></tr></table></figure></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2017/12/04/2015-05-15-python-help/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2017-12-04T15:35:44.000Z"><a href="/2017/12/04/2015-06-05-update-mysql/">2017-12-04</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2017/12/04/2015-06-05-update-mysql/">Centos 升级mysql5.1到5.6</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>系统：CentOS release 6.5 <br><br>升级前mysql版本：5.1.73-log <br><br>升级后mysql版本：5.6.25 <br></p>
+<h4 id="升级原因"><a href="#升级原因" class="headerlink" title="升级原因"></a>升级原因</h4><p>MySQL 5.1.x不支持四个字节的utf-8编码，只有5.5.x以后才支持</p>
+<h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mkdir /data/update_mysql</div><div class="line">备份my.cnf、/etc/init.d/mysqld</div><div class="line">备份整个数据库</div><div class="line">mysqldump -uroot -p -q --all-databases &gt; alldatabases.sql</div><div class="line">备份数据目录</div><div class="line">tar -zxvf datadir.tar.gz /var/lib/mysql</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2017/12/04/2015-06-05-update-mysql/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2017-12-03T14:11:08.000Z"><a href="/2017/12/03/2017-08-03-MySQL笔记之版本升级和权限管理/">2017-12-03</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2017/12/03/2017-08-03-MySQL笔记之版本升级和权限管理/">MySQL笔记之版本升级和权限管理</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="数据库升级"><a href="#数据库升级" class="headerlink" title="数据库升级"></a>数据库升级</h3><h4 id="1-环境说明："><a href="#1-环境说明：" class="headerlink" title="1. 环境说明："></a>1. <strong>环境说明：</strong></h4><p>一般说来，MySQL数据库的二进制数据文件，也就是<code>my.cnf</code>中的配置项<code>datadir</code>所在的位置，和我们MySQL应用程序安装的位置，是分开的，仅仅通过配置项告诉MySQL，数据库的数据存在<code>datadir</code>这个目录下。当程序和数据分离以后，方便我们对数据库应用程序做版本的升级或者回退。</p>
+<h4 id="环境举例："><a href="#环境举例：" class="headerlink" title="环境举例："></a><strong>环境举例：</strong></h4><ul>
+<li><p><em>MySQL安装目录：</em></p>
+<ul>
+<li><strong>MySQL 5.6.27:</strong> /usr/local/mysql-5.6.27-linux-glibc2.5-x86_64</li>
+<li><strong>MySQL 5.7.9 :</strong> /usr/local/mysql-5.7.9-linux-glibc2.5-x86_64</li>
+</ul>
+</li>
+<li><p><em>datadir目录：</em></p>
+<ul>
+<li>/data/mysq_data/</li>
+</ul>
+</li>
+<li><p><em>初始环境：</em></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">shell&gt; ll | grep mysql</div><div class="line">lrwxrwxrwx   1 root root    34 Nov 16 13:40 mysql -&gt; mysql-5.6.27-linux-glibc2.5-x86_64</div><div class="line">drwxr-xr-x  13 root mysql  4096 Nov 16 13:37 mysql-5.6.27-linux-glibc2.5-x86_64</div><div class="line">drwxr-xr-x   9 7161 wheel 4096 Oct 12 00:29 mysql-5.7.9-linux-glibc2.5-x86_64</div><div class="line"></div><div class="line">shell&gt; ll /data/mysql_data/</div><div class="line">total 13540</div><div class="line">-rw-rw---- 1 mysql mysql    65468 Nov 16 13:50 bin.000001</div><div class="line">-rw-rw---- 1 mysql mysql  1176237 Nov 16 13:50 bin.000002</div><div class="line">-rw-rw---- 1 mysql mysql       26 Nov 16 13:50 bin.index</div><div class="line">-rw-rw---- 1 mysql mysql     6882 Nov 16 13:50 error.log</div><div class="line">-rw-rw---- 1 mysql mysql      865 Nov 16 13:50 ib_buffer_pool</div><div class="line">-rw-rw---- 1 mysql mysql 12582912 Nov 16 13:50 ibdata1</div><div class="line">drwx------ 2 mysql mysql     4096 Nov 16 13:50 mysql</div><div class="line">drwx------ 2 mysql mysql     4096 Nov 16 13:50 performance_schema</div><div class="line">drwx------ 2 mysql mysql     4096 Nov 16 13:49 <span class="built_in">test</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2017/12/03/2017-08-03-MySQL笔记之版本升级和权限管理/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2017-12-03T14:09:45.000Z"><a href="/2017/12/03/2017-08-02-MySQL笔记之介绍和安装/">2017-12-03</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2017/12/03/2017-08-02-MySQL笔记之介绍和安装/">MySQL笔记之介绍和安装</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="MySQL版本选择"><a href="#MySQL版本选择" class="headerlink" title="MySQL版本选择"></a>MySQL版本选择</h3><ol>
+<li>MySQL5.6以后的版本，推荐使用官方版本。</li>
+<li>Percona：在5.6版本以后，MySQL将Percon之前优化集成到官方版本中;</li>
+<li>MariaDB：无INNODB;且核心代码较老</li>
+<li>MySQL在5.6以后不断重构源码，安装包越来越大，功能和性能在持续改进</li>
+</ol>
+<h3 id="MySQL官方网站介绍"><a href="#MySQL官方网站介绍" class="headerlink" title="MySQL官方网站介绍"></a>MySQL官方网站介绍</h3><p>官方网站：<a href="http://www.mysql.com" target="_blank" rel="external">http://www.mysql.com</a></p>
+<ol>
+<li><p><strong>Developer Zone</strong>： MySQL开发工程师板块</p>
+<ul>
+<li>Articles： Oracle工程师自己的博客</li>
+<li>Plant MySQL： 和MySQL相关从业人员的博客</li>
+<li>Bugs：MySQL BugList</li>
+<li>Worklog：开发记录</li>
+<li>Labs：MySQL实验性项目</li>
+</ul>
+</li>
+<li><p><strong>Downloads</strong>：MySQL下载</p>
+<ul>
+<li>Enterprise：MySQL企业版本相关，略过</li>
+<li>Community：社区版，我们下载和使用社区版<ul>
+<li>MySQL Community Server：MySQL Server</li>
+<li>MySQL Fabric : 和管理相关的工具</li>
+<li>MySQL Router：路由中间件</li>
+<li>MySQL Utilities：MySQL应用程序包</li>
+<li>MySQL Workbench：官方图型化管理界面</li>
+<li>MySQL Proxy：MySQL代理。Alpha版本，不推荐</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Documentation</strong>：MySQL文档</p>
+<ul>
+<li>官方文档 版面更改，下载离线文档在左侧Menu的下面<ul>
+<li><a href="http://downloads.mysql.com/docs/refman-5.7-en.a4.pdf" target="_blank" rel="external">PDF A4</a></li>
+<li><a href="http://downloads.mysql.com/docs/refman-5.7-en.epub" target="_blank" rel="external">EPUB</a></li>
+<li><a href="http://downloads.mysql.com/docs/refman-5.7-en.html-chapter.zip" target="_blank" rel="external">HTML</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2017/12/03/2017-08-02-MySQL笔记之介绍和安装/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+
+<nav id="pagination">
+  
+    <a href="/page/2/" class="alignleft prev">上一页</a>
+  
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:www.wiredtiger.org">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>10</small></li>
+  
+    <li><a href="/categories/MySQL/">MySQL</a><small>11</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/MySQL/">MySQL</a><small>7</small></li>
+  
+    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
+  
+    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
+  
+    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
+  
+    <li><a href="/tags/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
+  
+    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
+  
+    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
+  
+    <li><a href="/tags/https/">https</a><small>1</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/shell/">shell</a><small>1</small></li>
+  
+    <li><a href="/tags/srs/">srs</a><small>1</small></li>
+  
+    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
+  
+    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 15px;">MySQL笔记</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
+  </div>
+</div>
+
+
+  
+  <div class="widget tag">
+    <h3 class="title">友情链接</h3>
+      <ul class="entry">
+        
+          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
+        
+          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
+        
+          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
+        
+      </ul>
+  </div>
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</script>
+<div class="aligncenter">
+  
+  Copyright &copy; 2018  Lyln
+   | 
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  &nbsp <a href="/atom.xml">RSS</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+-->
+<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'lyln';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+
+</body>
+</html>
+
+<!-- click bloom -->
+{% if theme.fireworks %}
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="application/x-javascript" src="/js/fireworks.js"></script>
+{% endif %}

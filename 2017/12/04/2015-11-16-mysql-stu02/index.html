@@ -6,13 +6,8 @@
   <title>MySQL安装升级 | 落影流年</title>
   <meta name="author" content="Lyln">
   
-  <meta name="description" content="mysql dba应该关注的网站http://www.mysql.com/mysql包的生命周期 Milestone Release(MR)&amp;gt;Release Candidate(RC) 
-
-Generally Avaialble(GA)&amp;gt;Archived Version
-
-
+  <meta name="description" content="mysql dba应该关注的网站http://www.mysql.com/12mysql包的生命周期 Milestone Release(MR)&amp;gt;Release Candidate(RC) &amp;gt;Generally Avaialble(GA)&amp;gt;Archived Version
 为什么推荐选择MySQL官方版本Oracle MySQL，Percona, MariaDB,Drizzle 推荐级别由前到后。Oracle MySQL 官方MysSQL数据库版本，mysql5.6后将Percona的优化集成到官方版本。Percona 使用XtraDB引擎。MariaDB 核心代码相对较老。Drizzle 采用C++语言重构各个模块，它与MySQL不兼容。
-
 MySQL版本的选择及注意推荐安装linux-generic，同时选择mysql5.6以上的版本。因为mysql5.6修复了5.5的好多bug。线上使用注意从http://dev.mysql.com/downloads/mysql/下载并用md5sum校验文件的MD5值。">
   
   
@@ -75,18 +70,11 @@ MySQL版本的选择及注意推荐安装linux-generic，同时选择mysql5.6以
     </header>
     <div class="entry">
       
-        <h4 id="mysql-dba应该关注的网站"><a href="#mysql-dba应该关注的网站" class="headerlink" title="mysql dba应该关注的网站"></a>mysql dba应该关注的网站</h4><p><a href="http://www.mysql.com/" target="_blank" rel="external">http://www.mysql.com/</a><br>mysql包的生命周期 Milestone Release(MR)&gt;Release Candidate(RC) </p>
-<blockquote>
-<p>Generally Avaialble(GA)&gt;Archived Version</p>
-</blockquote>
-<hr>
+        <h4 id="mysql-dba应该关注的网站"><a href="#mysql-dba应该关注的网站" class="headerlink" title="mysql dba应该关注的网站"></a>mysql dba应该关注的网站</h4><p><a href="http://www.mysql.com/" target="_blank" rel="external">http://www.mysql.com/</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql包的生命周期 Milestone Release(MR)&gt;Release Candidate(RC) </div><div class="line">&gt;Generally Avaialble(GA)&gt;Archived Version</div></pre></td></tr></table></figure></p>
 <h4 id="为什么推荐选择MySQL官方版本"><a href="#为什么推荐选择MySQL官方版本" class="headerlink" title="为什么推荐选择MySQL官方版本"></a>为什么推荐选择MySQL官方版本</h4><p>Oracle MySQL，Percona, MariaDB,Drizzle 推荐级别由前到后。<br>Oracle MySQL 官方MysSQL数据库版本，mysql5.6后将Percona的优化集成到官方版本。<br>Percona 使用XtraDB引擎。<br>MariaDB 核心代码相对较老。<br>Drizzle 采用C++语言重构各个模块，它与MySQL不兼容。</p>
-<hr>
 <h4 id="MySQL版本的选择及注意"><a href="#MySQL版本的选择及注意" class="headerlink" title="MySQL版本的选择及注意"></a>MySQL版本的选择及注意</h4><p>推荐安装linux-generic，同时选择mysql5.6以上的版本。因为mysql5.6修复了5.5的好多bug。<br>线上使用注意从<a href="http://dev.mysql.com/downloads/mysql/" target="_blank" rel="external">http://dev.mysql.com/downloads/mysql/</a>下载并用md5sum校验文件的MD5值。</p>
-<hr>
 <a id="more"></a>
 <h4 id="MySQL安装及升级"><a href="#MySQL安装及升级" class="headerlink" title="MySQL安装及升级"></a>MySQL安装及升级</h4><p>MySQL5.6安装，主要参考安装文档INSTALL-BINARY文件。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">To install and use a MySQL binary distribution, the <span class="built_in">command</span></div><div class="line">sequence looks like this:</div><div class="line">shell&gt; groupadd mysql</div><div class="line">shell&gt; useradd -r -g mysql mysql</div><div class="line">shell&gt; <span class="built_in">cd</span> /usr/<span class="built_in">local</span></div><div class="line">shell&gt; tar zxvf /path/to/mysql-VERSION-OS.tar.gz</div><div class="line">shell&gt; ln -s full-path-to-mysql-VERSION-OS mysql</div><div class="line">shell&gt; <span class="built_in">cd</span> mysql</div><div class="line">shell&gt; mkdir mysql-files</div><div class="line">shell&gt; chmod 770 mysql-files</div><div class="line">shell&gt; chown -R mysql .</div><div class="line">shell&gt; chgrp -R mysql .</div><div class="line">shell&gt; bin/mysql_install_db --user=mysql    <span class="comment"># Before MySQL 5.7.6</span></div><div class="line">shell&gt; bin/mysqld --initialize --user=mysql <span class="comment"># MySQL 5.7.6 and up</span></div><div class="line">shell&gt; bin/mysql_ssl_rsa_setup              <span class="comment"># MySQL 5.7.6 and up</span></div><div class="line">更改默认文件所属组 bin/mysql_ssl_rsa_setup  --uid mysql --datadir=/data/mysql57 </div><div class="line">shell&gt; chown -R root .</div><div class="line">shell&gt; chown -R mysql data mysql-files</div><div class="line">shell&gt; bin/mysqld_safe --user=mysql &amp;</div><div class="line"><span class="comment"># Next command is optional</span></div><div class="line">shell&gt; cp support-files/mysql.server /etc/init.d/mysql.server</div></pre></td></tr></table></figure></p>
-<hr>
 <h4 id="MySQL启动与停止"><a href="#MySQL启动与停止" class="headerlink" title="MySQL启动与停止"></a>MySQL启动与停止</h4><p>查看mysql启动加载my.cnf的顺序<br>mysqld -v –help |grep my.cnf<br>my.cnf参数覆盖原则，都读取，相同参数配置值会被后面的覆盖。</p>
 <ul>
 <li><p>a) mysqld启动 [mysqld]<br>mysqld –defaults-file=my.cnf –user=mysql</p>
@@ -98,18 +86,14 @@ MySQL版本的选择及注意推荐安装linux-generic，同时选择mysql5.6以
 <li><p>d)mysqld_multi 多实例启动,指定启动加载配置<br>mysqld_safe –defaults-file=my.cnf &amp; </p>
 </li>
 </ul>
-<hr>
 <p>停止<br>/etc/init.d/mysqld stop<br>mysqladmin shutdown</p>
-<hr>
 <p>登录<br>mysql –login-path 别名     相对安全的登录方式<br>mysql mysql_config_editor set -G 别名 -uroot -p</p>
-<hr>
 <p>升级 </p>
 <ul>
 <li>a)安全的停止数据库,备份系统库。</li>
 <li>b)修改软链接指向</li>
 <li>c)启动mysql，mysql_upgrade -s 升级系统库。</li>
 </ul>
-<hr>
 <p>用户权限管理<br>用户认证流程：user和ip是否允许-&gt;查看mysql.user表-&gt;查看mysql.db表<br>-&gt;查看mysql.table_priv表-&gt;查看mysql.column_priv-&gt;提示用户没有权限</p>
 <h4 id="notes"><a href="#notes" class="headerlink" title="notes:"></a>notes:</h4><ul>
 <li>a)是否已经存在/etc/my.cnf /etc/mysql/my.cnf <br></li>
@@ -203,11 +187,11 @@ MySQL版本的选择及注意推荐安装linux-generic，同时选择mysql5.6以
   
     <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
   
-    <li><a href="/categories/Linux/">Linux</a><small>2</small></li>
+    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
   
-    <li><a href="/categories/MySQL/">MySQL</a><small>8</small></li>
+    <li><a href="/categories/Linux/">Linux</a><small>10</small></li>
   
-    <li><a href="/categories/Nginx/">Nginx</a><small>1</small></li>
+    <li><a href="/categories/MySQL/">MySQL</a><small>11</small></li>
   
     <li><a href="/categories/Python/">Python</a><small>1</small></li>
   
@@ -222,19 +206,37 @@ MySQL版本的选择及注意推荐安装linux-generic，同时选择mysql5.6以
   
     <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
   
-    <li><a href="/tags/Linux/">Linux</a><small>1</small></li>
+    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
   
-    <li><a href="/tags/MySQL/">MySQL</a><small>6</small></li>
+    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+  
+    <li><a href="/tags/MySQL/">MySQL</a><small>7</small></li>
   
     <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
   
-    <li><a href="/tags/Nginx/">Nginx</a><small>1</small></li>
+    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
   
     <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
   
     <li><a href="/tags/Python/">Python</a><small>1</small></li>
   
+    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
+  
+    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
+  
+    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
+  
+    <li><a href="/tags/https/">https</a><small>1</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/shell/">shell</a><small>1</small></li>
+  
     <li><a href="/tags/srs/">srs</a><small>1</small></li>
+  
+    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
+  
+    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
   
   </ul>
 </div>
@@ -244,7 +246,7 @@ MySQL版本的选择及注意推荐安装linux-generic，同时选择mysql5.6以
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 15px;">MySQL笔记</a> <a href="/tags/Nginx/" style="font-size: 10px;">Nginx</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a>
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 15px;">MySQL笔记</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
   </div>
 </div>
 
