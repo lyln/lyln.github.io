@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "hexo-generator-archive": "^0.1.5"
+  }
+}

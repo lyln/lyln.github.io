@@ -3,6 +3,7 @@ layout: post
 title: "从日志恢复数据"
 categories: MySQL
 tags: shell
+date: 2016/11/07
 ---
 
 循环遍历日志

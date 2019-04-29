@@ -3,6 +3,7 @@ layout: post
 title: "MySQL笔记之版本升级和权限管理"
 categories: MySQL
 tags: MySQL笔记
+date: 2017/08/03
 ---
 
 ### 数据库升级

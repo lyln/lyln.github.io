@@ -3,6 +3,7 @@ layout: post
 title: "Percona Toolkit使用小结"
 categories: MySQL
 tags: Percona Toolkit
+date: 2016/09/18
 ---
 
 Percona Toolkit安装

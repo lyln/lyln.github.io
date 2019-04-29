@@ -3,6 +3,7 @@ layout: post
 title: "Smokeping nginx 安装小记"
 categories: Linux
 tags: Smokeping
+date: 2016/09/01
 ---
 
 ### nginx支持cgi

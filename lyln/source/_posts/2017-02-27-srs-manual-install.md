@@ -3,6 +3,7 @@ layout: post
 title: "SRS使用小记"
 categories: Linux
 tags: srs
+date: 2017/02/27
 ---
 
 ### SRS简介

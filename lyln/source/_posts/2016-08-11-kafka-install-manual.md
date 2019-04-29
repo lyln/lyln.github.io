@@ -3,6 +3,7 @@ layout: post
 title: "Kafka操作小结"
 categories: Kafka
 tags: Kafka
+date: 2016/08/11
 ---
 
 #### Kafka操作小结

@@ -3,6 +3,7 @@ layout: post
 title: "iptables notes"
 categories: Linux
 tags: Linux
+date: 2015/07/07
 ---
 
 #### 链

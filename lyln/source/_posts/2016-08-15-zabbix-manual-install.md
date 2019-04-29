@@ -3,6 +3,7 @@ layout: post
 title: "Zabbix 3.0 安装小记"
 categories: Linux
 tags: zabbix
+date: 2016/08/15
 ---
 
 ### zabbix_server部署
@@ -196,5 +197,11 @@ win下找到SIMHEI.TTF字体，上传至/usr/local/zabbix/fonts
 
 define('ZBX_GRAPH_FONT_NAME', 'simhei'); // font file name
 ```
+3、 zabbix_agentd [43606]: cannot recreate Zabbix semaphores for IPC key 0x7a0108e8 Semaphore ID 4294967295: [22] Invalid argument
+```
+ipcrm -S 0x7a0108e8
+清理重启zabbix-agent即可
+```
+
 #### links:
 <https://www.zabbix.com/documentation/3.0/manual/installation/install_from_packages#debianubuntu>

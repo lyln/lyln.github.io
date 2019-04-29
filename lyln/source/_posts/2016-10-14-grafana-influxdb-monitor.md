@@ -3,6 +3,7 @@ layout: post
 title: "grafana influxdb构建自定义监控"
 categories: Linux
 tags: grafana influxdb
+date: 2016/10/14
 ---
 
 #### grafana 安装

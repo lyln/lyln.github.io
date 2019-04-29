@@ -3,6 +3,7 @@ layout: post
 title: "ffmpeg 编译安装"
 categories: Linux
 tags: ffmpeg
+date: 2016/10/25
 ---
 系统环境
 Ubuntu 14.04.3 LTS

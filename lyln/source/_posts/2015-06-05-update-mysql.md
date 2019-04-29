@@ -3,6 +3,7 @@ layout: post
 title: "Centos 升级mysql5.1到5.6"
 categories: MySQL
 tags: MySQL
+date: 2015/06/05
 ---
 
 系统：CentOS release 6.5 <br>

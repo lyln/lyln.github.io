@@ -7,6 +7,7 @@ if (page.archive){
   else title = __('archive_a');
 }
 %>
+
 <h2 class="archive-title<% if (page.tag){ %> tag<% } else if (page.category){ %> category<% } %>"><%= title %></h2>
 
 <% if (pagination == 2){ %>
@@ -33,8 +34,13 @@ if (page.archive){
               <h1 class="title"><a href="<%- config.root %><%- item.path %>"><%= item.title %></a></h1>
             <% } %>
           </header>
+	  <div class='archive-tags'>
+	      <%- partial('post/tag', {item: item}) %>
+	  </div>
         </div>
       </article>
     <% }); %>
   </div>
 <% } %>
+
+<%- partial('_partial/pagination') %>

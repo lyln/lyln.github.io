@@ -3,6 +3,7 @@ layout: post
 title:  "Discuz! X3.2 安装问题小记"
 categories: Linux
 tags: Linux
+date: 2016/08/06
 ---
 
 Discuz 安装本来很简单，但是由于不熟悉和本身代码的问题，花了快一天才解决。现在将问题罗列如下：

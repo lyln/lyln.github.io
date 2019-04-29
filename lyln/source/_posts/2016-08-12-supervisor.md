@@ -3,6 +3,7 @@ layout: post
 title: "Supervisor进程管理"
 categories: Linux
 tags: supervisor
+date: 2016/08/12
 ---
 
 Supervisor (http://supervisord.org) 是一个用 Python 写的进程管理工具，可以很方便的用来启动、重启、关闭进程。

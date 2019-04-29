@@ -3,6 +3,7 @@ layout: post
 title: "Docker笔记"
 categories: Docker
 tags: Docker
+date: 2015/05/29
 ---
 
 #### 安装 

@@ -2,6 +2,7 @@
 layout: post
 title: "PostgreSQL笔记--初识PostgreSQL"
 tags: PostgreSQL
+date: 2015/06/04
 ---
 
 #### PostgreSQL安装

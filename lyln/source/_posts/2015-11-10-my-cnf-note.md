@@ -3,6 +3,7 @@ layout: post
 title: "my.cnf配置文件注释"
 categories: MySQL
 tags: MySQL
+date: 2015/11/10
 ---
 
 #### MySQL 5.6 & 5.7最优配置文件模板

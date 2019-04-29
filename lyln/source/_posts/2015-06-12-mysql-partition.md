@@ -3,6 +3,7 @@ layout: post
 title: "mysql表分区基础"
 categories: MySQL
 tags: MySQL
+date: 2015/06/12
 ---
 
 ##### 表结构文件

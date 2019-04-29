@@ -3,6 +3,7 @@ layout: post
 title:  "Anemometer 展示示MySQL慢查询日志"
 categories: MySQL
 tags: MySQL
+date: 2016/07/01
 ---
 
 安装部署

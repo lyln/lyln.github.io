@@ -3,6 +3,7 @@ layout: post
 title: "MySQL笔记之介绍和安装"
 categories: MySQL
 tags: MySQL笔记
+date: 2017/08/02
 ---
 
 ### MySQL版本选择

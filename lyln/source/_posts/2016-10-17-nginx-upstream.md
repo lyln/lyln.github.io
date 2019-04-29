@@ -3,6 +3,7 @@ layout: post
 title: "nginx 负载均衡配置"
 categories: Linux
 tags: nginx
+date: 2016/10/17
 ---
 
 环境介绍

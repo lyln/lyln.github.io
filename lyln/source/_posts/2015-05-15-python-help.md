@@ -3,6 +3,7 @@ layout: post
 title:  "python小技巧"
 categories: Python
 tags: Python
+date: 2015/05/15
 ---
 dir查看对象的属性
 ```bash
