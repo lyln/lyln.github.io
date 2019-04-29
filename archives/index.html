@@ -22,6 +22,22 @@
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   
 
+  <script>
+	(function() {
+	    var OriginTitile = document.title, titleTime;
+	    document.addEventListener('visibilitychange', function() {
+		if (document.hidden) {
+		    document.title = '死鬼去哪里了！';
+		    clearTimeout(titleTime);
+		} else {
+		    document.title = '(つェ⊂)咦!又好了!';
+		    titleTime = setTimeout(function() {
+			document.title = OriginTitile;
+		    },2000);
+		}
+	    });
+	})();
+ </script>
 </head>
 
 
@@ -50,6 +66,7 @@
 </header>
   <div id="content" class="inner">
     <div id="main-col" class="alignleft"><div id="wrapper">
+
 <h2 class="archive-title">归档</h2>
 
 
@@ -59,11 +76,19 @@
         <div class="post-content">
           <header>
             <div class="icon"></div>
-            <time datetime="2018-11-05T09:14:03.501Z"><a href="/2018/11/05/2016-12-03-nginx-tomcat-https/">2018-11-05</a></time>
+            <time datetime="2018-12-07T16:00:00.000Z"><a href="/2018/12/08/2016-08-15-k8s-common-use/">2018-12-08</a></time>
             
-              <h1 class="title"><a href="/2018/11/05/2016-12-03-nginx-tomcat-https/">Nginx/Tomcat添加Https支持</a></h1>
+              <h1 class="title"><a href="/2018/12/08/2016-08-15-k8s-common-use/">K8S常用命令</a></h1>
             
           </header>
+	  <div class='archive-tags'>
+	      
+  
+  <div class="tags">
+    <a href="/tags/kubernetes/">kubernetes</a>
+  </div>
+
+	  </div>
         </div>
       </article>
     
@@ -71,11 +96,19 @@
         <div class="post-content">
           <header>
             <div class="icon"></div>
-            <time datetime="2018-11-05T09:11:34.312Z"><a href="/2018/11/05/2016-11-07-from-log-recover-data/">2018-11-05</a></time>
+            <time datetime="2018-10-17T16:00:00.000Z"><a href="/2018/10/18/2018-10-18-nexus-oss-install/">2018-10-18</a></time>
             
-              <h1 class="title"><a href="/2018/11/05/2016-11-07-from-log-recover-data/">从日志恢复数据</a></h1>
+              <h1 class="title"><a href="/2018/10/18/2018-10-18-nexus-oss-install/">Nexus OSS私服的安装和迁移</a></h1>
             
           </header>
+	  <div class='archive-tags'>
+	      
+  
+  <div class="tags">
+    <a href="/tags/Nexus/">Nexus</a>
+  </div>
+
+	  </div>
         </div>
       </article>
     
@@ -83,11 +116,19 @@
         <div class="post-content">
           <header>
             <div class="icon"></div>
-            <time datetime="2018-11-05T09:08:32.139Z"><a href="/2018/11/05/2016-10-25-ffmpeg-build/">2018-11-05</a></time>
+            <time datetime="2017-08-02T16:00:00.000Z"><a href="/2017/08/03/2017-08-03-mysql-notes-update-privileges/">2017-08-03</a></time>
             
-              <h1 class="title"><a href="/2018/11/05/2016-10-25-ffmpeg-build/">ffmpeg 编译安装</a></h1>
+              <h1 class="title"><a href="/2017/08/03/2017-08-03-mysql-notes-update-privileges/">MySQL笔记之版本升级和权限管理</a></h1>
             
           </header>
+	  <div class='archive-tags'>
+	      
+  
+  <div class="tags">
+    <a href="/tags/MySQL笔记/">MySQL笔记</a>
+  </div>
+
+	  </div>
         </div>
       </article>
     
@@ -95,11 +136,19 @@
         <div class="post-content">
           <header>
             <div class="icon"></div>
-            <time datetime="2018-11-05T09:04:57.581Z"><a href="/2018/11/05/2016-10-17-nginx-upstream/">2018-11-05</a></time>
+            <time datetime="2017-08-01T16:00:00.000Z"><a href="/2017/08/02/2017-08-02-mysql-notes-install/">2017-08-02</a></time>
             
-              <h1 class="title"><a href="/2018/11/05/2016-10-17-nginx-upstream/">nginx 负载均衡配置</a></h1>
+              <h1 class="title"><a href="/2017/08/02/2017-08-02-mysql-notes-install/">MySQL笔记之介绍和安装</a></h1>
             
           </header>
+	  <div class='archive-tags'>
+	      
+  
+  <div class="tags">
+    <a href="/tags/MySQL笔记/">MySQL笔记</a>
+  </div>
+
+	  </div>
         </div>
       </article>
     
@@ -107,11 +156,19 @@
         <div class="post-content">
           <header>
             <div class="icon"></div>
-            <time datetime="2018-11-05T08:58:14.391Z"><a href="/2018/11/05/2016-10-14-grafana-influxdb-monitor/">2018-11-05</a></time>
+            <time datetime="2017-02-26T16:00:00.000Z"><a href="/2017/02/27/2017-02-27-srs-manual-install/">2017-02-27</a></time>
             
-              <h1 class="title"><a href="/2018/11/05/2016-10-14-grafana-influxdb-monitor/">grafana influxdb构建自定义监控</a></h1>
+              <h1 class="title"><a href="/2017/02/27/2017-02-27-srs-manual-install/">SRS使用小记</a></h1>
             
           </header>
+	  <div class='archive-tags'>
+	      
+  
+  <div class="tags">
+    <a href="/tags/srs/">srs</a>
+  </div>
+
+	  </div>
         </div>
       </article>
     
@@ -119,11 +176,19 @@
         <div class="post-content">
           <header>
             <div class="icon"></div>
-            <time datetime="2018-11-05T08:44:31.213Z"><a href="/2018/11/05/2016-09-18-percona-toolkit/">2018-11-05</a></time>
+            <time datetime="2016-12-02T16:00:00.000Z"><a href="/2016/12/03/2016-12-03-nginx-tomcat-https/">2016-12-03</a></time>
             
-              <h1 class="title"><a href="/2018/11/05/2016-09-18-percona-toolkit/">Percona Toolkit使用小结</a></h1>
+              <h1 class="title"><a href="/2016/12/03/2016-12-03-nginx-tomcat-https/">Nginx/Tomcat添加Https支持</a></h1>
             
           </header>
+	  <div class='archive-tags'>
+	      
+  
+  <div class="tags">
+    <a href="/tags/https/">https</a>
+  </div>
+
+	  </div>
         </div>
       </article>
     
@@ -131,11 +196,19 @@
         <div class="post-content">
           <header>
             <div class="icon"></div>
-            <time datetime="2018-11-05T08:26:42.284Z"><a href="/2018/11/05/2016-09-01-smokeping-nginx-install/">2018-11-05</a></time>
+            <time datetime="2016-11-06T16:00:00.000Z"><a href="/2016/11/07/2016-11-07-from-log-recover-data/">2016-11-07</a></time>
             
-              <h1 class="title"><a href="/2018/11/05/2016-09-01-smokeping-nginx-install/">Smokeping nginx 安装小记</a></h1>
+              <h1 class="title"><a href="/2016/11/07/2016-11-07-from-log-recover-data/">从日志恢复数据</a></h1>
             
           </header>
+	  <div class='archive-tags'>
+	      
+  
+  <div class="tags">
+    <a href="/tags/shell/">shell</a>
+  </div>
+
+	  </div>
         </div>
       </article>
     
@@ -143,11 +216,19 @@
         <div class="post-content">
           <header>
             <div class="icon"></div>
-            <time datetime="2018-11-05T08:16:17.945Z"><a href="/2018/11/05/2016-08-15-zabbix-manual-install/">2018-11-05</a></time>
+            <time datetime="2016-10-24T16:00:00.000Z"><a href="/2016/10/25/2016-10-25-ffmpeg-build/">2016-10-25</a></time>
             
-              <h1 class="title"><a href="/2018/11/05/2016-08-15-zabbix-manual-install/">Zabbix 3.0 安装小记</a></h1>
+              <h1 class="title"><a href="/2016/10/25/2016-10-25-ffmpeg-build/">ffmpeg 编译安装</a></h1>
             
           </header>
+	  <div class='archive-tags'>
+	      
+  
+  <div class="tags">
+    <a href="/tags/ffmpeg/">ffmpeg</a>
+  </div>
+
+	  </div>
         </div>
       </article>
     
@@ -155,11 +236,19 @@
         <div class="post-content">
           <header>
             <div class="icon"></div>
-            <time datetime="2018-11-05T08:11:49.250Z"><a href="/2018/11/05/2016-08-12-supervisor/">2018-11-05</a></time>
+            <time datetime="2016-10-16T16:00:00.000Z"><a href="/2016/10/17/2016-10-17-nginx-upstream/">2016-10-17</a></time>
             
-              <h1 class="title"><a href="/2018/11/05/2016-08-12-supervisor/">Supervisor进程管理</a></h1>
+              <h1 class="title"><a href="/2016/10/17/2016-10-17-nginx-upstream/">nginx 负载均衡配置</a></h1>
             
           </header>
+	  <div class='archive-tags'>
+	      
+  
+  <div class="tags">
+    <a href="/tags/nginx/">nginx</a>
+  </div>
+
+	  </div>
         </div>
       </article>
     
@@ -167,16 +256,32 @@
         <div class="post-content">
           <header>
             <div class="icon"></div>
-            <time datetime="2018-11-05T07:51:32.842Z"><a href="/2018/11/05/2016-08-11-kafka-install-manual/">2018-11-05</a></time>
+            <time datetime="2016-10-13T16:00:00.000Z"><a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/">2016-10-14</a></time>
             
-              <h1 class="title"><a href="/2018/11/05/2016-08-11-kafka-install-manual/">Kafka操作小结</a></h1>
+              <h1 class="title"><a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/">grafana influxdb构建自定义监控</a></h1>
             
           </header>
+	  <div class='archive-tags'>
+	      
+  
+  <div class="tags">
+    <a href="/tags/grafana-influxdb/">grafana influxdb</a>
+  </div>
+
+	  </div>
         </div>
       </article>
     
   </div>
 
+
+<nav id="pagination">
+  
+  
+    <a href="/archives/page/2/" class="alignright next">下一页</a>
+  
+  <div class="clearfix"></div>
+</nav>
 </div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
@@ -193,11 +298,13 @@
   
     <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
   
+    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
+  
     <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
   
-    <li><a href="/categories/Linux/">Linux</a><small>10</small></li>
+    <li><a href="/categories/Linux/">Linux</a><small>14</small></li>
   
-    <li><a href="/categories/MySQL/">MySQL</a><small>11</small></li>
+    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
   
     <li><a href="/categories/Python/">Python</a><small>1</small></li>
   
@@ -214,11 +321,13 @@
   
     <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
   
-    <li><a href="/tags/Linux/">Linux</a><small>2</small></li>
+    <li><a href="/tags/Linux/">Linux</a><small>3</small></li>
   
-    <li><a href="/tags/MySQL/">MySQL</a><small>7</small></li>
+    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
   
     <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
+  
+    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
   
     <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
   
@@ -226,13 +335,19 @@
   
     <li><a href="/tags/Python/">Python</a><small>1</small></li>
   
+    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
+  
     <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
   
     <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
   
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
     <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
   
     <li><a href="/tags/https/">https</a><small>1</small></li>
+  
+    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
   
     <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
   
@@ -252,7 +367,7 @@
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 15px;">MySQL笔记</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
   </div>
 </div>
 
@@ -279,7 +394,7 @@
 </script>
 <div class="aligncenter">
   
-  Copyright &copy; 2018  Lyln
+  Copyright &copy; 2019  Lyln
    | 
   <span id="busuanzi_container_site_pv">
     本站总访问量<span id="busuanzi_value_site_pv"></span>次
@@ -330,7 +445,6 @@ var disqus_shortname = 'lyln';
 
 <!-- click bloom -->
 {% if theme.fireworks %}
-   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
-   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
-   <script type="application/x-javascript" src="/js/fireworks.js"></script>
+   <script type="application/x-javascript" src="/js/mo.min.js"></script>
+   <script type="text/javascript" src="/js/loading.mo.js"></script> 
 {% endif %}

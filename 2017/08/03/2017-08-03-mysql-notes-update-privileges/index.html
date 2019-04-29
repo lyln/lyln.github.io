@@ -1,0 +1,444 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>MySQL笔记之版本升级和权限管理 | 落影流年</title>
+  <meta name="author" content="Lyln">
+  
+  <meta name="description" content="数据库升级1. 环境说明：一般说来，MySQL数据库的二进制数据文件，也就是my.cnf中的配置项datadir所在的位置，和我们MySQL应用程序安装的位置，是分开的，仅仅通过配置项告诉MySQL，数据库的数据存在datadir这个目录下。当程序和数据分离以后，方便我们对数据库应用程序做版本的升级或者回退。
+环境举例：
+MySQL安装目录：
+
+MySQL 5.6.27: /usr/local/mysql-5.6.27-linux-glibc2.5-x86_64
+MySQL 5.7.9 : /usr/local/mysql-5.7.9-linux-glibc2.5-x86_64
+
+
+datadir目录：
+
+/data/mysq_data/
+
+
+初始环境：
+  12345678910111213141516shell&amp;gt; ll | grep mysqllrwxrwxrwx   1 root root    34 Nov 16 13:40 mysql -&amp;gt; mysql-5.6.27-linux-glibc2.5-x86_64drwxr-xr-x  13 root mysql  4096 Nov 16 13:37 mysql-5.6.27-linux-glibc2.5-x86_64drwxr-xr-x   9 7161 wheel 4096 Oct 12 00:29 mysql-5.7.9-linux-glibc2.5-x86_64shell&amp;gt; ll /data/mysql_data/total 13540-rw-rw---- 1 mysql mysql    65468 Nov 16 13:50 bin.000001-rw-rw---- 1 mysql mysql  1176237 Nov 16 13:50 bin.000002-rw-rw---- 1 mysql mysql       26 Nov 16 13:50 bin.index-rw-rw---- 1 mysql mysql     6882 Nov 16 13:50 error.log-rw-rw---- 1 mysql mysql      865 Nov 16 13:50 ib_buffer_pool-rw-rw---- 1 mysql mysql 12582912 Nov 16 13:50 ibdata1drwx------ 2 mysql mysql     4096 Nov 16 13:50 mysqldrwx------ 2 mysql mysql     4096 Nov 16 13:50 performance_schemadrwx------ 2 mysql mysql     4096 Nov 16 13:49 test">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="MySQL笔记之版本升级和权限管理"/>
+  <meta property="og:site_name" content="落影流年"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  <script>
+	(function() {
+	    var OriginTitile = document.title, titleTime;
+	    document.addEventListener('visibilitychange', function() {
+		if (document.hidden) {
+		    document.title = '死鬼去哪里了！';
+		    clearTimeout(titleTime);
+		} else {
+		    document.title = '(つェ⊂)咦!又好了!';
+		    titleTime = setTimeout(function() {
+			document.title = OriginTitile;
+		    },2000);
+		}
+	    });
+	})();
+ </script>
+</head>
+
+
+<!-- add Fork me on Github -->
+
+<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">落影流年</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2017-08-02T16:00:00.000Z"><a href="/2017/08/03/2017-08-03-mysql-notes-update-privileges/">2017-08-03</a></time>
+      
+      
+  
+    <h1 class="title">MySQL笔记之版本升级和权限管理</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="数据库升级"><a href="#数据库升级" class="headerlink" title="数据库升级"></a>数据库升级</h3><h4 id="1-环境说明："><a href="#1-环境说明：" class="headerlink" title="1. 环境说明："></a>1. <strong>环境说明：</strong></h4><p>一般说来，MySQL数据库的二进制数据文件，也就是<code>my.cnf</code>中的配置项<code>datadir</code>所在的位置，和我们MySQL应用程序安装的位置，是分开的，仅仅通过配置项告诉MySQL，数据库的数据存在<code>datadir</code>这个目录下。当程序和数据分离以后，方便我们对数据库应用程序做版本的升级或者回退。</p>
+<h4 id="环境举例："><a href="#环境举例：" class="headerlink" title="环境举例："></a><strong>环境举例：</strong></h4><ul>
+<li><p><em>MySQL安装目录：</em></p>
+<ul>
+<li><strong>MySQL 5.6.27:</strong> /usr/local/mysql-5.6.27-linux-glibc2.5-x86_64</li>
+<li><strong>MySQL 5.7.9 :</strong> /usr/local/mysql-5.7.9-linux-glibc2.5-x86_64</li>
+</ul>
+</li>
+<li><p><em>datadir目录：</em></p>
+<ul>
+<li>/data/mysq_data/</li>
+</ul>
+</li>
+<li><p><em>初始环境：</em></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">shell&gt; ll | grep mysql</div><div class="line">lrwxrwxrwx   1 root root    34 Nov 16 13:40 mysql -&gt; mysql-5.6.27-linux-glibc2.5-x86_64</div><div class="line">drwxr-xr-x  13 root mysql  4096 Nov 16 13:37 mysql-5.6.27-linux-glibc2.5-x86_64</div><div class="line">drwxr-xr-x   9 7161 wheel 4096 Oct 12 00:29 mysql-5.7.9-linux-glibc2.5-x86_64</div><div class="line"></div><div class="line">shell&gt; ll /data/mysql_data/</div><div class="line">total 13540</div><div class="line">-rw-rw---- 1 mysql mysql    65468 Nov 16 13:50 bin.000001</div><div class="line">-rw-rw---- 1 mysql mysql  1176237 Nov 16 13:50 bin.000002</div><div class="line">-rw-rw---- 1 mysql mysql       26 Nov 16 13:50 bin.index</div><div class="line">-rw-rw---- 1 mysql mysql     6882 Nov 16 13:50 error.log</div><div class="line">-rw-rw---- 1 mysql mysql      865 Nov 16 13:50 ib_buffer_pool</div><div class="line">-rw-rw---- 1 mysql mysql 12582912 Nov 16 13:50 ibdata1</div><div class="line">drwx------ 2 mysql mysql     4096 Nov 16 13:50 mysql</div><div class="line">drwx------ 2 mysql mysql     4096 Nov 16 13:50 performance_schema</div><div class="line">drwx------ 2 mysql mysql     4096 Nov 16 13:49 <span class="built_in">test</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<a id="more"></a>
+<h4 id="版本升级"><a href="#版本升级" class="headerlink" title="版本升级"></a>版本升级</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line">shell&gt; /etc/init.d/mysqld stop  <span class="comment">#安全的停止数据库的运行</span></div><div class="line">shell&gt; <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/</div><div class="line">shell&gt; unlink mysql</div><div class="line">shell&gt; ln -s mysql-5.7.9-linux-glibc2.5-x86_64 mysql </div><div class="line">        <span class="comment">#此时，MySQL的应用程序版本已经升级完成</span></div><div class="line">        <span class="comment">#/etc/init.d/mysqld</span></div><div class="line">        <span class="comment">#/etc/profile中PATH增加的/usr/local/mysql/bin</span></div><div class="line">        <span class="comment">#都不需要做任何的改变，即可将当前系统的mysql版本升级完成</span></div><div class="line">        <span class="comment">#注意：此时只是应用程序升级完成，系统表仍然还是5.6的版本</span></div><div class="line">        </div><div class="line"></div><div class="line">shell&gt; <span class="built_in">cd</span> /usr/<span class="built_in">local</span>/mysql</div><div class="line">shell&gt; chown root.mysql . -R</div><div class="line">shell&gt; cp /data/mysql_data/mysql /你的备份路径/mysql_5_6_27.backup -r</div><div class="line">       <span class="comment">#该步骤将mysql5.6.27版本的系统表进行了备份，以便将来可以回退</span></div><div class="line">       </div><div class="line">shell&gt; /etc/init.d/mysqld start </div><div class="line"><span class="comment">#此时 /etc/init.d/mysqld start  # 可以启动</span></div><div class="line"><span class="comment">#     且可以使用 mysql -u root -p （原密码） 进入数据库</span></div><div class="line"><span class="comment">#     show databases;存在test表，而没有sys表（数据的二进制文件兼容）</span></div><div class="line"><span class="comment">#     但是如果去看error.log会发现好多的WARNNING</span></div><div class="line"><span class="comment">#     所以，这个时候我们要去 upgrade 去升级</span></div><div class="line"></div><div class="line">       </div><div class="line">shell&gt; mysql_upgrade -p -s  </div><div class="line">        <span class="comment">#参数 -s 一定要加,表示只更新系统表，-s: upgrade-system-tables</span></div><div class="line">        <span class="comment">#如果不加-s,则会把所有库的表以5.7.9的方式重建，线上千万别这样操作</span></div><div class="line">        <span class="comment">#因为数据库二进制文件是兼容的，无需升级</span></div><div class="line">        <span class="comment">#什么时候不需要-s ? 当一些老的版本的存储格式需要新的特性，</span></div><div class="line">        <span class="comment">#                 来提升性能时，不加-s</span></div><div class="line">        <span class="comment">#即使通过slave进行升级，也推荐使用该方式升级，速度比较快</span></div><div class="line">   </div><div class="line">Enter password: </div><div class="line">The --upgrade-system-tables option was used, databases wont be touched.</div><div class="line">Checking <span class="keyword">if</span> update is needed.</div><div class="line">Checking server version.</div><div class="line">Running queries to upgrade MySQL server.</div><div class="line">Upgrading the sys schema.</div><div class="line">Upgrade process completed successfully.</div><div class="line">Checking <span class="keyword">if</span> update is needed.</div><div class="line">    </div><div class="line">shell&gt; mysql -u root -p</div><div class="line">Enter password: </div><div class="line">Welcome to the MySQL monitor.  Commands end with ; or \g.</div><div class="line">Your MySQL connection id is 4</div><div class="line">Server version: 5.7.9-log MySQL Community Server (GPL)</div><div class="line"></div><div class="line">Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.</div><div class="line"></div><div class="line">Oracle is a registered trademark of Oracle Corporation and/or its</div><div class="line">affiliates. Other names may be trademarks of their respective</div><div class="line">owners.</div><div class="line"></div><div class="line">Type <span class="string">'help;'</span> or <span class="string">'\h'</span> <span class="keyword">for</span> <span class="built_in">help</span>. Type <span class="string">'\c'</span> to clear the current input statement.</div><div class="line"></div><div class="line">mysql&gt; show databases;</div><div class="line">+--------------------+</div><div class="line">| Database           |</div><div class="line">+--------------------+</div><div class="line">| information_schema |</div><div class="line">| mysql              |  <span class="comment"># 这个就是升级后的系统库，如果回退，将备份的拷贝回来覆盖即可</span></div><div class="line">| performance_schema |</div><div class="line">| sys                |  <span class="comment"># 5.7 新的sys库</span></div><div class="line">| <span class="built_in">test</span>               |  <span class="comment"># 5.6 中的test库</span></div><div class="line">+--------------------+</div><div class="line">5 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</div></pre></td></tr></table></figure>
+<p><code>5.1.X</code>、<code>5.5.X</code> 、<code>5.6.X</code> 是可以直接通过该方式升级到<code>5.7.X</code>。<code>5.0.X</code>未知，需要测试</p>
+<p><strong>注意：</strong><br>如果原来数据二进制文件保存在<strong>/usr/local/<code>mysql-5.6.27</code>-linux-glibc2.5-x86_64/data</strong>目录下,在升级之前，要么将该目录的数据拷贝到新的你指定的data目录（比如<strong>/usr/local/<code>mysql-5.7.9</code>-linux-glibc2.5-x86_64/data</strong> ），要么修改<code>my.cnf</code>，将<code>datadir</code>指向<code>/usr/local/mysql-5.6.27-linux-glibc2.5-x86_64/data</code>，总之一定要确保<code>my.cnf</code>中的数据位置和你实际的数据位置是一致的，不管是默认的也好，还是你<code>datadir</code>指定的也好</p>
+<h3 id="MySQL的连接登录"><a href="#MySQL的连接登录" class="headerlink" title="MySQL的连接登录"></a>MySQL的连接登录</h3><h4 id="1-几种登录方式"><a href="#1-几种登录方式" class="headerlink" title="1. 几种登录方式"></a>1. 几种登录方式</h4><pre><code>* 方式一 `mysql -p`
+    - 该方法默认使用root用户, 可使用`select user();`查看当前用户
+
+* 方式二 `mysql -S /tmp/mysql.sock -u root -p`  *密码A*
+    - 该方法适用于在安装MySQL主机上进行本地登录
+
+* 方式三 `mysql -h 127.0.0.1 -u root -p` *密码B*
+    - 使用`&apos;root&apos;@&apos;127.0.0.1&apos;`这个用户登录
+
+* 方式四 `mysql -h localhost -u root -p` *密码A*
+    - 该方式等价与【方式二】，且和【方式三】属于两个不同的“用户”
+</code></pre><h4 id="2-免密码登录"><a href="#2-免密码登录" class="headerlink" title="2. 免密码登录"></a>2. 免密码登录</h4><pre><code>* 方式一 `my.cnf`增加`[client]`标签   
+
+    <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[client]   </div><div class="line">username=<span class="string">"root"</span>  </div><div class="line">password=<span class="string">"你的密码"</span></div></pre></td></tr></table></figure>
+
+    <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#单对定义不同的客户端</span></div><div class="line">[mysql] <span class="comment"># 这个是给/usr/loca/mysql/bin/mysql 使用的</span></div><div class="line">username=root</div><div class="line">password=<span class="string">"你的密码"</span></div><div class="line"></div><div class="line">[mysqladmin] <span class="comment"># 这个是给/usr/local/mysql/bin/mysqladmin使用的</span></div><div class="line">username=root</div><div class="line">password=<span class="string">"你的密码"</span></div></pre></td></tr></table></figure>
+
+    **每个不同的客户端需要定义不同的标签，使用`[client]`可以统一**
+
+
+* 方式二  login-path
+    <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">shell&gt; mysql_config_editor <span class="built_in">set</span> -G vm1 -S /tmp/mysql.sock -u root -p</div><div class="line">Enter password [输入root的密码]</div><div class="line"></div><div class="line">shell&gt; mysql_config_editor <span class="built_in">print</span> --all</div><div class="line">[vm1]</div><div class="line">user=root</div><div class="line">password=*****</div><div class="line">socket=/tmp/mysql.sock</div><div class="line"></div><div class="line"><span class="comment">#login</span></div><div class="line">shell&gt; mysql --login-path=vm1 <span class="comment"># 这样登录就不需要密码，且文件二进制存储 ,位置是 ~/.mylogin.cnf</span></div></pre></td></tr></table></figure>
+
+    **该方式相对安全。如果server被黑了，该二进制文件还是会被破解**
+
+* 方式三 `~/.my.cnf`, 自己当前家目录的下
+    <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#Filename: ~/.my.cnf</span></div><div class="line">[client]</div><div class="line">username=<span class="string">"root"</span></div><div class="line">password=<span class="string">"你的密码"</span></div></pre></td></tr></table></figure>
+</code></pre><h3 id="MySQL-参数介绍和设置"><a href="#MySQL-参数介绍和设置" class="headerlink" title="MySQL 参数介绍和设置"></a>MySQL 参数介绍和设置</h3><h4 id="1-参数的分类"><a href="#1-参数的分类" class="headerlink" title="1. 参数的分类"></a>1. 参数的分类</h4><pre><code>* 全局参数：GLOBAL
+    - 可修改参数
+    - 不可修改参数
+* 会话参数：SESSION
+    - 可修改参数
+    - 不可修改参数
+</code></pre><p>1: 用户可在线修改<code>非只读参数</code>，<code>只读参数</code>只能预先在配置文件中进行设置，通过重启数据库实例,方可生效。  </p>
+<p>2: 所有的在线修改过的参数(GLOBAL/SESSION)，在重启后，都会丢失，不会写如<code>my.cnf</code>，无法将修改进行持久化</p>
+<p>3: 有些参数，即存在于<code>GLOBAL</code>又存在于<code>SESSION</code>, 比如<code>autocommit</code> (PS：MySQL默认是提交的)</p>
+<h4 id="2-查看参数"><a href="#2-查看参数" class="headerlink" title="2. 查看参数"></a>2. 查看参数</h4><pre><code><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show variables; <span class="comment"># 显示当前mysql的所有参数，且无隐藏参数</span></div><div class="line">mysql&gt; show variables like <span class="string">"max_%"</span>; <span class="comment">#查以max_开头的变量</span></div></pre></td></tr></table></figure>
+</code></pre><h4 id="3-设置参数"><a href="#3-设置参数" class="headerlink" title="3. 设置参数"></a>3. 设置参数</h4><pre><code>* 设置全局(GLOBAL)参数
+    <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="built_in">set</span> global slow_query_log = off; <span class="comment">#不加global，会提示错误</span></div><div class="line">                                       <span class="comment">#slow_query_log是全局参数</span></div><div class="line">mysql&gt; <span class="built_in">set</span> slow_query_log = off;  <span class="comment"># 下面就报错了，默认是会话参数</span></div><div class="line">ERROR 1229 (HY000): Variable <span class="string">'slow_query_log'</span> is a GLOBAL variable and should be <span class="built_in">set</span> with SET GLOBAL</div></pre></td></tr></table></figure>
+
+* 设置会话(SESSION)参数  
+    <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="built_in">set</span> autocommit = 0;  <span class="comment"># 当前会话生效</span></div><div class="line"><span class="comment"># 或者</span></div><div class="line">mysql&gt; <span class="built_in">set</span> session autocommit = 0;  <span class="comment"># 当前会话生效</span></div></pre></td></tr></table></figure>
+
+    `autocommit`同样在`GLOBAL`中, 也有同样的参数
+    <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql&gt; <span class="built_in">set</span> global autocommit = 1; <span class="comment">#当前实例，全局生效</span></div></pre></td></tr></table></figure>
+
+    **注意：如果这个时候/etc/init.d/mysqld restart, 则全局的autocommit的值会变成默认值，或者依赖于my.cnf的设置值。**
+
+    执行的效果如下：
+    <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">mysql&gt; show variables like <span class="string">"slow%"</span>; <span class="comment"># 原值为ON</span></div><div class="line">+---------------------+----------+</div><div class="line">| Variable_name       | Value    |</div><div class="line">+---------------------+----------+</div><div class="line">| slow_launch_time    | 2        |</div><div class="line">| slow_query_log      | OFF      |</div><div class="line">| slow_query_log_file | slow.log |</div><div class="line">+---------------------+----------+</div><div class="line">3 rows <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</div><div class="line"></div><div class="line">mysql&gt; select @@session.autocommit; <span class="comment"># 等价于 slect @@autocomit;</span></div><div class="line">+----------------------+</div><div class="line">| @@session.autocommit |</div><div class="line">+----------------------+</div><div class="line">|                    0 |</div><div class="line">+----------------------+</div><div class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</div><div class="line"></div><div class="line">mysql&gt; select @@global.autocommit;       </div><div class="line">+---------------------+</div><div class="line">| @@global.autocommit |</div><div class="line">+---------------------+</div><div class="line">|                   1 |</div><div class="line">+---------------------+</div><div class="line">1 row <span class="keyword">in</span> <span class="built_in">set</span> (0.00 sec)</div></pre></td></tr></table></figure>
+</code></pre><h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3><h4 id="1-“用户-IP”的概念"><a href="#1-“用户-IP”的概念" class="headerlink" title="1. “用户 + IP”的概念"></a>1. “用户 + IP”的概念</h4><p>MySQL中同一个用户名，比如Bob,能否登录，以及用什么密码登录，可以访问什么库等等，都需要加上IP，才可以表示一个完整的用户标识</p>
+<p><code>bob@127.0.0.1</code> 和 <code>bob@loalhost</code> 以及 <code>bob@192.168.1.100</code> 这三个其实是<code>不同</code>的 <strong>用户标识</strong> </p>
+<h4 id="2-用户权限管理"><a href="#2-用户权限管理" class="headerlink" title="2. 用户权限管理"></a>2. 用户权限管理</h4><ul>
+<li><p><strong>系统表权限信息:</strong></p>
+<ul>
+<li><strong>a) 用户名和IP是否允许</strong></li>
+<li><strong>b) 查看mysql.user表</strong>  <code>// 查看全局所有库的权限</code></li>
+<li><strong>c) 查看mysql.db表</strong>  <code>// 查看指定库的权限</code></li>
+<li><strong>d) 查看mysql.table_priv表</strong> <code>// 查看指定表的权限</code></li>
+<li><p><strong>e) 查看mysql.column_priv表</strong> <code>// 查看指定列的权限</code></p>
+<p><strong>*tips</strong>: mysql&gt; desc [tablename]; 可以查看表的结构信息；*</p>
+</li>
+</ul>
+</li>
+<li><p><strong>常用权限：</strong></p>
+<ul>
+<li>SQL语句：SELECT、INSERT、UPDATE、DELETE、INDEX</li>
+<li>存储过程：CREATE ROUTINE、ALTER ROUTINE、EXECUTE、TRIGGER</li>
+<li><p>管理权限：SUPER、RELOAD、SHOW DATABASE、SHUTDOWN、</p>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/en/privileges-provided.html" target="_blank" rel="external">MySQL5.6权限</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p><strong>可选资源:</strong></p>
+<ul>
+<li>MAX_QUERIES_PER_HOUR <em>count</em></li>
+<li>MAX_UPDATES_PER_HOUR <em>count</em></li>
+<li>MAX_CONNECTIONS_PER_HOUR <em>count</em></li>
+<li><p>MAX_USER_CONNECTIONS <em>count</em></p>
+<p><strong>*tips:</strong>只能精确到小时，对于部分场景不适用，可以考虑中间件方式*</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>显示当前用户的权限</strong>  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#这三个是同一个意思</span></div><div class="line">mysql&gt; show grants;</div><div class="line">mysql&gt; show grants <span class="keyword">for</span> current_user;</div><div class="line">mysql&gt; show grants <span class="keyword">for</span> current_user();</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">mysql&gt; create user <span class="string">'bob'</span>@<span class="string">'127.0.0.1'</span> identified by <span class="string">'123'</span>; </div><div class="line">       <span class="comment">#创建一个认证用户为'bob'@'127.0.0.1',密码是123</span></div><div class="line">mysql&gt; grant all on NWDB.* to <span class="string">'bob'</span>@<span class="string">'127.0.0.1'</span>;</div><div class="line">       <span class="comment">#授予他NWDB库下面所有表的所有访问权限; *.*表示所有库的所有表</span></div><div class="line"></div><div class="line">mysql&gt; grant all on NWDB.* to <span class="string">'alice'</span>@<span class="string">'127.0.0.1'</span> identified by <span class="string">'123'</span>;</div><div class="line">       <span class="comment">#这个grant语句会搜索用户，如果用户不存在，则自动创建用户，</span></div><div class="line">       <span class="comment">#如果不带identified by, 则该用户名密码为空</span></div><div class="line"></div><div class="line">mysql&gt; grant all on *.* to <span class="string">'tom'</span>@<span class="string">'192.168.10.%'</span> identified by <span class="string">'123'</span> with grant option;</div><div class="line">       <span class="comment">#表示这个用户'tom'@'127.0.0.1'可以访问所有库的所有表，</span></div><div class="line">       <span class="comment">#同时，他还可以给其他用户授予权限(with grant option)，</span></div><div class="line">       <span class="comment">#注意如果，*.*改成了某一个指定的非USER库，</span></div><div class="line">       <span class="comment">#则tom没法去新建其他用户了，因为User库没有权限了</span></div><div class="line">       <span class="comment">#192.168.10.% 表示属于192.168.10.0/24网段的用户可以访问</span></div></pre></td></tr></table></figure>
+<h3 id="撤销权限"><a href="#撤销权限" class="headerlink" title="撤销权限"></a>撤销权限</h3><ul>
+<li><code>revoke</code> 关键字，该关键字只删除用户权限，不删除用户</li>
+<li><code>revoke</code> 语法同<code>grant</code>一致, 从<code>grant ... to</code> 变为<code>revoke ... from</code></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/MySQL/">MySQL</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/MySQL笔记/">MySQL笔记</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+
+
+<!--
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+-->
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:www.wiredtiger.org">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
+  
+    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>14</small></li>
+  
+    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>3</small></li>
+  
+    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
+  
+    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
+  
+    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
+  
+    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
+  
+    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
+  
+    <li><a href="/tags/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
+  
+    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
+  
+    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
+    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
+  
+    <li><a href="/tags/https/">https</a><small>1</small></li>
+  
+    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/shell/">shell</a><small>1</small></li>
+  
+    <li><a href="/tags/srs/">srs</a><small>1</small></li>
+  
+    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
+  
+    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
+  </div>
+</div>
+
+
+  
+  <div class="widget tag">
+    <h3 class="title">友情链接</h3>
+      <ul class="entry">
+        
+          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
+        
+          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
+        
+          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
+        
+      </ul>
+  </div>
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</script>
+<div class="aligncenter">
+  
+  Copyright &copy; 2019  Lyln
+   | 
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  &nbsp <a href="/atom.xml">RSS</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+-->
+<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'lyln';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+
+</body>
+</html>
+
+<!-- click bloom -->
+{% if theme.fireworks %}
+   <script type="application/x-javascript" src="/js/mo.min.js"></script>
+   <script type="text/javascript" src="/js/loading.mo.js"></script> 
+{% endif %}

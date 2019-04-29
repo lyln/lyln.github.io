@@ -1,0 +1,323 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Percona Toolkit使用小结 | 落影流年</title>
+  <meta name="author" content="Lyln">
+  
+  <meta name="description" content="Percona Toolkit安装1、下载包2、安装1234perl Makefile.PLmakemake testmake install
+pt-online-schema-change 在线修改表结构修改表结构前，切记备份！！!pt-osc原理：1、创建一个和要执行 alter 操作的表一样的新的空表结构(是alter之前的结构)2、在新表执行alter table 语句（速度应该很快）3、在原表中创建触发器3个触发器分别对应insert,update,delete操作4、以一定块大小从原表拷贝数据到临时表，拷贝过程中通过原表上的触发器在原表进行的写操作都会更新到新建的临时表5、Rename 原表到old表中，在把临时表Rename为原表6、如果有参考该表的外键，根据alter-foreign-keys-method参数的值，检测外键相关的表，做相应设置的处理7、默认最后将旧原表删除">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Percona Toolkit使用小结"/>
+  <meta property="og:site_name" content="落影流年"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  <script>
+	(function() {
+	    var OriginTitile = document.title, titleTime;
+	    document.addEventListener('visibilitychange', function() {
+		if (document.hidden) {
+		    document.title = '死鬼去哪里了！';
+		    clearTimeout(titleTime);
+		} else {
+		    document.title = '(つェ⊂)咦!又好了!';
+		    titleTime = setTimeout(function() {
+			document.title = OriginTitile;
+		    },2000);
+		}
+	    });
+	})();
+ </script>
+</head>
+
+
+<!-- add Fork me on Github -->
+
+<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">落影流年</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-09-17T16:00:00.000Z"><a href="/2016/09/18/2016-09-18-percona-toolkit/">2016-09-18</a></time>
+      
+      
+  
+    <h1 class="title">Percona Toolkit使用小结</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Percona Toolkit安装<br>1、<a href="https://www.percona.com/downloads/percona-toolkit/" target="_blank" rel="external">下载包</a><br>2、安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">perl Makefile.PL</div><div class="line">make</div><div class="line">make test</div><div class="line">make install</div></pre></td></tr></table></figure></p>
+<h3 id="pt-online-schema-change-在线修改表结构"><a href="#pt-online-schema-change-在线修改表结构" class="headerlink" title="pt-online-schema-change 在线修改表结构"></a>pt-online-schema-change 在线修改表结构</h3><p><strong>修改表结构前，切记备份！！!</strong><br>pt-osc原理：<br>1、创建一个和要执行 alter 操作的表一样的新的空表结构(是alter之前的结构)<br>2、在新表执行alter table 语句（速度应该很快）<br>3、在原表中创建触发器3个触发器分别对应insert,update,delete操作<br>4、以一定块大小从原表拷贝数据到临时表，拷贝过程中通过原表上的触发器在原表进行的写操作都会更新到新建的临时表<br>5、Rename 原表到old表中，在把临时表Rename为原表<br>6、如果有参考该表的外键，根据alter-foreign-keys-method参数的值，检测外键相关的表，做相应设置的处理<br>7、默认最后将旧原表删除<br><a id="more"></a></p>
+<h4 id="添加列"><a href="#添加列" class="headerlink" title="添加列"></a>添加列</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">pt-online-schema-change h=192.168.1.87,u=ljd,D=mytest,t=a --ask-pass \</div><div class="line">--alter &quot;add column c varchar(10)&quot; --print --dry-run</div><div class="line">pt-online-schema-change h=192.168.1.87,u=ljd,D=mytest,t=a --ask-pass \</div><div class="line">--alter &quot;add column c varchar(10)&quot; --print --execute</div></pre></td></tr></table></figure>
+<h4 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">pt-online-schema-change h=192.168.1.87,u=rgbvr,D=mytest,t=s_event_notice --ask-pass \</div><div class="line">--alter &quot;DROP INDEX notice_id_UNIQUE&quot; \</div><div class="line">--print --execute</div><div class="line">为什么要去除重复的索引</div><div class="line">1、多余的索引占用磁盘空间，会引起不必要的磁盘IO</div><div class="line">2、多余的索引会导致数据库在进行索引选择的时候变慢，</div><div class="line">尤其是索引越多的时候越突出（主要是相关联的索引才会影响索引选择）</div><div class="line">3、重复的索引会导致表的更新变慢</div></pre></td></tr></table></figure>
+<h3 id="pt-duplicate-key-checker-检测MySQL冗余和重复索引"><a href="#pt-duplicate-key-checker-检测MySQL冗余和重复索引" class="headerlink" title="pt-duplicate-key-checker 检测MySQL冗余和重复索引"></a>pt-duplicate-key-checker 检测MySQL冗余和重复索引</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pt-duplicate-key-checker h=192.168.1.87,u=ljd -d mytest --ask-pass --nocluster</div></pre></td></tr></table></figure>
+<h3 id="pt-kill-杀掉进程"><a href="#pt-kill-杀掉进程" class="headerlink" title="pt-kill 杀掉进程"></a>pt-kill 杀掉进程</h3><p>由于空闲连接较多导致超过最大连接数或者某个有问题的sql导致mysql负载很高时，可以使用pk-kill杀掉进程。<br>例如：每10秒检查一次,杀死指定用户超过100秒的查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pt-kill --no-version-check h=192.168.1.87,u=ljd,P=3306,p=root123 \</div><div class="line">--match-user root --victims all --busy-time 10 \</div><div class="line">--interval 10 --kill --print</div></pre></td></tr></table></figure></p>
+<p>参数说明：<br>match-command<br>指定杀死的查询类型<br>match-user<br>指定杀死的用户名,即杀死该用户的查询<br>busy-time<br>指定杀死超过多少秒的查询<br>kill<br>执行kill命令<br>victims<br>表示从匹配的结果中选择,类似SQL中的where部分,all是全部的查询<br>interal<br>每隔多少秒检查一次</p>
+<h4 id="notes："><a href="#notes：" class="headerlink" title="notes："></a>notes：</h4><p>1、使用–ask-pass 提示错误Can’t locate Term/ReadKey.pm in @INC<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install libterm-readkey-perl</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/MySQL/">MySQL</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/Percona-Toolkit/">Percona Toolkit</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+
+
+<!--
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+-->
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:www.wiredtiger.org">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
+  
+    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>14</small></li>
+  
+    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>3</small></li>
+  
+    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
+  
+    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
+  
+    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
+  
+    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
+  
+    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
+  
+    <li><a href="/tags/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
+  
+    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
+  
+    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
+    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
+  
+    <li><a href="/tags/https/">https</a><small>1</small></li>
+  
+    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/shell/">shell</a><small>1</small></li>
+  
+    <li><a href="/tags/srs/">srs</a><small>1</small></li>
+  
+    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
+  
+    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
+  </div>
+</div>
+
+
+  
+  <div class="widget tag">
+    <h3 class="title">友情链接</h3>
+      <ul class="entry">
+        
+          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
+        
+          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
+        
+          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
+        
+      </ul>
+  </div>
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</script>
+<div class="aligncenter">
+  
+  Copyright &copy; 2019  Lyln
+   | 
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  &nbsp <a href="/atom.xml">RSS</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+-->
+<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'lyln';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+
+</body>
+</html>
+
+<!-- click bloom -->
+{% if theme.fireworks %}
+   <script type="application/x-javascript" src="/js/mo.min.js"></script>
+   <script type="text/javascript" src="/js/loading.mo.js"></script> 
+{% endif %}

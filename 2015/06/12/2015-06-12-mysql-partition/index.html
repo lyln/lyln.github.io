@@ -1,0 +1,325 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>mysql表分区基础 | 落影流年</title>
+  <meta name="author" content="Lyln">
+  
+  <meta name="description" content="表结构文件12345678910111213141516171819.frm  表结构文件.par  partition申明一个分区表.ibd  数据索引文件   innodb引擎表.MYD  数据文件       myisam表数据文件.MYI  索引文件       myisam表索引文件Myisam 存储引擎，它默认使用独立表空间InnoDB 存储引擎，默认使用共享表空间,默认存到ibdata1查看表空间设置 SHOW VARIABLES LIKE &#39;%innodb_file_per_table%&#39;;修改表空间设置(/ect/my.cnf)innodb_file_per_table=1查看mysql是否支持分区show plugins;orshow variables like &#39;%part%&#39;;">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="mysql表分区基础"/>
+  <meta property="og:site_name" content="落影流年"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  <script>
+	(function() {
+	    var OriginTitile = document.title, titleTime;
+	    document.addEventListener('visibilitychange', function() {
+		if (document.hidden) {
+		    document.title = '死鬼去哪里了！';
+		    clearTimeout(titleTime);
+		} else {
+		    document.title = '(つェ⊂)咦!又好了!';
+		    titleTime = setTimeout(function() {
+			document.title = OriginTitile;
+		    },2000);
+		}
+	    });
+	})();
+ </script>
+</head>
+
+
+<!-- add Fork me on Github -->
+
+<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">落影流年</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-06-11T16:00:00.000Z"><a href="/2015/06/12/2015-06-12-mysql-partition/">2015-06-12</a></time>
+      
+      
+  
+    <h1 class="title">mysql表分区基础</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h5 id="表结构文件"><a href="#表结构文件" class="headerlink" title="表结构文件"></a>表结构文件</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">.frm  表结构文件</div><div class="line">.par  partition申明一个分区表</div><div class="line">.ibd  数据索引文件   innodb引擎表</div><div class="line"></div><div class="line">.MYD  数据文件       myisam表数据文件</div><div class="line">.MYI  索引文件       myisam表索引文件</div><div class="line"></div><div class="line">Myisam 存储引擎，它默认使用独立表空间</div><div class="line">InnoDB 存储引擎，默认使用共享表空间,默认存到ibdata1</div><div class="line"></div><div class="line">查看表空间设置 </div><div class="line">SHOW VARIABLES LIKE <span class="string">'%innodb_file_per_table%'</span>;</div><div class="line">修改表空间设置(/ect/my.cnf)</div><div class="line">innodb_file_per_table=1</div><div class="line"></div><div class="line">查看mysql是否支持分区</div><div class="line">show plugins;</div><div class="line">or</div><div class="line">show variables like <span class="string">'%part%'</span>;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h5 id="分区类型"><a href="#分区类型" class="headerlink" title="分区类型"></a>分区类型</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">RANGE: 基于一个连续的区间范围，将数据分配到不同的分区。&lt;br&gt;</div><div class="line">LIST：基于枚举出的值列表分区。&lt;br&gt;</div><div class="line">HASH: 基于给定的分区数，将数据分配到不同的分区。&lt;br&gt;</div><div class="line">KEY： 类似于HASH分区，但不允许用户自定义表达式。</div></pre></td></tr></table></figure>
+<h5 id="RANGE分区"><a href="#RANGE分区" class="headerlink" title="RANGE分区"></a>RANGE分区</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE USER(</div><div class="line">id INT NOT NULL,</div><div class="line">NAME VARCHAR(20)</div><div class="line">)</div><div class="line">PARTITION BY RANGE(id)(</div><div class="line">PARTITION p1 VALUES LESS THAN (3),</div><div class="line">PARTITION p2 VALUES LESS THAN (6),</div><div class="line">PARTITION p3 VALUES LESS THAN (9),</div><div class="line">PARTITION p4 VALUES LESS THAN MAXVALUE</div><div class="line">);</div><div class="line">insert into user values (1,<span class="string">'aaa'</span>),(2,<span class="string">'bbb'</span>),(3,<span class="string">'ccc'</span>),(4,<span class="string">'ddd'</span>),(5,<span class="string">'eee'</span>),(6,<span class="string">'fff'</span>),(7,<span class="string">'ggg'</span>),(8,<span class="string">'hhh'</span>),(9,<span class="string">'iii'</span>),(10,<span class="string">'jjj'</span>),(11,<span class="string">'kkk'</span>),(12,<span class="string">'lll'</span>)</div><div class="line"></div><div class="line">查看表结构</div><div class="line">show create table user;</div><div class="line">查看查询是否使用partition分区过滤</div><div class="line">EXPLAIN PARTITIONS SELECT id,NAME FROM user <span class="built_in">where</span> id =8 \G</div></pre></td></tr></table></figure>
+<p>list分区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE listname(</div><div class="line">id INT NOT NULL,</div><div class="line">NAME VARCHAR(20)</div><div class="line">)PARTITION BY LIST (id)(</div><div class="line">PARTITION p1 VALUES IN (1,3,5),</div><div class="line">PARTITION p2 VALUES IN (2,4,6)</div><div class="line">);</div><div class="line"></div><div class="line">INSERT INTO listname VALUES (1,<span class="string">'111'</span>),(2,<span class="string">'222'</span>),(3,<span class="string">'333'</span>),(4,<span class="string">'444'</span>)</div><div class="line">EXPLAIN PARTITIONS SELECT * FROM listname WHERE id=2;</div></pre></td></tr></table></figure>
+<p>hash分区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE hash_part(</div><div class="line">id INT NOT NULL,</div><div class="line">NAME VARCHAR(20)</div><div class="line">)PARTITION BY <span class="built_in">hash</span> (id)(</div><div class="line">PARTITIONS 3</div><div class="line">);</div><div class="line">INSERT INTO hash_part VALUES (1,<span class="string">'111'</span>),(2,<span class="string">'222'</span>),(3,<span class="string">'333'</span>),(4,<span class="string">'444'</span>)</div><div class="line">EXPLAIN PARTITIONS SELECT * FROM hash_part WHERE id=2;</div><div class="line">ls /var/lib/mysql/ceshi/</div></pre></td></tr></table></figure>
+<p>key分区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE key_part(</div><div class="line">id INT NOT NULL,</div><div class="line">NAME VARCHAR(20)</div><div class="line">)PARTITION BY LINEAR KEY (id)</div><div class="line">PARTITIONS 3;</div><div class="line"></div><div class="line">INSERT INTO key_part VALUES (1,<span class="string">'111'</span>),(2,<span class="string">'222'</span>),(3,<span class="string">'333'</span>),(4,<span class="string">'444'</span>)</div><div class="line">EXPLAIN PARTITIONS SELECT * FROM key_part WHERE id=2;</div><div class="line">ls /var/lib/mysql/ceshi/</div></pre></td></tr></table></figure>
+<h5 id="分区管理"><a href="#分区管理" class="headerlink" title="分区管理"></a>分区管理</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">删除分区</div><div class="line">alter table tbl_name DROP PARTITION partition_names;</div><div class="line"></div><div class="line">新增分区</div><div class="line">range添加</div><div class="line">alter table USER add partition (partition p4 values less than MAXVALUE);</div><div class="line">list添加</div><div class="line">alter table listname add partition (partition p3 values <span class="keyword">in</span> (7,8,9));</div><div class="line"><span class="built_in">hash</span>重新分区</div><div class="line">alter table hash_part add partition partitions  6;</div><div class="line">key重新分区</div><div class="line">alter table key_part add partition partitions  6;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/MySQL/">MySQL</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/MySQL/">MySQL</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+
+
+<!--
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+-->
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:www.wiredtiger.org">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
+  
+    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>14</small></li>
+  
+    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>3</small></li>
+  
+    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
+  
+    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
+  
+    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
+  
+    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
+  
+    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
+  
+    <li><a href="/tags/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
+  
+    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
+  
+    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
+    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
+  
+    <li><a href="/tags/https/">https</a><small>1</small></li>
+  
+    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/shell/">shell</a><small>1</small></li>
+  
+    <li><a href="/tags/srs/">srs</a><small>1</small></li>
+  
+    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
+  
+    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
+  </div>
+</div>
+
+
+  
+  <div class="widget tag">
+    <h3 class="title">友情链接</h3>
+      <ul class="entry">
+        
+          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
+        
+          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
+        
+          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
+        
+      </ul>
+  </div>
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</script>
+<div class="aligncenter">
+  
+  Copyright &copy; 2019  Lyln
+   | 
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  &nbsp <a href="/atom.xml">RSS</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+-->
+<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'lyln';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+
+</body>
+</html>
+
+<!-- click bloom -->
+{% if theme.fireworks %}
+   <script type="application/x-javascript" src="/js/mo.min.js"></script>
+   <script type="text/javascript" src="/js/loading.mo.js"></script> 
+{% endif %}

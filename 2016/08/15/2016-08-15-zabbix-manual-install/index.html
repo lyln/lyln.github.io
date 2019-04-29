@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Zabbix 3.0 安装小记 | 落影流年</title>
+  <meta name="author" content="Lyln">
+  
+  <meta name="description" content="zabbix_server部署1、Zabbix 3.0 for Ubuntu 14.04 LTS:12345wget http://repo.zabbix.com/zabbix/3.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.0-1+trusty_all.debdpkg -i zabbix-release_3.0-1+trusty_all.debapt-get updateapt-get install zabbix-server-mysql zabbix-frontend-php #安装server和frontendapt-get install zabbix-agent #安装agent
+2、初始化数据库12cd /usr/share/doc/zabbix-server-mysqlzcat create.sql.gz | mysql -uroot zabbix">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Zabbix 3.0 安装小记"/>
+  <meta property="og:site_name" content="落影流年"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  <script>
+	(function() {
+	    var OriginTitile = document.title, titleTime;
+	    document.addEventListener('visibilitychange', function() {
+		if (document.hidden) {
+		    document.title = '死鬼去哪里了！';
+		    clearTimeout(titleTime);
+		} else {
+		    document.title = '(つェ⊂)咦!又好了!';
+		    titleTime = setTimeout(function() {
+			document.title = OriginTitile;
+		    },2000);
+		}
+	    });
+	})();
+ </script>
+</head>
+
+
+<!-- add Fork me on Github -->
+
+<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">落影流年</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-08-14T16:00:00.000Z"><a href="/2016/08/15/2016-08-15-zabbix-manual-install/">2016-08-15</a></time>
+      
+      
+  
+    <h1 class="title">Zabbix 3.0 安装小记</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="zabbix-server部署"><a href="#zabbix-server部署" class="headerlink" title="zabbix_server部署"></a>zabbix_server部署</h3><p>1、Zabbix 3.0 for Ubuntu 14.04 LTS:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">wget http://repo.zabbix.com/zabbix/3.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.0-1+trusty_all.deb</div><div class="line">dpkg -i zabbix-release_3.0-1+trusty_all.deb</div><div class="line">apt-get update</div><div class="line">apt-get install zabbix-server-mysql zabbix-frontend-php #安装server和frontend</div><div class="line">apt-get install zabbix-agent #安装agent</div></pre></td></tr></table></figure></p>
+<p>2、初始化数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd /usr/share/doc/zabbix-server-mysql</div><div class="line">zcat create.sql.gz | mysql -uroot zabbix</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>3、修改nginx<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">server&#123;</div><div class="line">        server_name zabbix.xxx.com;</div><div class="line">        listen 80;</div><div class="line">        root /usr/share/zabbix;</div><div class="line">        index index.html index.htm index.php portal.php default.php;</div><div class="line">        error_page   500 502 503 504  /50x.html;</div><div class="line">        location = /50x.html &#123;</div><div class="line">                root   /usr/share/nginx/html;</div><div class="line">        &#125;</div><div class="line">        location ~ \.php$ &#123;</div><div class="line">                try_files $uri =404;</div><div class="line">                fastcgi_pass   127.0.0.1:2088;</div><div class="line">                fastcgi_index  index.php;</div><div class="line">                fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;</div><div class="line">                fastcgi_param PATH_INFO $fastcgi_script_name;</div><div class="line">                include        fastcgi_params;</div><div class="line">                fastcgi_buffer_size 128k;</div><div class="line">                fastcgi_buffers 256 16k;</div><div class="line">                fastcgi_busy_buffers_size 256k;</div><div class="line">                fastcgi_temp_file_write_size 256k;</div><div class="line">        &#125;</div><div class="line">        #location ~ /\.ht &#123;</div><div class="line">        #deny  all;</div><div class="line">        #&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>4、修改php参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/etc/php5/fpm/php.ini</div><div class="line"></div><div class="line">max_execution_time 300</div><div class="line">memory_limit 128M</div><div class="line">post_max_size 16M</div><div class="line">upload_max_filesize 2M</div><div class="line">max_input_time 300</div><div class="line">always_populate_raw_post_data -1</div><div class="line">date.timezone = UTC</div></pre></td></tr></table></figure></p>
+<p>5、zabbix 配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">ListenPort=10051</div><div class="line">LogFile=/var/log/zabbix/zabbix_server.log</div><div class="line">LogFileSize=0</div><div class="line">PidFile=/var/run/zabbix/zabbix_server.pid</div><div class="line">DBHost=localhost</div><div class="line">DBName=zabbix</div><div class="line">DBUser=zabbix</div><div class="line">DBPassword=pass</div><div class="line">DBSocket=/tmp/mysql.sock</div><div class="line">DBPort=3306</div><div class="line">JavaGateway=10.254.140.104</div><div class="line">JavaGatewayPort=10052</div><div class="line">StartJavaPollers=5</div><div class="line">ListenIP=10.254.140.104</div><div class="line">Timeout=4</div><div class="line">AlertScriptsPath=/etc/zabbix/sendEmail</div><div class="line">ExternalScripts=/usr/lib/zabbix/externalscripts</div><div class="line">FpingLocation=/usr/bin/fping</div><div class="line">Fping6Location=/usr/bin/fping6</div><div class="line">LogSlowQueries=3000</div></pre></td></tr></table></figure></p>
+<h3 id="zabbix-server邮件报警"><a href="#zabbix-server邮件报警" class="headerlink" title="zabbix_server邮件报警"></a>zabbix_server邮件报警</h3><p>1、修改zabbix_server配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">zabbix_server.conf</div><div class="line">AlertScriptsPath=/etc/zabbix/sendEmail</div></pre></td></tr></table></figure></p>
+<p>2、安装sendemail<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/mogaal/sendemail.git</div><div class="line">cp -a sendEmail-v1.XX/sendEmail /usr/local/bin</div><div class="line">chmod +x /usr/local/bin/sendEmail</div></pre></td></tr></table></figure></p>
+<p>3、添加脚本发邮件脚本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">mail.sh</div><div class="line"></div><div class="line">#!/bin/sh</div><div class="line">#export.UTF-8 #解决发送邮件中文变成乱码的问题</div><div class="line">to=$1</div><div class="line">subject=$2</div><div class="line">body=$3</div><div class="line">/usr/local/bin/sendEmail -f itsupport@sevenga.com -t &quot;$to&quot; -s smtp.exmail.qq.com \</div><div class="line">-u &quot;$subject&quot; -o message-content-type=html -o message-charset=utf8 \</div><div class="line">-xu user@qq.com -xp mail_pass -m &quot;$body&quot; 2&gt;&gt;/tmp/sendEmail.log</div></pre></td></tr></table></figure></p>
+<p>4、web添加媒介类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">Administration-&gt;Media types-&gt;Create medis type</div><div class="line"></div><div class="line">zabbix-agent安装</div><div class="line">修改zabbix_agentd.conf</div><div class="line"></div><div class="line">PidFile=/var/run/zabbix/zabbix_agentd.pid</div><div class="line">LogFile=/var/log/zabbix-agent/zabbix_agentd.log</div><div class="line">LogFileSize=0</div><div class="line">Server=10.254.140.104  #zabbix server ip</div><div class="line">ServerActive=10.254.140.104:10051 #zabbix server ip+port</div><div class="line">Hostname=10.136.11.159 # 本机ip</div><div class="line">Include=/etc/zabbix/zabbix_agentd.conf.d/</div><div class="line">zabbix 监听tomcat</div><div class="line">apt-get install zabbix-java-gateway</div><div class="line">修改zabbix_java_gateway.conf</div><div class="line"></div><div class="line">LISTEN_IP=&quot;10.254.140.104&quot;</div><div class="line">LISTEN_PORT=10052</div><div class="line">PID_FILE=&quot;/var/run/zabbix/zabbix_java_gateway.pid&quot;</div><div class="line">START_POLLERS=5</div><div class="line">TIMEOUT=3</div><div class="line">在zabbix_server去掉如下选项注释</div><div class="line"></div><div class="line">JavaGateway=10.254.140.104</div><div class="line">JavaGatewayPort=10052</div><div class="line">StartJavaPollers=5</div></pre></td></tr></table></figure></p>
+<h3 id="zabbix-agent端tomcat设置"><a href="#zabbix-agent端tomcat设置" class="headerlink" title="zabbix_agent端tomcat设置"></a>zabbix_agent端tomcat设置</h3><p>1、<a href="http://repo2.maven.org/maven2/org/apache/tomcat/tomcat-catalina-jmx-remote/" target="_blank" rel="external">下载</a>与之对应的<br>tomcat-catalina-jmx-remote-8.0.36.jar到tomcat的lib目录下<br>2、修改catalina.sh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">export CATALINA_OPTS=&quot;-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false \</div><div class="line">-Dcom.sun.management.jmxremote.port=12345 -Dcom.sun.management.jmxremote.ssl=false</div><div class="line">-Djava.rmi.server.hostname=x.x.x.x&quot;</div></pre></td></tr></table></figure></p>
+<p>3、重启tomcat和zabbix_java_gateway、zabbix_server<br>4、使用cmdline测试<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">java -jar cmdline-jmxclient-0.10.3.jar - 10.136.11.159:10053 java.lang:type=Memory NonHeapMemoryUsage</div><div class="line">08/16/2016 16:20:07 +0800 org.archive.jmx.Client NonHeapMemoryUsage:</div><div class="line">committed: 26083328</div><div class="line">init: 2555904</div><div class="line">max: -1</div><div class="line">used: 25317240</div></pre></td></tr></table></figure></p>
+<p>5、下载jmx template<br><a href="https://raw.githubusercontent.com/lyln/Shell/master/zabbix/Templates/JMX_templates.xml" target="_blank" rel="external">jmx template 模板</a></p>
+<h3 id="zabbix-agent远程拉起tomcat"><a href="#zabbix-agent远程拉起tomcat" class="headerlink" title="zabbix_agent远程拉起tomcat"></a>zabbix_agent远程拉起tomcat</h3><p>1、zabbix_agentd.conf开启<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EnableRemoteCommands=1</div></pre></td></tr></table></figure></p>
+<p>2、修改sudoer使zabbix用户免密码执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">zabbix  ALL=NOPASSWD: /bin/sh /opt/apache-tomcat-8.0.36/bin/startup.sh</div><div class="line">所有命令免密码</div><div class="line">zabbix  ALL=NOPASSWD: ALL</div></pre></td></tr></table></figure></p>
+<p>3、tomcat startup.sh脚本头添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">JAVA_HOME=/usr/local/jdk</div><div class="line">export PATH=$JAVA_HOME/bin:$PATH</div></pre></td></tr></table></figure></p>
+<h3 id="问题小结"><a href="#问题小结" class="headerlink" title="问题小结"></a>问题小结</h3><p>1、Zabbix报告系统缺少交换分区空间（“Lack of free swap space”）<br>由于云主机交换分区没有设置，free -m Swap三项为0。修改触发条件解决。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Configuration-&gt;Templates-&gt;Template OS Linux-&gt;Triggers-&gt;Lack of…</div><div class="line">修改</div><div class="line">&#123;Template OS Linux:system.swap.size[,pfree].last(0)&#125;&lt;50</div><div class="line">为</div><div class="line"></div><div class="line">&#123;Template OS Linux:system.swap.size[,pfree].last(0)&#125;&lt;50</div><div class="line">and &#123;Template OS Linux:system.swap.size[,free].last(0)&#125;&lt;&gt;0</div><div class="line">判断系统有交换空间，当系统无交换空间值为0时，不触发。</div></pre></td></tr></table></figure></p>
+<p>2、zabbix图形中文乱码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">win下找到SIMHEI.TTF字体，上传至/usr/local/zabbix/fonts</div><div class="line">然后修改/usr/local/zabbix/include/defines.inc.php 文件</div><div class="line"></div><div class="line">define(&apos;ZBX_GRAPH_FONT_NAME&apos;, &apos;simhei&apos;); // font file name</div></pre></td></tr></table></figure></p>
+<p>3、 zabbix_agentd [43606]: cannot recreate Zabbix semaphores for IPC key 0x7a0108e8 Semaphore ID 4294967295: [22] Invalid argument<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ipcrm -S 0x7a0108e8</div><div class="line">清理重启zabbix-agent即可</div></pre></td></tr></table></figure></p>
+<h4 id="links"><a href="#links" class="headerlink" title="links:"></a>links:</h4><p><a href="https://www.zabbix.com/documentation/3.0/manual/installation/install_from_packages#debianubuntu" target="_blank" rel="external">https://www.zabbix.com/documentation/3.0/manual/installation/install_from_packages#debianubuntu</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Linux/">Linux</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/zabbix/">zabbix</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+
+
+<!--
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+-->
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:www.wiredtiger.org">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
+  
+    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>14</small></li>
+  
+    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>3</small></li>
+  
+    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
+  
+    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
+  
+    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
+  
+    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
+  
+    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
+  
+    <li><a href="/tags/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
+  
+    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
+  
+    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
+    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
+  
+    <li><a href="/tags/https/">https</a><small>1</small></li>
+  
+    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/shell/">shell</a><small>1</small></li>
+  
+    <li><a href="/tags/srs/">srs</a><small>1</small></li>
+  
+    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
+  
+    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
+  </div>
+</div>
+
+
+  
+  <div class="widget tag">
+    <h3 class="title">友情链接</h3>
+      <ul class="entry">
+        
+          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
+        
+          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
+        
+          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
+        
+      </ul>
+  </div>
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</script>
+<div class="aligncenter">
+  
+  Copyright &copy; 2019  Lyln
+   | 
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  &nbsp <a href="/atom.xml">RSS</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+-->
+<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'lyln';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+
+</body>
+</html>
+
+<!-- click bloom -->
+{% if theme.fireworks %}
+   <script type="application/x-javascript" src="/js/mo.min.js"></script>
+   <script type="text/javascript" src="/js/loading.mo.js"></script> 
+{% endif %}
