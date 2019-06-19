@@ -1,0 +1,338 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>CAT集群部署 | 落影流年</title>
+  <meta name="author" content="Lyln">
+  
+  <meta name="description" content="cat集群机器列表cat1192.168.1.110 8080cat2192.168.1.111 8080cat3192.168.1.112 8080
+部署tomcat新建setenv.sh然后添加环境变量1234567891011bin/setenv.shexport CAT_HOME=/data/apps/data/cat/export JAVA_OPTS=&amp;quot;-server -Xms10g -Xmx10g -Xmn8g -XX:PermSize=256m -XX:MaxPermSize=512m -Dfile.encoding=UTF-8 -verbose:gc -Xloggc:$&amp;#123;CATALINA_HOME&amp;#125;/logs/gc.log`date +%Y-%m-%d-%H-%M` -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -noclassgc&amp;quot;server.xml&amp;lt;Connector port=&amp;quot;8080&amp;quot; protocol=&amp;quot;HTTP/1.1&amp;quot;           URIEncoding=&amp;quot;utf-8&amp;quot;    connectionTimeout=&amp;quot;20000&amp;quot;               redirectPort=&amp;quot;8443&amp;quot; /&amp;gt;  &amp;lt;!-- 增加  URIEncoding=&amp;quot;utf-8&amp;quot;  --&amp;gt;  CAT_HOME目录权限chmod -R 777 $CAT_HOME">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="CAT集群部署"/>
+  <meta property="og:site_name" content="落影流年"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  <script>
+	(function() {
+	    var OriginTitile = document.title, titleTime;
+	    document.addEventListener('visibilitychange', function() {
+		if (document.hidden) {
+		    document.title = '死鬼去哪里了！';
+		    clearTimeout(titleTime);
+		} else {
+		    document.title = '(つェ⊂)咦!又好了!';
+		    titleTime = setTimeout(function() {
+			document.title = OriginTitile;
+		    },2000);
+		}
+	    });
+	})();
+ </script>
+</head>
+
+
+<!-- add Fork me on Github -->
+
+<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">落影流年</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2019-05-14T16:00:00.000Z"><a href="/2019/05/15/2019-05-15-dianping-cat-install/">2019-05-15</a></time>
+      
+      
+  
+    <h1 class="title">CAT集群部署</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="cat集群机器列表"><a href="#cat集群机器列表" class="headerlink" title="cat集群机器列表"></a>cat集群机器列表</h3><p>cat1<br>192.168.1.110 8080<br>cat2<br>192.168.1.111 8080<br>cat3<br>192.168.1.112 8080</p>
+<h3 id="部署tomcat"><a href="#部署tomcat" class="headerlink" title="部署tomcat"></a>部署tomcat</h3><p>新建setenv.sh然后添加环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">bin/setenv.sh</div><div class="line">export CAT_HOME=/data/apps/data/cat/</div><div class="line">export JAVA_OPTS=&quot;-server -Xms10g -Xmx10g -Xmn8g -XX:PermSize=256m -XX:MaxPermSize=512m -Dfile.encoding=UTF-8 -verbose:gc -Xloggc:$&#123;CATALINA_HOME&#125;/logs/gc.log`date +%Y-%m-%d-%H-%M` -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -noclassgc&quot;</div><div class="line"></div><div class="line">server.xml</div><div class="line">&lt;Connector port=&quot;8080&quot; protocol=&quot;HTTP/1.1&quot;</div><div class="line">           URIEncoding=&quot;utf-8&quot;    connectionTimeout=&quot;20000&quot;</div><div class="line">               redirectPort=&quot;8443&quot; /&gt;  &lt;!-- 增加  URIEncoding=&quot;utf-8&quot;  --&gt;  </div><div class="line"></div><div class="line">CAT_HOME目录权限</div><div class="line">chmod -R 777 $CAT_HOME</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h3 id="配置-data-appdatas-cat-client-xml-CAT-HOME-client-xml"><a href="#配置-data-appdatas-cat-client-xml-CAT-HOME-client-xml" class="headerlink" title="配置/data/appdatas/cat/client.xml ($CAT_HOME/client.xml)"></a>配置/data/appdatas/cat/client.xml ($CAT_HOME/client.xml)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">client.xml</div><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line">&lt;config mode=&quot;client&quot;&gt;</div><div class="line">    &lt;servers&gt;</div><div class="line">        &lt;server ip=&quot;192.168.1.110&quot; port=&quot;2280&quot; http-port=&quot;8080&quot;/&gt;</div><div class="line">        &lt;server ip=&quot;192.168.1.111&quot; port=&quot;2280&quot; http-port=&quot;8080&quot;/&gt;</div><div class="line">        &lt;server ip=&quot;192.168.1.112&quot; port=&quot;2280&quot; http-port=&quot;8080&quot;/&gt;</div><div class="line">    &lt;/servers&gt;</div><div class="line">&lt;/config&gt;</div></pre></td></tr></table></figure>
+<h3 id="安装CAT数据库"><a href="#安装CAT数据库" class="headerlink" title="安装CAT数据库"></a>安装CAT数据库</h3><p>安装数据库并导入数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mysql -uroot -Dcat &lt; CatApplication.sql</div></pre></td></tr></table></figure></p>
+<h3 id="配置-data-appdatas-cat-datasources-xml-CAT-HOME-datasources-xml"><a href="#配置-data-appdatas-cat-datasources-xml-CAT-HOME-datasources-xml" class="headerlink" title="配置/data/appdatas/cat/datasources.xml($CAT_HOME/datasources.xml)"></a>配置/data/appdatas/cat/datasources.xml($CAT_HOME/datasources.xml)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line"></div><div class="line">&lt;data-sources&gt;</div><div class="line">	&lt;data-source id=&quot;cat&quot;&gt;</div><div class="line">		&lt;maximum-pool-size&gt;3&lt;/maximum-pool-size&gt;</div><div class="line">		&lt;connection-timeout&gt;1s&lt;/connection-timeout&gt;</div><div class="line">		&lt;idle-timeout&gt;10m&lt;/idle-timeout&gt;</div><div class="line">		&lt;statement-cache-size&gt;1000&lt;/statement-cache-size&gt;</div><div class="line">		&lt;properties&gt;</div><div class="line">			&lt;driver&gt;com.mysql.jdbc.Driver&lt;/driver&gt;</div><div class="line">			&lt;url&gt;&lt;![CDATA[jdbc:mysql://192.168.1.110:3306/newsapp_cat]]&gt;&lt;/url&gt;  &lt;!-- 请替换为真实数据库URL及Port  --&gt;</div><div class="line">			&lt;user&gt;newsapp_cat&lt;/user&gt;  &lt;!-- 请替换为真实数据库用户名  --&gt;</div><div class="line">			&lt;password&gt;newsapp_cat_monitor&lt;/password&gt;  &lt;!-- 请替换为真实数据库密码  --&gt;</div><div class="line">			&lt;connectionProperties&gt;&lt;![CDATA[useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;socketTimeout=120000]]&gt;&lt;/connectionProperties&gt;</div><div class="line">		&lt;/properties&gt;</div><div class="line">	&lt;/data-source&gt;</div><div class="line">&lt;/data-sources&gt;</div></pre></td></tr></table></figure>
+<h3 id="war打包"><a href="#war打包" class="headerlink" title="war打包"></a>war打包</h3><p><a href="http://unidal.org/nexus/service/local/repositories/releases/content/com/dianping/cat/cat-home/3.0.0/cat-home-3.0.0.war" target="_blank" rel="external">官方下载</a></p>
+<h3 id="war部署"><a href="#war部署" class="headerlink" title="war部署"></a>war部署</h3><p>cat.war部署到webapps目录下。<br>默认用户名：admin 默认密码：admin。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line">&lt;router-config backup-server=&quot;192.168.1.110&quot; backup-server-port=&quot;2280&quot;&gt;</div><div class="line">   &lt;default-server id=&quot;192.168.1.110&quot; weight=&quot;1.0&quot; port=&quot;2280&quot; enable=&quot;false&quot;/&gt;</div><div class="line">   &lt;default-server id=&quot;192.168.1.111&quot; weight=&quot;1.0&quot; port=&quot;2280&quot; enable=&quot;true&quot;/&gt;</div><div class="line">   &lt;default-server id=&quot;192.168.1.112&quot; weight=&quot;1.0&quot; port=&quot;2280&quot; enable=&quot;true&quot;/&gt;</div><div class="line">   &lt;network-policy id=&quot;default&quot; title=&quot;default&quot; block=&quot;false&quot; server-group=&quot;default_group&quot;&gt;</div><div class="line">   &lt;/network-policy&gt;</div><div class="line">   &lt;server-group id=&quot;default_group&quot; title=&quot;default-group&quot;&gt;</div><div class="line">      &lt;group-server id=&quot;192.168.1.111&quot;/&gt;</div><div class="line">      &lt;group-server id=&quot;192.168.1.112&quot;/&gt;</div><div class="line">   &lt;/server-group&gt;</div><div class="line">   &lt;domain id=&quot;cat&quot;&gt;</div><div class="line">      &lt;group id=&quot;default&quot;&gt;</div><div class="line">         &lt;server id=&quot;192.168.1.111&quot; port=&quot;2280&quot; weight=&quot;1.0&quot;/&gt;</div><div class="line">         &lt;server id=&quot;192.168.1.112&quot; port=&quot;2280&quot; weight=&quot;1.0&quot;/&gt;</div><div class="line">      &lt;/group&gt;</div><div class="line">   &lt;/domain&gt;</div><div class="line">&lt;/router-config&gt;</div></pre></td></tr></table></figure>
+<h3 id="服务端配置"><a href="#服务端配置" class="headerlink" title="服务端配置"></a>服务端配置</h3><p>配置链接：<a href="http://{ip:port}/cat/s/config?op=serverConfigUpdate" target="_blank" rel="external">http://{ip:port}/cat/s/config?op=serverConfigUpdate</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line">&lt;server-config&gt;</div><div class="line">   &lt;server id=&quot;default&quot;&gt;</div><div class="line">      &lt;properties&gt;</div><div class="line">         &lt;property name=&quot;local-mode&quot; value=&quot;false&quot;/&gt;</div><div class="line">         &lt;property name=&quot;job-machine&quot; value=&quot;false&quot;/&gt;</div><div class="line">         &lt;property name=&quot;send-machine&quot; value=&quot;false&quot;/&gt;</div><div class="line">         &lt;property name=&quot;alarm-machine&quot; value=&quot;false&quot;/&gt;</div><div class="line">         &lt;property name=&quot;hdfs-enabled&quot; value=&quot;false&quot;/&gt;</div><div class="line">         &lt;property name=&quot;remote-servers&quot; value=&quot;192.168.1.110:8080,192.168.1.111:8080,192.168.1.112:8080&quot;/&gt;</div><div class="line">      &lt;/properties&gt;</div><div class="line">      &lt;storage local-base-dir=&quot;/data/apps/data/cat/bucket/&quot; max-hdfs-storage-time=&quot;15&quot; local-report-storage-time=&quot;7&quot; local-logivew-storage-time=&quot;7&quot; har-mode=&quot;true&quot; upload-thread=&quot;5&quot;&gt;</div><div class="line">         &lt;hdfs id=&quot;logview&quot; max-size=&quot;128M&quot; server-uri=&quot;hdfs://10.1.77.86/&quot; base-dir=&quot;user/cat/logview&quot;/&gt;</div><div class="line">         &lt;hdfs id=&quot;dump&quot; max-size=&quot;128M&quot; server-uri=&quot;hdfs://10.1.77.86/&quot; base-dir=&quot;user/cat/dump&quot;/&gt;</div><div class="line">         &lt;hdfs id=&quot;remote&quot; max-size=&quot;128M&quot; server-uri=&quot;hdfs://10.1.77.86/&quot; base-dir=&quot;user/cat/remote&quot;/&gt;</div><div class="line">      &lt;/storage&gt;</div><div class="line">      &lt;consumer&gt;</div><div class="line">         &lt;long-config default-url-threshold=&quot;1000&quot; default-sql-threshold=&quot;100&quot; default-service-threshold=&quot;50&quot;&gt;</div><div class="line">            &lt;domain name=&quot;cat&quot; url-threshold=&quot;500&quot; sql-threshold=&quot;500&quot;/&gt;</div><div class="line">            &lt;domain name=&quot;OpenPlatformWeb&quot; url-threshold=&quot;100&quot; sql-threshold=&quot;500&quot;/&gt;</div><div class="line">         &lt;/long-config&gt;</div><div class="line">      &lt;/consumer&gt;</div><div class="line">   &lt;/server&gt;</div><div class="line">   &lt;server id=&quot;192.168.1.110&quot;&gt;</div><div class="line">      &lt;properties&gt;</div><div class="line">         &lt;property name=&quot;job-machine&quot; value=&quot;true&quot;/&gt;</div><div class="line">         &lt;property name=&quot;alarm-machine&quot; value=&quot;true&quot;/&gt;</div><div class="line">         &lt;property name=&quot;send-machine&quot; value=&quot;true&quot;/&gt;</div><div class="line">      &lt;/properties&gt;</div><div class="line">   &lt;/server&gt;</div><div class="line">&lt;/server-config&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="notes"><a href="#notes" class="headerlink" title="notes:"></a>notes:</h3><p><a href="https://github.com/dianping/cat/wiki/readme_server" target="_blank" rel="external">https://github.com/dianping/cat/wiki/readme_server</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Linux/">Linux</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/cat/">cat</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  <h1 class="title">留言</h1>
+
+  
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+</section>
+
+
+
+
+<!--
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+-->
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:www.wiredtiger.org">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
+  
+    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>16</small></li>
+  
+    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Redis/">Redis</a><small>2</small></li>
+  
+    <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>4</small></li>
+  
+    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
+  
+    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
+  
+    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
+  
+    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
+  
+    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
+  
+    <li><a href="/tags/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/tags/Redis/">Redis</a><small>1</small></li>
+  
+    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
+  
+    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
+  
+    <li><a href="/tags/cat/">cat</a><small>1</small></li>
+  
+    <li><a href="/tags/elk/">elk</a><small>1</small></li>
+  
+    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
+    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
+  
+    <li><a href="/tags/https/">https</a><small>1</small></li>
+  
+    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
+  
+    <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
+  
+    <li><a href="/tags/shell/">shell</a><small>1</small></li>
+  
+    <li><a href="/tags/srs/">srs</a><small>1</small></li>
+  
+    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
+  
+    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
+  </div>
+</div>
+
+
+  
+  <div class="widget tag">
+    <h3 class="title">友情链接</h3>
+      <ul class="entry">
+        
+          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
+        
+          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
+        
+          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
+        
+      </ul>
+  </div>
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</script>
+<div class="aligncenter">
+  
+  Copyright &copy; 2019  Lyln
+   | 
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  &nbsp <a href="/atom.xml">RSS</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+-->
+<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'lyln';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+
+</body>
+</html>
+
+<!-- click bloom -->
+<script type="application/x-javascript" src="/js/mo.min.js"></script>
+<script type="text/javascript" src="/js/loading.mo.js"></script> 

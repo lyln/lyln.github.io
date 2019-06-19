@@ -72,6 +72,236 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2016-12-02T16:00:00.000Z"><a href="/2016/12/03/2016-12-03-nginx-tomcat-https/">2016-12-03</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/12/03/2016-12-03-nginx-tomcat-https/">Nginx/Tomcat添加Https支持</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>安装certbot<br><a href="https://certbot.eff.org/" target="_blank" rel="external">https://certbot.eff.org/</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget https://dl.eff.org/certbot-auto</div><div class="line">chmod a+x certbot-auto</div><div class="line">nginx生成免费证书</div><div class="line">./certbot-auto certonly --webroot -w /web/ss-panel/public -d ss.wiredtiger.org</div><div class="line">nginx生成dhparams</div><div class="line">openssl dhparam -out /etc/ssl/certs/dhparams.pem 2048</div></pre></td></tr></table></figure></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2016/12/03/2016-12-03-nginx-tomcat-https/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-11-28T16:00:00.000Z"><a href="/2016/11/29/2016-11-29-how-to-add-repo-nexus/">2016-11-29</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/11/29/2016-11-29-how-to-add-repo-nexus/">如何向Nexus上添加第三方Repository</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>登陆nexus</p>
+<p>点击Repositories-&gt;Proxy Repository，如下图：<br><img src="https://lyln.oss-cn-beijing.aliyuncs.com/wiredtiger/201611/nexus-1.png" alt="添加"></p>
+<p>在打开的页面中填入以下三项，然后点保存：<br><img src="https://lyln.oss-cn-beijing.aliyuncs.com/wiredtiger/201611/nexus-2.png" alt="保存"></p>
+<p>Repository ID：仓库的唯一标识;<br>Repository Name：仓库的名称，在nexus中用这个来显示某个仓库;<br>Remote Storage Location：仓库的远程地址;</p>
+<p>能看到在nexus中已经有了：<br><img src="https://lyln.oss-cn-beijing.aliyuncs.com/wiredtiger/201611/nexus-3.png" alt="查看"><br>注：Browse Remote这个tab如果没显示出来，刷新一下页面即可。<br>这个时候Browse Remote下已经能看到远程仓库的结构了，但Browser Storage下没有任何东西，说明构件还都没有从远程仓库拉取到nexus。</p>
+<p>选择Public Repositories（这个是nexus对外的仓库地址），把getui从右边添加到左边，表示把getui的仓库添加到Public group中，这样才能对外可见。<br><img src="https://lyln.oss-cn-beijing.aliyuncs.com/wiredtiger/201611/nexus-4.png" alt="设置权限"><br>注：Browse Remote这个tab如果没显示出来，刷新一下页面即可。</p>
+<p>在自己的maven项目中，配置依赖关系：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;com.gexin.platform&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;gexin-rp-sdk-http&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;4.0.1.7&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure></p>
+<p>这样，项目首先会去nexus检索看有没有这个jar，如果没有，再在nexus中检索有没有这个jar相关的仓库配置，发现有，然后会去getui这个仓库将所有相关jar拉取到nexus中，然后下载到你本机的.m2目录下。这时，可以看到nexus的getui这个仓库的Browser Storage下也有了这些jar：<br><img src="https://lyln.oss-cn-beijing.aliyuncs.com/wiredtiger/201611/nexus-4.png" alt="结果"></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-11-06T16:00:00.000Z"><a href="/2016/11/07/2016-11-07-from-log-recover-data/">2016-11-07</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/11/07/2016-11-07-from-log-recover-data/">从日志恢复数据</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>循环遍历日志<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">stat.txt</div><div class="line">2016-11-09 00:00:23 &quot;deviceId&quot;:&quot;F9D4F729-7EE7-467F-BF3F-7D9D008EAB&quot; &quot;userId&quot;:&quot;20048603&quot;</div><div class="line">2016-11-09 00:00:29 &quot;deviceId&quot;:&quot;c96996784f99e106c32138940da2987c&quot; &quot;osSystem&quot;:&quot;Android6.0&quot; &quot;userId&quot;:&quot;20066192&quot;</div></pre></td></tr></table></figure></p>
+<p>过滤出无用字段(类似循环处理)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">grep -i -v &quot;osSystem&quot; stat1.txt &gt;&gt; stat11.txt</div><div class="line">grep -i  &quot;osSystem&quot; stat1.txt &gt;&gt; stat12.txt</div></pre></td></tr></table></figure></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2016/11/07/2016-11-07-from-log-recover-data/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-10-24T16:00:00.000Z"><a href="/2016/10/25/2016-10-25-ffmpeg-build/">2016-10-25</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/10/25/2016-10-25-ffmpeg-build/">ffmpeg 编译安装</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>系统环境<br>Ubuntu 14.04.3 LTS<br>最近测试ffmpeg转推，使用老版本ffmpeg流转推一段时间会断掉，测试发现在新版本ffmpeg效果明显好很多。但是由于依赖众多(主要问题)，编译花费了好长时间。<br>记录下编译过程。</p>
+<p>ffmpeg 编译安装<br>依赖安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">apt-get install yasm pkg-config</div><div class="line">apt-get install gnutls-bin libgnutls-dev libass-dev libfdk-aac-dev </div><div class="line">libmp3lame0 libmp3lame-dev libpulse0 libpulse-dev libsoxr0 libsoxr-dev speex libspeex-dev libopus0 libopus-dev  libvpx1 libvpx-dev</div><div class="line">libwavpack1 libwavpack-dev </div><div class="line">apt-get install libx264-dev libxvidcore-dev libopencore-amrwb-dev libopencore-amrnb-dev libfaad-dev libfaac-dev libmp3lame-dev libtwolame-dev liba52-0.7.4-dev libcddb2-dev libcdaudio-dev libcdio-cdda-dev libvorbis-dev libopenjpeg-dev</div><div class="line">add-apt-repository ppa:sunab/kdenlive-release</div><div class="line">apt-get install libvidstab1.0 libvidstab-dev</div></pre></td></tr></table></figure></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2016/10/25/2016-10-25-ffmpeg-build/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-10-16T16:00:00.000Z"><a href="/2016/10/17/2016-10-17-nginx-upstream/">2016-10-17</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/10/17/2016-10-17-nginx-upstream/">nginx 负载均衡配置</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>环境介绍<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">nginx version: nginx/1.10.1</div><div class="line">负载机器：192.168.1.168 80</div><div class="line">upstream机器：192.168.1.169:81</div><div class="line">192.168.1.170:81</div></pre></td></tr></table></figure></p>
+<p>nginx安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">wget http://nginx.org/keys/nginx_signing.key</div><div class="line">apt-key add nginx_signing.key</div><div class="line">#For Ubuntu 14.04 replace codename to trusty</div><div class="line">deb http://nginx.org/packages/ubuntu/ trusty nginx</div><div class="line">deb-src http://nginx.org/packages/ubuntu/ trusty nginx</div><div class="line">apt-get update</div><div class="line">apt-get install nginx</div></pre></td></tr></table></figure></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2016/10/17/2016-10-17-nginx-upstream/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-10-13T16:00:00.000Z"><a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/">2016-10-14</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/">grafana influxdb构建自定义监控</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h4 id="grafana-安装"><a href="#grafana-安装" class="headerlink" title="grafana 安装"></a>grafana 安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ wget https://grafanarel.s3.amazonaws.com/builds/grafana_3.0.4-1464167696_amd64.deb</div><div class="line">$ sudo apt-get install -y adduser libfontconfig</div><div class="line">$ sudo dpkg -i grafana_3.0.4-1464167696_amd64.deb</div><div class="line">/etc/init.d/grafana-server start/stop/status</div><div class="line">http://192.168.1.158:3000/ admin/admin</div></pre></td></tr></table></figure>
+<h4 id="influxdb-安装"><a href="#influxdb-安装" class="headerlink" title="influxdb 安装"></a>influxdb 安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">wget https://dl.influxdata.com/influxdb/releases/influxdb_1.0.2_amd64.deb</div><div class="line">sudo dpkg -i influxdb_1.0.2_amd64.deb</div><div class="line">web访问influxdb http://192.168.1.158:8083/</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2016-09-17T16:00:00.000Z"><a href="/2016/09/18/2016-09-18-percona-toolkit/">2016-09-18</a></time>
       
       
@@ -217,237 +447,6 @@
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-08-10T16:00:00.000Z"><a href="/2016/08/11/2016-08-11-kafka-install-manual/">2016-08-11</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/08/11/2016-08-11-kafka-install-manual/">Kafka操作小结</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="Kafka操作小结"><a href="#Kafka操作小结" class="headerlink" title="Kafka操作小结"></a>Kafka操作小结</h4><p>kafka依赖zookeeper，所以要先安装zookeeper。</p>
-<p>下载安装包<br>省略，解压即可食用，方便快捷</p>
-<h4 id="zookeeper安装"><a href="#zookeeper安装" class="headerlink" title="zookeeper安装"></a>zookeeper安装</h4><p>1、zoo.cfg参数解释<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">dataDir：数据目录</div><div class="line">dataLogDir：日志目录</div><div class="line">clientPort：客户端连接端口</div><div class="line">tickTime：Zookeeper 服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个 tickTime 时间就会发送一个心跳。</div><div class="line">initLimit：Zookeeper的Leader 接受客户端（Follower）初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过 5个心跳的时间（也就是tickTime）长度后 Zookeeper 服务器还没有收到客户端的返回信息，那么表明这个客户端连接失败。总的时间长度就是 5*2000=10 秒</div><div class="line">syncLimit：表示 Leader 与 Follower 之间发送消息时请求和应答时间长度，最长不能超过多少个tickTime 的时间长度，总的时间长度就是 2*2000=4 秒。</div><div class="line">server.A=B：C：D：其中A 是一个数字，表示这个是第几号服务器；B 是这个服务器的 ip 地址；C 表示的是这个服务器与集群中的 Leader 服务器交换信息的端口；D 表示的是万一集群中的 Leader 服务器挂了，需要一个端口来重新进行选举，选出一个新的 Leader，而这个端口就是用来执行选举时服务器相互通信的端口。如果是伪集群的配置方式，由于 B 都是一样，所以不同的 Zookeeper 实例通信端口号不能一样，所以要给它们分配不同的端口号。</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/08/11/2016-08-11-kafka-install-manual/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-08-05T16:00:00.000Z"><a href="/2016/08/06/2016-08-06-discuz-install/">2016-08-06</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/08/06/2016-08-06-discuz-install/">Discuz! X3.2 安装问题小记</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>Discuz 安装本来很简单，但是由于不熟悉和本身代码的问题，花了快一天才解决。现在将问题罗列如下：</p>
-<h4 id="Can’t-connect-to-local-MySQL-server-through-socket"><a href="#Can’t-connect-to-local-MySQL-server-through-socket" class="headerlink" title="Can’t connect to local MySQL server through socket"></a>Can’t connect to local MySQL server through socket</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mysqli_connect() 不支持 advice_mysqli_connect</div><div class="line">Discuz 安装完成后，后台打开Ucenter出现404</div><div class="line">头像上传不能成功</div><div class="line">Can’t connect to <span class="built_in">local</span> MySQL server through socket</div><div class="line">指定host使用的socket，格式如下：</div><div class="line"><span class="variable">$dbhost</span> = ‘localhost:/temp/mysql.sock’;</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/08/06/2016-08-06-discuz-install/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-06-30T16:00:00.000Z"><a href="/2016/07/01/2016-07-01-anemometer-slow-log/">2016-07-01</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/07/01/2016-07-01-anemometer-slow-log/">Anemometer 展示示MySQL慢查询日志</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>安装部署<br>nginx,mysql,php环境可参考博客其他文章<br>Anemometer部署过程参考官网Quickstart</p>
-<p>问题小结<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">配置多个数据源，只是指定不同db即可。</div><div class="line"></div><div class="line"><span class="variable">$conf</span>[<span class="string">'datasources'</span>][<span class="string">'192.168.1.87'</span>] = array(</div><div class="line">        <span class="string">'host'</span>  =&gt; <span class="string">'192.168.1.87'</span>,</div><div class="line">        <span class="string">'port'</span>  =&gt; 3306,</div><div class="line">        <span class="string">'db'</span>    =&gt; <span class="string">'slow_query_log'</span>,</div><div class="line">        <span class="string">'user'</span>  =&gt; <span class="string">'ljd'</span>,</div><div class="line">        <span class="string">'password'</span> =&gt; <span class="string">'root123'</span>,</div><div class="line">        <span class="string">'tables'</span> =&gt; array(</div><div class="line">                <span class="string">'global_query_review'</span> =&gt; <span class="string">'fact'</span>,</div><div class="line">                <span class="string">'global_query_review_history'</span> =&gt; <span class="string">'dimension'</span></div><div class="line">        ),</div><div class="line">        <span class="string">'source_type'</span> =&gt; <span class="string">'slow_query_log'</span></div><div class="line">);</div><div class="line"><span class="variable">$conf</span>[<span class="string">'datasources'</span>][<span class="string">'online'</span>] = array(</div><div class="line">        <span class="string">'host'</span>  =&gt; <span class="string">'192.168.1.87'</span>,</div><div class="line">        <span class="string">'port'</span>  =&gt; 3306,</div><div class="line">        <span class="string">'db'</span>    =&gt; <span class="string">'slow_online'</span>,</div><div class="line">        <span class="string">'user'</span>  =&gt; <span class="string">'ljd'</span>,</div><div class="line">        <span class="string">'password'</span> =&gt; <span class="string">'root123'</span>,</div><div class="line">        <span class="string">'tables'</span> =&gt; array(</div><div class="line">                <span class="string">'global_query_review'</span> =&gt; <span class="string">'fact'</span>,</div><div class="line">                <span class="string">'global_query_review_history'</span> =&gt; <span class="string">'dimension'</span></div><div class="line">        ),</div><div class="line">        <span class="string">'source_type'</span> =&gt; <span class="string">'slow_query_log'</span></div><div class="line">);</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/07/01/2016-07-01-anemometer-slow-log/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-05-21T16:00:00.000Z"><a href="/2016/05/22/2016-05-22-shell-common-ops-01/">2016-05-22</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/05/22/2016-05-22-shell-common-ops-01/">Shell常用命令</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>1、防止rm,mv惨案，环境变量添加/etc/profile</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">alias rm=&apos;rm -i&apos;</div><div class="line">alias mv=&apos;mv -i&apos;</div><div class="line">alias vi=&apos;vim&apos;</div><div class="line">alias cp=&apos;cp -i&apos;</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/05/22/2016-05-22-shell-common-ops-01/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-11-20T16:00:00.000Z"><a href="/2015/11/21/2015-11-21-mysql-stu03/">2015-11-21</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/11/21/2015-11-21-mysql-stu03/">MySQL5.7模拟role，5.6添加审计功能,SSL连接，多实例</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="mysql5-7可以模拟role"><a href="#mysql5-7可以模拟role" class="headerlink" title="mysql5.7可以模拟role"></a>mysql5.7可以模拟role</h4><p>1、创建tom，junior_dba用户<br>2、将tom加入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grant proxy on <span class="string">'junior_dba'</span>@<span class="string">'localhost'</span> to <span class="string">'tom'</span>@<span class="string">'localhost'</span>;</div></pre></td></tr></table></figure></p>
-<p>3、授予junior_dba权限后，tom将拥有和junior_dba相同的权限。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grant select on *.* to <span class="string">'junior_dba'</span>@<span class="string">'localhost'</span>;</div></pre></td></tr></table></figure></p>
-<p>4、登陆测试<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">show database;</div><div class="line">SELECT USER(), CURRENT_USER();</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/11/21/2015-11-21-mysql-stu03/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-11-15T16:00:00.000Z"><a href="/2015/11/16/2015-11-16-mysql-stu02/">2015-11-16</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/11/16/2015-11-16-mysql-stu02/">MySQL安装升级</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="mysql-dba应该关注的网站"><a href="#mysql-dba应该关注的网站" class="headerlink" title="mysql dba应该关注的网站"></a>mysql dba应该关注的网站</h4><p><a href="http://www.mysql.com/" target="_blank" rel="external">http://www.mysql.com/</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql包的生命周期 Milestone Release(MR)&gt;Release Candidate(RC) </div><div class="line">&gt;Generally Avaialble(GA)&gt;Archived Version</div></pre></td></tr></table></figure></p>
-<h4 id="为什么推荐选择MySQL官方版本"><a href="#为什么推荐选择MySQL官方版本" class="headerlink" title="为什么推荐选择MySQL官方版本"></a>为什么推荐选择MySQL官方版本</h4><p>Oracle MySQL，Percona, MariaDB,Drizzle 推荐级别由前到后。<br>Oracle MySQL 官方MysSQL数据库版本，mysql5.6后将Percona的优化集成到官方版本。<br>Percona 使用XtraDB引擎。<br>MariaDB 核心代码相对较老。<br>Drizzle 采用C++语言重构各个模块，它与MySQL不兼容。</p>
-<h4 id="MySQL版本的选择及注意"><a href="#MySQL版本的选择及注意" class="headerlink" title="MySQL版本的选择及注意"></a>MySQL版本的选择及注意</h4><p>推荐安装linux-generic，同时选择mysql5.6以上的版本。因为mysql5.6修复了5.5的好多bug。<br>线上使用注意从<a href="http://dev.mysql.com/downloads/mysql/" target="_blank" rel="external">http://dev.mysql.com/downloads/mysql/</a>下载并用md5sum校验文件的MD5值。</p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/11/16/2015-11-16-mysql-stu02/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
 
 <nav id="pagination">
   
@@ -477,11 +476,15 @@
   
     <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
   
-    <li><a href="/categories/Linux/">Linux</a><small>14</small></li>
+    <li><a href="/categories/Linux/">Linux</a><small>16</small></li>
   
     <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
   
-    <li><a href="/categories/Python/">Python</a><small>1</small></li>
+    <li><a href="/categories/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Redis/">Redis</a><small>2</small></li>
+  
+    <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
   
   </ul>
 </div>
@@ -496,7 +499,7 @@
   
     <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
   
-    <li><a href="/tags/Linux/">Linux</a><small>3</small></li>
+    <li><a href="/tags/Linux/">Linux</a><small>4</small></li>
   
     <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
   
@@ -510,9 +513,15 @@
   
     <li><a href="/tags/Python/">Python</a><small>1</small></li>
   
+    <li><a href="/tags/Redis/">Redis</a><small>1</small></li>
+  
     <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
   
     <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
+  
+    <li><a href="/tags/cat/">cat</a><small>1</small></li>
+  
+    <li><a href="/tags/elk/">elk</a><small>1</small></li>
   
     <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
   
@@ -525,6 +534,10 @@
     <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
   
     <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
+  
+    <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
   
     <li><a href="/tags/shell/">shell</a><small>1</small></li>
   
@@ -542,7 +555,7 @@
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
   </div>
 </div>
 
@@ -619,7 +632,5 @@ var disqus_shortname = 'lyln';
 </html>
 
 <!-- click bloom -->
-{% if theme.fireworks %}
-   <script type="application/x-javascript" src="/js/mo.min.js"></script>
-   <script type="text/javascript" src="/js/loading.mo.js"></script> 
-{% endif %}
+<script type="application/x-javascript" src="/js/mo.min.js"></script>
+<script type="text/javascript" src="/js/loading.mo.js"></script> 

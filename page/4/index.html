@@ -72,6 +72,261 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2015-06-04T16:00:00.000Z"><a href="/2015/06/05/2015-06-05-update-mysql/">2015-06-05</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/06/05/2015-06-05-update-mysql/">Centos 升级mysql5.1到5.6</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>系统：CentOS release 6.5 <br><br>升级前mysql版本：5.1.73-log <br><br>升级后mysql版本：5.6.25 <br></p>
+<h4 id="升级原因"><a href="#升级原因" class="headerlink" title="升级原因"></a>升级原因</h4><p>MySQL 5.1.x不支持四个字节的utf-8编码，只有5.5.x以后才支持</p>
+<h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mkdir /data/update_mysql</div><div class="line">备份my.cnf、/etc/init.d/mysqld</div><div class="line">备份整个数据库</div><div class="line">mysqldump -uroot -p -q --all-databases &gt; alldatabases.sql</div><div class="line">备份数据目录</div><div class="line">tar -zxvf datadir.tar.gz /var/lib/mysql</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2015/06/05/2015-06-05-update-mysql/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-06-03T16:00:00.000Z"><a href="/2015/06/04/2015-06-04-postgresql-stu-01/">2015-06-04</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/06/04/2015-06-04-postgresql-stu-01/">PostgreSQL笔记--初识PostgreSQL</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h4 id="PostgreSQL安装"><a href="#PostgreSQL安装" class="headerlink" title="PostgreSQL安装"></a>PostgreSQL安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">./configure --prefix   安装路径</div><div class="line">--with-pgport=NUMBER  设置默认端口（5432）</div><div class="line">--with-segsize=SEGSIZE 段大小（单位gb）</div><div class="line">--with-blocksize=BLOCKSIZW 块大小（单位kb）</div><div class="line">--with-wal-segsize=SEGSIZE wal日志(单位mb)</div><div class="line">--with-wal-blocksize=BLOCKSIZE wal日志块大小(单位kb)</div><div class="line"></div><div class="line">gmake</div><div class="line">gmake install</div><div class="line">useradd postgres</div><div class="line"></div><div class="line">initdb -D /opt/pgsql/data --locale=C --encoding=UTF8 初始化数据库</div><div class="line">or pg_ctl -D /opt/pgsql/data initdb</div><div class="line">使用D参数或设置环境变量PGDATA</div><div class="line"></div><div class="line">postgres -D /opt/pgsql/data &gt; logfile 2&gt;&amp;1 &amp;启动数据库</div><div class="line">or pg_ctl start -l logfile</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2015/06/04/2015-06-04-postgresql-stu-01/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-05-28T16:00:00.000Z"><a href="/2015/05/29/2015-05-29-docker-stu-notes/">2015-05-29</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/05/29/2015-05-29-docker-stu-notes/">Docker笔记</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>在Ubuntu 14.04.2 LTS安装docker<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install docker.io</div><div class="line">依赖安装aufs-tools cgroup-lite git git-man liberror-perl</div></pre></td></tr></table></figure></p>
+<p>查看docker版本和系统信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker version</div><div class="line">docker info</div></pre></td></tr></table></figure></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2015/05/29/2015-05-29-docker-stu-notes/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-05-14T16:00:00.000Z"><a href="/2015/05/15/2015-05-15-python-help/">2015-05-15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/05/15/2015-05-15-python-help/">python小技巧</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>dir查看对象的属性<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; dir(re)</div><div class="line">[<span class="string">'DEBUG'</span>, <span class="string">'DOTALL'</span>, <span class="string">'I'</span>, ...<span class="string">'compile'</span>....]</div></pre></td></tr></table></figure></p>
+<p>help查看模块方法的使用<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;<span class="built_in">help</span>(<span class="string">'compile'</span>)</div></pre></td></tr></table></figure></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2015/05/15/2015-05-15-python-help/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-03-15T16:00:00.000Z"><a href="/2015/03/16/2015-03-16-mysql-ha-mha/">2015-03-16</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/03/16/2015-03-16-mysql-ha-mha/">MySQL MHA高可用方案</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>mha是用perl写的一套MySql故障切换方案，保证数据库系统的高可用。支持在线切换，从当前运行master到新master只需很短时间（0.5-2s内），此时仅仅阻塞写操作，并不影响读操作。</p>
+<h3 id="环境部署"><a href="#环境部署" class="headerlink" title="环境部署"></a>环境部署</h3><p>MHA要求一个复制集群中必须至少三台数据库</p>
+<p>实验环境（RHEL release 5.9）</p>
+<table>
+<thead>
+<tr>
+<th>服务器</th>
+<th>IP</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>主服务器</td>
+<td>10.16.34.208</td>
+<td></td>
+</tr>
+<tr>
+<td>从服务器</td>
+<td>10.16.34.201</td>
+<td>主备份、管理节点</td>
+</tr>
+<tr>
+<td>从服务器</td>
+<td>10.16.34.194</td>
+</tr>
+</tbody>
+</table>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2015/03/16/2015-03-16-mysql-ha-mha/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-08-26T16:00:00.000Z"><a href="/2014/08/27/2014-08-27-mysql-common-ops/">2014-08-27</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/08/27/2014-08-27-mysql-common-ops/">MySQL常用操作</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>以下常用命令适用于MySQL 5.6</p>
+<p>多表更新<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">UPDATE s_chat c,s_room r</div><div class="line">SET c.`anchor_user_id`=r.`user_id`WHERE c.`room_id`=r.`room_id`;</div></pre></td></tr></table></figure></p>
+<p>显示表中列名称<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show columns from mysql.user;</div></pre></td></tr></table></figure></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2014/08/27/2014-08-27-mysql-common-ops/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2014-08-14T16:00:00.000Z"><a href="/2014/08/15/2014-08-15-linux-common-info/">2014-08-15</a></time>
       
       
@@ -171,11 +426,15 @@
   
     <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
   
-    <li><a href="/categories/Linux/">Linux</a><small>14</small></li>
+    <li><a href="/categories/Linux/">Linux</a><small>16</small></li>
   
     <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
   
-    <li><a href="/categories/Python/">Python</a><small>1</small></li>
+    <li><a href="/categories/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Redis/">Redis</a><small>2</small></li>
+  
+    <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
   
   </ul>
 </div>
@@ -190,7 +449,7 @@
   
     <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
   
-    <li><a href="/tags/Linux/">Linux</a><small>3</small></li>
+    <li><a href="/tags/Linux/">Linux</a><small>4</small></li>
   
     <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
   
@@ -204,9 +463,15 @@
   
     <li><a href="/tags/Python/">Python</a><small>1</small></li>
   
+    <li><a href="/tags/Redis/">Redis</a><small>1</small></li>
+  
     <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
   
     <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
+  
+    <li><a href="/tags/cat/">cat</a><small>1</small></li>
+  
+    <li><a href="/tags/elk/">elk</a><small>1</small></li>
   
     <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
   
@@ -219,6 +484,10 @@
     <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
   
     <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
+  
+    <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
   
     <li><a href="/tags/shell/">shell</a><small>1</small></li>
   
@@ -236,7 +505,7 @@
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
   </div>
 </div>
 
@@ -313,7 +582,5 @@ var disqus_shortname = 'lyln';
 </html>
 
 <!-- click bloom -->
-{% if theme.fireworks %}
-   <script type="application/x-javascript" src="/js/mo.min.js"></script>
-   <script type="text/javascript" src="/js/loading.mo.js"></script> 
-{% endif %}
+<script type="application/x-javascript" src="/js/mo.min.js"></script>
+<script type="text/javascript" src="/js/loading.mo.js"></script> 
