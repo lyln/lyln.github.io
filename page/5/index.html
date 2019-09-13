@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>第 5 页 | 落影流年</title>
+  <meta name="author" content="Lyln">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="落影流年"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+  <script>
+	(function() {
+	    var OriginTitile = document.title, titleTime;
+	    document.addEventListener('visibilitychange', function() {
+		if (document.hidden) {
+		    document.title = '死鬼去哪里了！';
+		    clearTimeout(titleTime);
+		} else {
+		    document.title = '(つェ⊂)咦!又好了!';
+		    titleTime = setTimeout(function() {
+			document.title = OriginTitile;
+		    },2000);
+		}
+	    });
+	})();
+ </script>
+</head>
+
+
+<!-- add Fork me on Github -->
+
+<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">落影流年</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+      <li><a href="/about">About</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-08-14T16:00:00.000Z"><a href="/2014/08/15/2014-08-15-linux-common-info/">2014-08-15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/08/15/2014-08-15-linux-common-info/">Linux常用查看命令</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h4 id="查看外网ip"><a href="#查看外网ip" class="headerlink" title="查看外网ip"></a>查看外网ip</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">curl ifconfig.me</div><div class="line">curl ifconfig.sh</div><div class="line">curl ifconfig.co</div></pre></td></tr></table></figure>
+<h4 id="查看编译参数"><a href="#查看编译参数" class="headerlink" title="查看编译参数"></a>查看编译参数</h4><p>1、nginx编译参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/nginx/sbin/nginx -V</div></pre></td></tr></table></figure></p>
+<p>2、apache编译参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /usr/local/apache2/build/config.nice</div></pre></td></tr></table></figure></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2014/08/15/2014-08-15-linux-common-info/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-08-13T16:00:00.000Z"><a href="/2014/08/14/2014-08-14-git-notes/">2014-08-14</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/08/14/2014-08-14-git-notes/">Git常用命令</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="账户公钥与项目公钥区别"><a href="#账户公钥与项目公钥区别" class="headerlink" title="账户公钥与项目公钥区别"></a>账户公钥与项目公钥区别</h3><p>账户设置的 SSH 公钥是用来认证用户身份的，而项目部署公钥是用来授权项目的只读权限的。<br>账户 SSH 公钥是跟用户账户关联的公钥，一旦设置，就拥有账户下所有项目仓库的读写权限。<br>项目部署 SSH 公钥是跟项目关联的公钥，设置后有该项目的仓库的只读权限。</p>
+<p>账户公钥相当于设置管理员权限一样，你可以clone、pull、[push]<br>项目公钥，为了安全起见只允许，clone和pull</p>
+<h4 id="git添加空目录"><a href="#git添加空目录" class="headerlink" title="git添加空目录"></a>git添加空目录</h4><p>空目录empty中添加 .gitignore 文件<br>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2014/08/14/2014-08-14-git-notes/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+
+<nav id="pagination">
+  
+    <a href="/page/4/" class="alignleft prev">上一页</a>
+  
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜索">
+    <input type="hidden" name="q" value="site:www.wiredtiger.org">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分类</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/categories/House/">House</a><small>1</small></li>
+  
+    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
+  
+    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/categories/Linux/">Linux</a><small>18</small></li>
+  
+    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Redis/">Redis</a><small>3</small></li>
+  
+    <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">标签</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
+  
+    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
+  
+    <li><a href="/tags/Linux/">Linux</a><small>4</small></li>
+  
+    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
+  
+    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
+  
+    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
+  
+    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
+  
+    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
+  
+    <li><a href="/tags/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/tags/Redis/">Redis</a><small>1</small></li>
+  
+    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
+  
+    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
+  
+    <li><a href="/tags/cat/">cat</a><small>1</small></li>
+  
+    <li><a href="/tags/elk/">elk</a><small>1</small></li>
+  
+    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
+  
+    <li><a href="/tags/git/">git</a><small>1</small></li>
+  
+    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
+  
+    <li><a href="/tags/https/">https</a><small>1</small></li>
+  
+    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
+  
+    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
+  
+    <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
+  
+    <li><a href="/tags/redis/">redis</a><small>2</small></li>
+  
+    <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
+  
+    <li><a href="/tags/shell/">shell</a><small>1</small></li>
+  
+    <li><a href="/tags/srs/">srs</a><small>1</small></li>
+  
+    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
+  
+    <li><a href="/tags/yum/">yum</a><small>1</small></li>
+  
+    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
+  
+    <li><a href="/tags/买房/">买房</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tagcloud">
+  <h3 class="title">标签云</h3>
+  <div class="entry">
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a> <a href="/tags/买房/" style="font-size: 10px;">买房</a>
+  </div>
+</div>
+
+
+  
+  <div class="widget tag">
+    <h3 class="title">友情链接</h3>
+      <ul class="entry">
+        
+          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
+        
+          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
+        
+          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
+        
+      </ul>
+  </div>
+
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</script>
+<div class="aligncenter">
+  
+  Copyright &copy; 2019  Lyln
+   | 
+  <span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+  </span>
+  &nbsp <a href="/atom.xml">RSS</a>
+</div>
+<div class="clearfix"></div>
+</footer>
+  <!--
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+-->
+<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<script type="text/javascript">
+var disqus_shortname = 'lyln';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
+<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+</div>
+
+<script src="/js/backtop.js"></script>
+
+</body>
+</html>
+
+<!-- click bloom -->
+<script type="application/x-javascript" src="/js/mo.min.js"></script>
+<script type="text/javascript" src="/js/loading.mo.js"></script> 

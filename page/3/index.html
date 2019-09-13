@@ -72,6 +72,157 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2016-09-17T16:00:00.000Z"><a href="/2016/09/18/2016-09-18-percona-toolkit/">2016-09-18</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/09/18/2016-09-18-percona-toolkit/">Percona Toolkit使用小结</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Percona Toolkit安装<br>1、<a href="https://www.percona.com/downloads/percona-toolkit/" target="_blank" rel="external">下载包</a><br>2、安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">perl Makefile.PL</div><div class="line">make</div><div class="line">make test</div><div class="line">make install</div></pre></td></tr></table></figure></p>
+<h3 id="pt-online-schema-change-在线修改表结构"><a href="#pt-online-schema-change-在线修改表结构" class="headerlink" title="pt-online-schema-change 在线修改表结构"></a>pt-online-schema-change 在线修改表结构</h3><p><strong>修改表结构前，切记备份！！!</strong><br>pt-osc原理：<br>1、创建一个和要执行 alter 操作的表一样的新的空表结构(是alter之前的结构)<br>2、在新表执行alter table 语句（速度应该很快）<br>3、在原表中创建触发器3个触发器分别对应insert,update,delete操作<br>4、以一定块大小从原表拷贝数据到临时表，拷贝过程中通过原表上的触发器在原表进行的写操作都会更新到新建的临时表<br>5、Rename 原表到old表中，在把临时表Rename为原表<br>6、如果有参考该表的外键，根据alter-foreign-keys-method参数的值，检测外键相关的表，做相应设置的处理<br>7、默认最后将旧原表删除<br>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2016/09/18/2016-09-18-percona-toolkit/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-08-31T16:00:00.000Z"><a href="/2016/09/01/2016-09-01-smokeping-nginx-install/">2016-09-01</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/09/01/2016-09-01-smokeping-nginx-install/">Smokeping nginx 安装小记</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="nginx支持cgi"><a href="#nginx支持cgi" class="headerlink" title="nginx支持cgi"></a>nginx支持cgi</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">aptitude install fcgiwrap</div></pre></td></tr></table></figure>
+<p>nginx配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">smokeping.conf</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen      80;</div><div class="line">    server_name 192.168.1.158;</div><div class="line">    #charset koi8-r;</div><div class="line">    access_log  /data/log/nginx/smokeping_access.log ;</div><div class="line">    error_log  /data/log/nginx/smokeping_error.log;</div><div class="line">    root  /opt/smokeping;</div><div class="line">    index index.html index.htm index.php portal.php default.php;</div><div class="line">    #error_page  404              /404.html;</div><div class="line">    # redirect server error pages to the static page /50x.html</div><div class="line">    error_page   500 502 503 504  /50x.html;</div><div class="line">    location = /50x.html &#123;</div><div class="line">        root   /usr/share/nginx/html;</div><div class="line">    &#125;</div><div class="line">    # Include this file on your nginx.conf to support debian cgi-bin scripts using</div><div class="line">    # fcgiwrap</div><div class="line">    location ~ .*\.fcgi$ &#123; </div><div class="line">	# Disable gzip (it makes scripts feel slower since they have to complete</div><div class="line">	# before getting gzipped)</div><div class="line">	gzip off;</div><div class="line">	# Set the root to /usr/lib (inside this location this means that we are</div><div class="line">	# giving access to the files under /usr/lib/cgi-bin)</div><div class="line">	root  /opt/smokeping/htdocs;</div><div class="line">	# Fastcgi socket</div><div class="line">	fastcgi_pass  unix:/var/run/fcgiwrap.socket;</div><div class="line">	# Fastcgi parameters, include the standard ones</div><div class="line">	include /etc/nginx/fastcgi_params;</div><div class="line">	# Adjust non standard parameters (SCRIPT_FILENAME)</div><div class="line">	#fastcgi_param SCRIPT_FILENAME  /usr/lib$fastcgi_script_name;</div><div class="line">	fastcgi_param   SCRIPT_FILENAME /opt/smokeping/htdocs$fastcgi_script_name;</div><div class="line">    &#125;</div><div class="line">    # deny access to .htaccess files, if Apache&apos;s document root</div><div class="line">    location ~ /\.ht &#123;</div><div class="line">        deny  all;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2016/09/01/2016-09-01-smokeping-nginx-install/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-08-14T16:00:00.000Z"><a href="/2016/08/15/2016-08-15-zabbix-manual-install/">2016-08-15</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/08/15/2016-08-15-zabbix-manual-install/">Zabbix 3.0 安装小记</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h3 id="zabbix-server部署"><a href="#zabbix-server部署" class="headerlink" title="zabbix_server部署"></a>zabbix_server部署</h3><p>1、Zabbix 3.0 for Ubuntu 14.04 LTS:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">wget http://repo.zabbix.com/zabbix/3.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.0-1+trusty_all.deb</div><div class="line">dpkg -i zabbix-release_3.0-1+trusty_all.deb</div><div class="line">apt-get update</div><div class="line">apt-get install zabbix-server-mysql zabbix-frontend-php #安装server和frontend</div><div class="line">apt-get install zabbix-agent #安装agent</div></pre></td></tr></table></figure></p>
+<p>2、初始化数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd /usr/share/doc/zabbix-server-mysql</div><div class="line">zcat create.sql.gz | mysql -uroot zabbix</div></pre></td></tr></table></figure></p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2016/08/15/2016-08-15-zabbix-manual-install/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2016-08-11T16:00:00.000Z"><a href="/2016/08/12/2016-08-12-supervisor/">2016-08-12</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2016/08/12/2016-08-12-supervisor/">Supervisor进程管理</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Supervisor (<a href="http://supervisord.org" target="_blank" rel="external">http://supervisord.org</a>) 是一个用 Python 写的进程管理工具，可以很方便的用来启动、重启、关闭进程。</p>
+<h4 id="Supervisor安装"><a href="#Supervisor安装" class="headerlink" title="Supervisor安装"></a>Supervisor安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install supervisor</div></pre></td></tr></table></figure>
+<h4 id="Supervisor配置文件"><a href="#Supervisor配置文件" class="headerlink" title="Supervisor配置文件"></a>Supervisor配置文件</h4><p>默认配置文件/etc/supervisor/supervisord.conf<br>如过没有,生成默认配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</div><div class="line">[supervisord] #supervisord本身的日志配置</div><div class="line">logfile=/var/log/supervisor/supervisord.log ;</div><div class="line">pidfile=/var/run/supervisord.pid ;</div></pre></td></tr></table></figure></p>
+<p>添加管理的java进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">hello.conf</div><div class="line">[program:showchat]</div><div class="line">directory = /home/ljd/hello</div><div class="line">command = /usr/local/jdk/bin/java -Xmx512M -Xms512M -classpath hello.jar com.ljd.Hello</div><div class="line">autostart = true #子进程随supervisord启动而启动</div><div class="line">startsecs = 5 #进程启动后跑了几秒，才被认定为成功启动。默认1</div><div class="line">autorestart = true #子进程挂掉将被无条件重启</div><div class="line">numprocs=1 #启动线程数目</div><div class="line">user = rgbvr  #指定运行用户</div><div class="line">environment=CHAT_SETTING_HOME=/opt/hello/config #指定程序环境变量 </div><div class="line">stdout_logfile_maxbytes = 20MB</div><div class="line">stdout_logfile_backups = 20</div><div class="line">redirect_stderr = true</div><div class="line">stdout_logfile = /home/ljd/hello.log</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2016-08-10T16:00:00.000Z"><a href="/2016/08/11/2016-08-11-kafka-install-manual/">2016-08-11</a></time>
       
       
@@ -297,156 +448,6 @@
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-11-09T16:00:00.000Z"><a href="/2015/11/10/2015-11-10-my-cnf-note/">2015-11-10</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/11/10/2015-11-10-my-cnf-note/">my.cnf配置文件注释</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="MySQL-5-6-amp-5-7最优配置文件模板"><a href="#MySQL-5-6-amp-5-7最优配置文件模板" class="headerlink" title="MySQL 5.6 &amp; 5.7最优配置文件模板"></a>MySQL 5.6 &amp; 5.7最优配置文件模板</h4><p><a href="http://www.innomysql.net/article/21730.html" target="_blank" rel="external">http://www.innomysql.net/article/21730.html</a></p>
-<h4 id="my-cnf配置文件注释"><a href="#my-cnf配置文件注释" class="headerlink" title="my.cnf配置文件注释"></a>my.cnf配置文件注释</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line">[client]</div><div class="line">user=root</div><div class="line">password=root</div><div class="line">default-character-set=utf8mb4</div><div class="line"></div><div class="line">[mysqld]</div><div class="line"><span class="comment">########basic settings########</span></div><div class="line">server-id = 11 </div><div class="line">port = 3306</div><div class="line">user = mysql</div><div class="line">bind_address = 10.166.224.32</div><div class="line">autocommit = 0</div><div class="line">character_set_server=utf8mb4</div><div class="line">skip_name_resolve = 1</div><div class="line">max_connections = 800</div><div class="line">max_connect_errors = 1000</div><div class="line">datadir = /data/mysql_data</div><div class="line">transaction_isolation = READ-COMMITTED</div><div class="line">explicit_defaults_for_timestamp = 1</div><div class="line">join_buffer_size = 134217728</div><div class="line">sort_buffer_size = 33554432</div><div class="line">tmp_table_size = 67108864</div><div class="line">tmpdir = /tmp</div><div class="line">max_allowed_packet = 16777216</div><div class="line">sql_mode = <span class="string">"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER"</span></div><div class="line">interactive_timeout = 1800</div><div class="line">wait_timeout = 1800</div><div class="line">read_buffer_size = 16777216</div><div class="line">read_rnd_buffer_size = 33554432</div><div class="line"><span class="comment">########log settings########</span></div><div class="line">log_error = error.log</div><div class="line">slow_query_log = 1</div><div class="line">slow_query_log_file = slow.log</div><div class="line">log_queries_not_using_indexes = 1</div><div class="line">log_slow_admin_statements = 1</div><div class="line">log_slow_slave_statements = 1</div><div class="line">log_throttle_queries_not_using_indexes = 10</div><div class="line">expire_logs_days = 90</div><div class="line">long_query_time = 2</div><div class="line">min_examined_row_limit = 100</div><div class="line"><span class="comment">########replication settings########</span></div><div class="line">master_info_repository = TABLE</div><div class="line">relay_log_info_repository = TABLE</div><div class="line">log_bin = bin.log</div><div class="line">sync_binlog = 1</div><div class="line">gtid_mode = on</div><div class="line">enforce_gtid_consistency = 1</div><div class="line">log_slave_updates</div><div class="line">binlog_format = row </div><div class="line">relay_log = relay.log</div><div class="line">relay_log_recovery = 1</div><div class="line">binlog_gtid_simple_recovery = 1</div><div class="line">slave_skip_errors = ddl_exist_errors</div><div class="line"><span class="comment">########innodb settings########</span></div><div class="line">innodb_page_size = 8192</div><div class="line">innodb_buffer_pool_size = 6G</div><div class="line">innodb_buffer_pool_instances = 8</div><div class="line">innodb_buffer_pool_load_at_startup = 1</div><div class="line">innodb_buffer_pool_dump_at_shutdown = 1</div><div class="line">innodb_lru_scan_depth = 2000</div><div class="line">innodb_lock_wait_timeout = 5</div><div class="line">innodb_io_capacity = 4000</div><div class="line">innodb_io_capacity_max = 8000</div><div class="line">innodb_flush_method = O_DIRECT</div><div class="line">innodb_file_format = Barracuda</div><div class="line">innodb_file_format_max = Barracuda</div><div class="line">innodb_log_group_home_dir = /redolog/</div><div class="line">innodb_undo_directory = /undolog/</div><div class="line">innodb_undo_logs = 128</div><div class="line">innodb_undo_tablespaces = 3</div><div class="line">innodb_flush_neighbors = 1</div><div class="line">innodb_log_file_size = 4G</div><div class="line">innodb_log_buffer_size = 16777216</div><div class="line">innodb_purge_threads = 4</div><div class="line">innodb_large_prefix = 1</div><div class="line">innodb_thread_concurrency = 64</div><div class="line">innodb_print_all_deadlocks = 1</div><div class="line">innodb_strict_mode = 1</div><div class="line">innodb_sort_buffer_size = 67108864 </div><div class="line"><span class="comment">########semi sync replication settings########</span></div><div class="line">plugin_dir=/usr/<span class="built_in">local</span>/mysql/lib/plugin</div><div class="line">plugin_load = <span class="string">"rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so"</span></div><div class="line">loose_rpl_semi_sync_master_enabled = 1</div><div class="line">loose_rpl_semi_sync_slave_enabled = 1</div><div class="line">loose_rpl_semi_sync_master_timeout = 5000</div><div class="line"></div><div class="line">[mysqld-5.7]</div><div class="line">innodb_buffer_pool_dump_pct = 40</div><div class="line">innodb_page_cleaners = 4</div><div class="line">innodb_undo_log_truncate = 1</div><div class="line">innodb_max_undo_log_size = 2G</div><div class="line">innodb_purge_rseg_truncate_frequency = 128</div><div class="line">binlog_gtid_simple_recovery=1</div><div class="line">log_timestamps=system</div><div class="line">transaction_write_set_extraction=MURMUR32</div><div class="line">show_compatibility_56=on</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/11/10/2015-11-10-my-cnf-note/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-07-06T16:00:00.000Z"><a href="/2015/07/07/2015-07-07-iptables-notes/">2015-07-07</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/07/07/2015-07-07-iptables-notes/">iptables notes</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="链"><a href="#链" class="headerlink" title="链"></a>链</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">INPUT：位于filter表，匹配目的ip是本机的数据包</div><div class="line">FORWARD： 位于filter表，匹配穿越本机的数据包</div><div class="line">PREROUTING： 位于 nat 表，用于修改目的地址（DNAT）</div><div class="line">POSTROUTING：位于 nat 表，用于修改源地址（SNAT）</div><div class="line">OUTPUT：位于filter表，匹配源ip是本机的数据包</div></pre></td></tr></table></figure>
-<h4 id="清空"><a href="#清空" class="headerlink" title="清空"></a>清空</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">iptables -F 清空所有规则链(谨慎用，尤其是默认策略是DROP)</div><div class="line">iptables -X 删除特定手工设置的链</div><div class="line">iptables -Z 清空计数器</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/07/07/2015-07-07-iptables-notes/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-06-11T16:00:00.000Z"><a href="/2015/06/12/2015-06-12-mysql-partition/">2015-06-12</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/06/12/2015-06-12-mysql-partition/">mysql表分区基础</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h5 id="表结构文件"><a href="#表结构文件" class="headerlink" title="表结构文件"></a>表结构文件</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">.frm  表结构文件</div><div class="line">.par  partition申明一个分区表</div><div class="line">.ibd  数据索引文件   innodb引擎表</div><div class="line"></div><div class="line">.MYD  数据文件       myisam表数据文件</div><div class="line">.MYI  索引文件       myisam表索引文件</div><div class="line"></div><div class="line">Myisam 存储引擎，它默认使用独立表空间</div><div class="line">InnoDB 存储引擎，默认使用共享表空间,默认存到ibdata1</div><div class="line"></div><div class="line">查看表空间设置 </div><div class="line">SHOW VARIABLES LIKE <span class="string">'%innodb_file_per_table%'</span>;</div><div class="line">修改表空间设置(/ect/my.cnf)</div><div class="line">innodb_file_per_table=1</div><div class="line"></div><div class="line">查看mysql是否支持分区</div><div class="line">show plugins;</div><div class="line">or</div><div class="line">show variables like <span class="string">'%part%'</span>;</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/06/12/2015-06-12-mysql-partition/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-06-08T16:00:00.000Z"><a href="/2015/06/09/2015-06-09-mysql-stu01/">2015-06-09</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/06/09/2015-06-09-mysql-stu01/">mysql学习笔记之一</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="下载mysql安装包"><a href="#下载mysql安装包" class="headerlink" title="下载mysql安装包"></a>下载mysql安装包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">http://downloads.mysql.com/archives/community/</div><div class="line">RPM Bundle</div><div class="line">MySQL-client-5.6.16-1.el6.x86_64.rpm  客户端      </div><div class="line">MySQL-server-5.6.16-1.el6.x86_64.rpm  服务端</div><div class="line">MySQL-devel-5.6.16-1.el6.x86_64.rpm 库和头文件</div><div class="line">MySQL-shared-5.6.16-1.el6.x86_64.rpm 共享库</div><div class="line">MySQL-shared-compat-5.6.16-1.el6.x86_64.rpm 兼容包</div><div class="line">MySQL-embedded-5.6.16-1.el6.x86_64.rpm 嵌入式版本</div><div class="line">MySQL-test-5.6.16-1.el6.x86_64.rpm 测试包</div><div class="line">详细解释参考：http://dev.mysql.com/doc/refman/5.6/en/linux-installation-rpm.html</div><div class="line">默认库的作用</div><div class="line">Information_Schema提供了访问数据库元数据的方式。</div><div class="line">元数据是关于数据的数据，如数据库名或表名，列的数据类型，或访问权限等。有些时候用于表述该信息的其他术语包括“数据词典”和“系统目录”。</div><div class="line">Performance_Schema是MySQL较为底层的性能监控特性，提供一系列、具备自定义收集粒度的监控体系。</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/06/09/2015-06-09-mysql-stu01/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
 
 <nav id="pagination">
   
@@ -472,17 +473,19 @@
   
     <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
   
+    <li><a href="/categories/House/">House</a><small>1</small></li>
+  
     <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
   
     <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
   
-    <li><a href="/categories/Linux/">Linux</a><small>16</small></li>
+    <li><a href="/categories/Linux/">Linux</a><small>18</small></li>
   
     <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
   
     <li><a href="/categories/Python/">Python</a><small>2</small></li>
   
-    <li><a href="/categories/Redis/">Redis</a><small>2</small></li>
+    <li><a href="/categories/Redis/">Redis</a><small>3</small></li>
   
     <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
   
@@ -537,6 +540,8 @@
   
     <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
   
+    <li><a href="/tags/redis/">redis</a><small>2</small></li>
+  
     <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
   
     <li><a href="/tags/shell/">shell</a><small>1</small></li>
@@ -545,7 +550,11 @@
   
     <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
   
+    <li><a href="/tags/yum/">yum</a><small>1</small></li>
+  
     <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
+  
+    <li><a href="/tags/买房/">买房</a><small>1</small></li>
   
   </ul>
 </div>
@@ -555,7 +564,7 @@
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a> <a href="/tags/买房/" style="font-size: 10px;">买房</a>
   </div>
 </div>
 

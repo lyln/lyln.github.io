@@ -72,6 +72,156 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2015-11-09T16:00:00.000Z"><a href="/2015/11/10/2015-11-10-my-cnf-note/">2015-11-10</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/11/10/2015-11-10-my-cnf-note/">my.cnf配置文件注释</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h4 id="MySQL-5-6-amp-5-7最优配置文件模板"><a href="#MySQL-5-6-amp-5-7最优配置文件模板" class="headerlink" title="MySQL 5.6 &amp; 5.7最优配置文件模板"></a>MySQL 5.6 &amp; 5.7最优配置文件模板</h4><p><a href="http://www.innomysql.net/article/21730.html" target="_blank" rel="external">http://www.innomysql.net/article/21730.html</a></p>
+<h4 id="my-cnf配置文件注释"><a href="#my-cnf配置文件注释" class="headerlink" title="my.cnf配置文件注释"></a>my.cnf配置文件注释</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line">[client]</div><div class="line">user=root</div><div class="line">password=root</div><div class="line">default-character-set=utf8mb4</div><div class="line"></div><div class="line">[mysqld]</div><div class="line"><span class="comment">########basic settings########</span></div><div class="line">server-id = 11 </div><div class="line">port = 3306</div><div class="line">user = mysql</div><div class="line">bind_address = 10.166.224.32</div><div class="line">autocommit = 0</div><div class="line">character_set_server=utf8mb4</div><div class="line">skip_name_resolve = 1</div><div class="line">max_connections = 800</div><div class="line">max_connect_errors = 1000</div><div class="line">datadir = /data/mysql_data</div><div class="line">transaction_isolation = READ-COMMITTED</div><div class="line">explicit_defaults_for_timestamp = 1</div><div class="line">join_buffer_size = 134217728</div><div class="line">sort_buffer_size = 33554432</div><div class="line">tmp_table_size = 67108864</div><div class="line">tmpdir = /tmp</div><div class="line">max_allowed_packet = 16777216</div><div class="line">sql_mode = <span class="string">"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER"</span></div><div class="line">interactive_timeout = 1800</div><div class="line">wait_timeout = 1800</div><div class="line">read_buffer_size = 16777216</div><div class="line">read_rnd_buffer_size = 33554432</div><div class="line"><span class="comment">########log settings########</span></div><div class="line">log_error = error.log</div><div class="line">slow_query_log = 1</div><div class="line">slow_query_log_file = slow.log</div><div class="line">log_queries_not_using_indexes = 1</div><div class="line">log_slow_admin_statements = 1</div><div class="line">log_slow_slave_statements = 1</div><div class="line">log_throttle_queries_not_using_indexes = 10</div><div class="line">expire_logs_days = 90</div><div class="line">long_query_time = 2</div><div class="line">min_examined_row_limit = 100</div><div class="line"><span class="comment">########replication settings########</span></div><div class="line">master_info_repository = TABLE</div><div class="line">relay_log_info_repository = TABLE</div><div class="line">log_bin = bin.log</div><div class="line">sync_binlog = 1</div><div class="line">gtid_mode = on</div><div class="line">enforce_gtid_consistency = 1</div><div class="line">log_slave_updates</div><div class="line">binlog_format = row </div><div class="line">relay_log = relay.log</div><div class="line">relay_log_recovery = 1</div><div class="line">binlog_gtid_simple_recovery = 1</div><div class="line">slave_skip_errors = ddl_exist_errors</div><div class="line"><span class="comment">########innodb settings########</span></div><div class="line">innodb_page_size = 8192</div><div class="line">innodb_buffer_pool_size = 6G</div><div class="line">innodb_buffer_pool_instances = 8</div><div class="line">innodb_buffer_pool_load_at_startup = 1</div><div class="line">innodb_buffer_pool_dump_at_shutdown = 1</div><div class="line">innodb_lru_scan_depth = 2000</div><div class="line">innodb_lock_wait_timeout = 5</div><div class="line">innodb_io_capacity = 4000</div><div class="line">innodb_io_capacity_max = 8000</div><div class="line">innodb_flush_method = O_DIRECT</div><div class="line">innodb_file_format = Barracuda</div><div class="line">innodb_file_format_max = Barracuda</div><div class="line">innodb_log_group_home_dir = /redolog/</div><div class="line">innodb_undo_directory = /undolog/</div><div class="line">innodb_undo_logs = 128</div><div class="line">innodb_undo_tablespaces = 3</div><div class="line">innodb_flush_neighbors = 1</div><div class="line">innodb_log_file_size = 4G</div><div class="line">innodb_log_buffer_size = 16777216</div><div class="line">innodb_purge_threads = 4</div><div class="line">innodb_large_prefix = 1</div><div class="line">innodb_thread_concurrency = 64</div><div class="line">innodb_print_all_deadlocks = 1</div><div class="line">innodb_strict_mode = 1</div><div class="line">innodb_sort_buffer_size = 67108864 </div><div class="line"><span class="comment">########semi sync replication settings########</span></div><div class="line">plugin_dir=/usr/<span class="built_in">local</span>/mysql/lib/plugin</div><div class="line">plugin_load = <span class="string">"rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so"</span></div><div class="line">loose_rpl_semi_sync_master_enabled = 1</div><div class="line">loose_rpl_semi_sync_slave_enabled = 1</div><div class="line">loose_rpl_semi_sync_master_timeout = 5000</div><div class="line"></div><div class="line">[mysqld-5.7]</div><div class="line">innodb_buffer_pool_dump_pct = 40</div><div class="line">innodb_page_cleaners = 4</div><div class="line">innodb_undo_log_truncate = 1</div><div class="line">innodb_max_undo_log_size = 2G</div><div class="line">innodb_purge_rseg_truncate_frequency = 128</div><div class="line">binlog_gtid_simple_recovery=1</div><div class="line">log_timestamps=system</div><div class="line">transaction_write_set_extraction=MURMUR32</div><div class="line">show_compatibility_56=on</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2015/11/10/2015-11-10-my-cnf-note/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-07-06T16:00:00.000Z"><a href="/2015/07/07/2015-07-07-iptables-notes/">2015-07-07</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/07/07/2015-07-07-iptables-notes/">iptables notes</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h4 id="链"><a href="#链" class="headerlink" title="链"></a>链</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">INPUT：位于filter表，匹配目的ip是本机的数据包</div><div class="line">FORWARD： 位于filter表，匹配穿越本机的数据包</div><div class="line">PREROUTING： 位于 nat 表，用于修改目的地址（DNAT）</div><div class="line">POSTROUTING：位于 nat 表，用于修改源地址（SNAT）</div><div class="line">OUTPUT：位于filter表，匹配源ip是本机的数据包</div></pre></td></tr></table></figure>
+<h4 id="清空"><a href="#清空" class="headerlink" title="清空"></a>清空</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">iptables -F 清空所有规则链(谨慎用，尤其是默认策略是DROP)</div><div class="line">iptables -X 删除特定手工设置的链</div><div class="line">iptables -Z 清空计数器</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2015/07/07/2015-07-07-iptables-notes/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-06-11T16:00:00.000Z"><a href="/2015/06/12/2015-06-12-mysql-partition/">2015-06-12</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/06/12/2015-06-12-mysql-partition/">mysql表分区基础</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h5 id="表结构文件"><a href="#表结构文件" class="headerlink" title="表结构文件"></a>表结构文件</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">.frm  表结构文件</div><div class="line">.par  partition申明一个分区表</div><div class="line">.ibd  数据索引文件   innodb引擎表</div><div class="line"></div><div class="line">.MYD  数据文件       myisam表数据文件</div><div class="line">.MYI  索引文件       myisam表索引文件</div><div class="line"></div><div class="line">Myisam 存储引擎，它默认使用独立表空间</div><div class="line">InnoDB 存储引擎，默认使用共享表空间,默认存到ibdata1</div><div class="line"></div><div class="line">查看表空间设置 </div><div class="line">SHOW VARIABLES LIKE <span class="string">'%innodb_file_per_table%'</span>;</div><div class="line">修改表空间设置(/ect/my.cnf)</div><div class="line">innodb_file_per_table=1</div><div class="line"></div><div class="line">查看mysql是否支持分区</div><div class="line">show plugins;</div><div class="line">or</div><div class="line">show variables like <span class="string">'%part%'</span>;</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2015/06/12/2015-06-12-mysql-partition/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-06-08T16:00:00.000Z"><a href="/2015/06/09/2015-06-09-mysql-stu01/">2015-06-09</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/06/09/2015-06-09-mysql-stu01/">mysql学习笔记之一</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h4 id="下载mysql安装包"><a href="#下载mysql安装包" class="headerlink" title="下载mysql安装包"></a>下载mysql安装包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">http://downloads.mysql.com/archives/community/</div><div class="line">RPM Bundle</div><div class="line">MySQL-client-5.6.16-1.el6.x86_64.rpm  客户端      </div><div class="line">MySQL-server-5.6.16-1.el6.x86_64.rpm  服务端</div><div class="line">MySQL-devel-5.6.16-1.el6.x86_64.rpm 库和头文件</div><div class="line">MySQL-shared-5.6.16-1.el6.x86_64.rpm 共享库</div><div class="line">MySQL-shared-compat-5.6.16-1.el6.x86_64.rpm 兼容包</div><div class="line">MySQL-embedded-5.6.16-1.el6.x86_64.rpm 嵌入式版本</div><div class="line">MySQL-test-5.6.16-1.el6.x86_64.rpm 测试包</div><div class="line">详细解释参考：http://dev.mysql.com/doc/refman/5.6/en/linux-installation-rpm.html</div><div class="line">默认库的作用</div><div class="line">Information_Schema提供了访问数据库元数据的方式。</div><div class="line">元数据是关于数据的数据，如数据库名或表名，列的数据类型，或访问权限等。有些时候用于表述该信息的其他术语包括“数据词典”和“系统目录”。</div><div class="line">Performance_Schema是MySQL较为底层的性能监控特性，提供一系列、具备自定义收集粒度的监控体系。</div></pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2015/06/09/2015-06-09-mysql-stu01/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2015-06-04T16:00:00.000Z"><a href="/2015/06/05/2015-06-05-update-mysql/">2015-06-05</a></time>
       
       
@@ -321,89 +471,13 @@
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2014-08-14T16:00:00.000Z"><a href="/2014/08/15/2014-08-15-linux-common-info/">2014-08-15</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2014/08/15/2014-08-15-linux-common-info/">Linux常用查看命令</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="查看外网ip"><a href="#查看外网ip" class="headerlink" title="查看外网ip"></a>查看外网ip</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">curl ifconfig.me</div><div class="line">curl ifconfig.sh</div><div class="line">curl ifconfig.co</div></pre></td></tr></table></figure>
-<h4 id="查看编译参数"><a href="#查看编译参数" class="headerlink" title="查看编译参数"></a>查看编译参数</h4><p>1、nginx编译参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/nginx/sbin/nginx -V</div></pre></td></tr></table></figure></p>
-<p>2、apache编译参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /usr/local/apache2/build/config.nice</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2014/08/15/2014-08-15-linux-common-info/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2014-08-13T16:00:00.000Z"><a href="/2014/08/14/2014-08-14-git-notes/">2014-08-14</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2014/08/14/2014-08-14-git-notes/">Git常用命令</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h3 id="账户公钥与项目公钥区别"><a href="#账户公钥与项目公钥区别" class="headerlink" title="账户公钥与项目公钥区别"></a>账户公钥与项目公钥区别</h3><p>账户设置的 SSH 公钥是用来认证用户身份的，而项目部署公钥是用来授权项目的只读权限的。<br>账户 SSH 公钥是跟用户账户关联的公钥，一旦设置，就拥有账户下所有项目仓库的读写权限。<br>项目部署 SSH 公钥是跟项目关联的公钥，设置后有该项目的仓库的只读权限。</p>
-<p>账户公钥相当于设置管理员权限一样，你可以clone、pull、[push]<br>项目公钥，为了安全起见只允许，clone和pull</p>
-<h4 id="git添加空目录"><a href="#git添加空目录" class="headerlink" title="git添加空目录"></a>git添加空目录</h4><p>空目录empty中添加 .gitignore 文件<br>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2014/08/14/2014-08-14-git-notes/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
 
 <nav id="pagination">
   
     <a href="/page/3/" class="alignleft prev">上一页</a>
   
+  
+    <a href="/page/5/" class="alignright next">下一页</a>
   
   <div class="clearfix"></div>
 </nav></div></div>
@@ -422,17 +496,19 @@
   
     <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
   
+    <li><a href="/categories/House/">House</a><small>1</small></li>
+  
     <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
   
     <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
   
-    <li><a href="/categories/Linux/">Linux</a><small>16</small></li>
+    <li><a href="/categories/Linux/">Linux</a><small>18</small></li>
   
     <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
   
     <li><a href="/categories/Python/">Python</a><small>2</small></li>
   
-    <li><a href="/categories/Redis/">Redis</a><small>2</small></li>
+    <li><a href="/categories/Redis/">Redis</a><small>3</small></li>
   
     <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
   
@@ -487,6 +563,8 @@
   
     <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
   
+    <li><a href="/tags/redis/">redis</a><small>2</small></li>
+  
     <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
   
     <li><a href="/tags/shell/">shell</a><small>1</small></li>
@@ -495,7 +573,11 @@
   
     <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
   
+    <li><a href="/tags/yum/">yum</a><small>1</small></li>
+  
     <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
+  
+    <li><a href="/tags/买房/">买房</a><small>1</small></li>
   
   </ul>
 </div>
@@ -505,7 +587,7 @@
 <div class="widget tagcloud">
   <h3 class="title">标签云</h3>
   <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a>
+    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a> <a href="/tags/买房/" style="font-size: 10px;">买房</a>
   </div>
 </div>
 
