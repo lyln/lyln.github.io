@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "redis-migrate-tool使用详解"
-categories: Linux
+categories: Redis
 tags: redis
 date: 2019/08/25
 ---
