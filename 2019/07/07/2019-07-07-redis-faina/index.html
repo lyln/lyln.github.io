@@ -1,340 +1,563 @@
-<!DOCTYPE HTML>
-<html>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;light&#34;>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>redis性能分析工具redis-faina | 落影流年</title>
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
   <meta name="author" content="Lyln">
+  <meta name="keywords" content="">
+  <title>redis性能分析工具redis-faina - 落影流年</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
   
-  <meta name="description" content="redis-faina是一个通过解析redis的MONITOR命令，从而对redis实例进行性能诊断的工具。该工具使用虽然简单，但是功能还是很不错，对于定位线上redis性能问题，确实是一把利器。
-通过redis MONITOR命令保存文件用于分析12redis-cli -h 192.168.1.110 -p 6700 monitor |head -n 5000 &amp;gt; redis-6700.txtredis-cli -h 192.168.1.111 -p 6701 monitor |head -n 5000 &amp;gt; redis-6701.txt">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <meta property="og:title" content="redis性能分析工具redis-faina"/>
-  <meta property="og:site_name" content="落影流年"/>
-
-  
-    <meta property="og:image" content=""/>
+    
+    
+      
+      
+        
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/prism/1.21.0/themes/prism.min.css" />
+      
+    
   
 
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   
 
-  <script>
-	(function() {
-	    var OriginTitile = document.title, titleTime;
-	    document.addEventListener('visibilitychange', function() {
-		if (document.hidden) {
-		    document.title = '死鬼去哪里了！';
-		    clearTimeout(titleTime);
-		} else {
-		    document.title = '(つェ⊂)咦!又好了!';
-		    titleTime = setTimeout(function() {
-			document.title = OriginTitile;
-		    },2000);
-		}
-	    });
-	})();
- </script>
-</head>
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
 
 
-<!-- add Fork me on Github -->
 
-<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
 
 <body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">落影流年</a></h1>
-  <h2><a href="/"></a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">Home</a></li>
-    
-      <li><a href="/archives">Archives</a></li>
-    
-      <li><a href="/about">About</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div>
-</header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
-<article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2019-07-06T16:00:00.000Z"><a href="/2019/07/07/2019-07-07-redis-faina/">2019-07-07</a></time>
-      
-      
-  
-    <h1 class="title">redis性能分析工具redis-faina</h1>
-  
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>落影流年</strong>&nbsp;</a>
 
-    </header>
-    <div class="entry">
-      
-        <p>redis-faina是一个通过解析redis的MONITOR命令，从而对redis实例进行性能诊断的工具。<br>该工具使用虽然简单，但是功能还是很不错，对于定位线上redis性能问题，确实是一把利器。</p>
-<h3 id="通过redis-MONITOR命令保存文件用于分析"><a href="#通过redis-MONITOR命令保存文件用于分析" class="headerlink" title="通过redis MONITOR命令保存文件用于分析"></a>通过redis MONITOR命令保存文件用于分析</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">redis-cli -h 192.168.1.110 -p 6700 monitor |head -n 5000 &gt; redis-6700.txt</div><div class="line">redis-cli -h 192.168.1.111 -p 6701 monitor |head -n 5000 &gt; redis-6701.txt</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<h3 id="redis-faina读取MONITOR日志进行分析："><a href="#redis-faina读取MONITOR日志进行分析：" class="headerlink" title="redis-faina读取MONITOR日志进行分析："></a>redis-faina读取MONITOR日志进行分析：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line">./redis-faina.py ../redis_monitor_cmd/redis-6701.txt</div><div class="line">Overall Stats</div><div class="line">========================================</div><div class="line">Lines Processed  	5000   --- 总命令数</div><div class="line">Commands/Sec     	16348.00 --- QPS</div><div class="line"></div><div class="line">Top Prefixes  ---前缀最多的数据</div><div class="line">========================================</div><div class="line">dailyreward      	873	(17.46%)</div><div class="line">EXPEND_COIN_KEY  	483	(9.66%)</div><div class="line">exclusivereward  	474	(9.48%)</div><div class="line">user             	465	(9.30%)</div><div class="line">u                	217	(4.34%)</div><div class="line">redPackFeed      	206	(4.12%)</div><div class="line">vouchers         	131	(2.62%)</div><div class="line">newhandtask      	122	(2.44%)</div><div class="line"></div><div class="line">Top Keys ---使用最多的key</div><div class="line">========================================</div><div class="line">welfareRead                                    	1566	(31.32%)</div><div class="line">dailyreward:xx:xx  	72  	(1.44%)</div><div class="line">dailyreward:xx:xx  	72  	(1.44%)</div><div class="line">dailyreward:xx:xx  	72  	(1.44%)</div><div class="line">dailyreward:xx:xx  	64  	(1.28%)</div><div class="line">dailyreward:xx:xx   62  	(1.24%)</div><div class="line">dailyreward:xx:xx  	60  	(1.20%)</div><div class="line">dailyreward:xx:xx   59  	(1.18%)</div><div class="line"></div><div class="line">Top Commands ---使用的最多的命令</div><div class="line">========================================</div><div class="line">HGET      	4035	(80.70%)</div><div class="line">EXPIREAT  	416 	(8.32%)</div><div class="line">PING      	137 	(2.74%)</div><div class="line">HMGET     	115 	(2.30%)</div><div class="line">HINCRBY   	61  	(1.22%)</div><div class="line">LRANGE    	39  	(0.78%)</div><div class="line">EXPIRE    	35  	(0.70%)</div><div class="line">HSET      	30  	(0.60%)</div><div class="line"></div><div class="line">Command Time (microsecs) ---请求的响应时间分布</div><div class="line">========================================</div><div class="line">Median  	39.0</div><div class="line">75%     	77.0</div><div class="line">90%     	136.25</div><div class="line">99%     	326.0</div><div class="line"></div><div class="line">Heaviest Commands (microsecs) ---总体耗时最多的命令</div><div class="line">========================================</div><div class="line">HGET      	245469.75</div><div class="line">EXPIREAT  	25063.5</div><div class="line">PING      	9035.25</div><div class="line">HMGET     	8282.0</div><div class="line">HINCRBY   	4135.25</div><div class="line">EXPIRE    	2172.75</div><div class="line">LRANGE    	2000.75</div><div class="line">HSET      	1749.5</div><div class="line"></div><div class="line">Slowest Calls  --- 慢请求列表</div><div class="line">========================================</div><div class="line">620.0   	&quot;HGET&quot; &quot;welfareRead&quot; &quot;3&quot;</div><div class="line">571.75  	&quot;HGET&quot; &quot;welfareRead&quot; &quot;3&quot;</div><div class="line">531.5   	&quot;HGET&quot; &quot;x&quot;</div><div class="line">494.75  	&quot;HGET&quot; &quot;x&quot;</div><div class="line">489.0   	&quot;EXPIREAT&quot; &quot;x&quot;</div><div class="line">477.0   	&quot;HGET&quot; &quot;x&quot;</div><div class="line">471.0   	&quot;HGET&quot; &quot;x&quot;</div><div class="line">470.25  	&quot;HMGET&quot; &quot;x&quot;</div></pre></td></tr></table></figure>
-<h3 id="notes"><a href="#notes" class="headerlink" title="notes:"></a>notes:</h3><p>由于redis MONITOR输出的只有请求开始的时间，所以在一个非常繁忙的redis实例中，根据该请求的开始时间以及下一个请求的开始时间，可以大概估算出一个请求的执行时间。由此可以看出，redis-faina统计的时间并不是十分精确的，尤其在分析一个非常闲的redis实例时，分析的结果可能差的很多。</p>
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
 
-      
-    </div>
-    <footer>
-      
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-  
-  <div class="categories">
-    <a href="/categories/Redis/">Redis</a>
-  </div>
-
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
         
-  
-  <div class="tags">
-    <a href="/tags/redis/">redis</a>
-  </div>
-
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
         
-  <div class="addthis addthis_toolbox addthis_default_style">
-    
-      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-    
-    
-      <a class="addthis_button_tweet"></a>
-    
-    
-      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-    
-    
-      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
-    
-    <a class="addthis_counter addthis_pill_style"></a>
-  </div>
-  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
-
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-<section id="comment">
-  <h1 class="title">留言</h1>
-
-  
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-  
-</section>
-
-
-
-
-<!--
-<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
-<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
-</div>
-
-<script src="/js/backtop.js"></script>
--->
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="搜索">
-    <input type="hidden" name="q" value="site:www.wiredtiger.org">
-  </form>
-</div>
-
-  
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/categories/House/">House</a><small>1</small></li>
-  
-    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
-  
-    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/categories/Linux/">Linux</a><small>18</small></li>
-  
-    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
-  
-    <li><a href="/categories/Python/">Python</a><small>2</small></li>
-  
-    <li><a href="/categories/Redis/">Redis</a><small>3</small></li>
-  
-    <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">标签</h3>
-  <ul class="entry">
-  
-    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/tags/Linux/">Linux</a><small>4</small></li>
-  
-    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
-  
-    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
-  
-    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
-  
-    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
-  
-    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
-  
-    <li><a href="/tags/Python/">Python</a><small>1</small></li>
-  
-    <li><a href="/tags/Redis/">Redis</a><small>1</small></li>
-  
-    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
-  
-    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
-  
-    <li><a href="/tags/cat/">cat</a><small>1</small></li>
-  
-    <li><a href="/tags/elk/">elk</a><small>1</small></li>
-  
-    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
-  
-    <li><a href="/tags/git/">git</a><small>1</small></li>
-  
-    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
-  
-    <li><a href="/tags/https/">https</a><small>1</small></li>
-  
-    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
-  
-    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
-  
-    <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
-  
-    <li><a href="/tags/redis/">redis</a><small>2</small></li>
-  
-    <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
-  
-    <li><a href="/tags/shell/">shell</a><small>1</small></li>
-  
-    <li><a href="/tags/srs/">srs</a><small>1</small></li>
-  
-    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
-  
-    <li><a href="/tags/yum/">yum</a><small>1</small></li>
-  
-    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
-  
-    <li><a href="/tags/买房/">买房</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
-  <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a> <a href="/tags/买房/" style="font-size: 10px;">买房</a>
-  </div>
-</div>
-
-
-  
-  <div class="widget tag">
-    <h3 class="title">友情链接</h3>
-      <ul class="entry">
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
         
-          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
         
-          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
         
-          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
         
       </ul>
+    </div>
   </div>
+</nav>
 
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://static.zkqiang.cn/images/20190728030406.jpeg-slim') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
 
-</aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-</script>
-<div class="aligncenter">
+            
+              <div class="mt-3">
   
-  Copyright &copy; 2019  Lyln
-   | 
-  <span id="busuanzi_container_site_pv">
-    本站总访问量<span id="busuanzi_value_site_pv"></span>次
-  </span>
-  &nbsp <a href="/atom.xml">RSS</a>
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-07-07 00:00" pubdate>
+        2019年7月7日 凌晨
+      </time>
+    </span>
+  
 </div>
-<div class="clearfix"></div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      823 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">redis性能分析工具redis-faina</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>redis-faina是一个通过解析redis的MONITOR命令，从而对redis实例进行性能诊断的工具。<br>该工具使用虽然简单，但是功能还是很不错，对于定位线上redis性能问题，确实是一把利器。</p>
+<h3 id="通过redis-MONITOR命令保存文件用于分析"><a href="#通过redis-MONITOR命令保存文件用于分析" class="headerlink" title="通过redis MONITOR命令保存文件用于分析"></a>通过redis MONITOR命令保存文件用于分析</h3><pre class="language-none"><code class="language-none">redis-cli -h 192.168.1.110 -p 6700 monitor |head -n 5000 &gt; redis-6700.txt
+redis-cli -h 192.168.1.111 -p 6701 monitor |head -n 5000 &gt; redis-6701.txt</code></pre>
+<a id="more"></a>
+<h3 id="redis-faina读取MONITOR日志进行分析："><a href="#redis-faina读取MONITOR日志进行分析：" class="headerlink" title="redis-faina读取MONITOR日志进行分析："></a>redis-faina读取MONITOR日志进行分析：</h3><pre class="language-none"><code class="language-none">.&#x2F;redis-faina.py ..&#x2F;redis_monitor_cmd&#x2F;redis-6701.txt
+Overall Stats
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+Lines Processed  	5000   --- 总命令数
+Commands&#x2F;Sec     	16348.00 --- QPS
+
+Top Prefixes  ---前缀最多的数据
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+dailyreward      	873	(17.46%)
+EXPEND_COIN_KEY  	483	(9.66%)
+exclusivereward  	474	(9.48%)
+user             	465	(9.30%)
+u                	217	(4.34%)
+redPackFeed      	206	(4.12%)
+vouchers         	131	(2.62%)
+newhandtask      	122	(2.44%)
+
+Top Keys ---使用最多的key
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+welfareRead                                    	1566	(31.32%)
+dailyreward:xx:xx  	72  	(1.44%)
+dailyreward:xx:xx  	72  	(1.44%)
+dailyreward:xx:xx  	72  	(1.44%)
+dailyreward:xx:xx  	64  	(1.28%)
+dailyreward:xx:xx   62  	(1.24%)
+dailyreward:xx:xx  	60  	(1.20%)
+dailyreward:xx:xx   59  	(1.18%)
+
+Top Commands ---使用的最多的命令
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+HGET      	4035	(80.70%)
+EXPIREAT  	416 	(8.32%)
+PING      	137 	(2.74%)
+HMGET     	115 	(2.30%)
+HINCRBY   	61  	(1.22%)
+LRANGE    	39  	(0.78%)
+EXPIRE    	35  	(0.70%)
+HSET      	30  	(0.60%)
+
+Command Time (microsecs) ---请求的响应时间分布
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+Median  	39.0
+75%     	77.0
+90%     	136.25
+99%     	326.0
+
+Heaviest Commands (microsecs) ---总体耗时最多的命令
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+HGET      	245469.75
+EXPIREAT  	25063.5
+PING      	9035.25
+HMGET     	8282.0
+HINCRBY   	4135.25
+EXPIRE    	2172.75
+LRANGE    	2000.75
+HSET      	1749.5
+
+Slowest Calls  --- 慢请求列表
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+620.0   	&quot;HGET&quot; &quot;welfareRead&quot; &quot;3&quot;
+571.75  	&quot;HGET&quot; &quot;welfareRead&quot; &quot;3&quot;
+531.5   	&quot;HGET&quot; &quot;x&quot;
+494.75  	&quot;HGET&quot; &quot;x&quot;
+489.0   	&quot;EXPIREAT&quot; &quot;x&quot;
+477.0   	&quot;HGET&quot; &quot;x&quot;
+471.0   	&quot;HGET&quot; &quot;x&quot;
+470.25  	&quot;HMGET&quot; &quot;x&quot;</code></pre>
+<h3 id="notes"><a href="#notes" class="headerlink" title="notes:"></a>notes:</h3><p>大概能看出key的分布<br>由于redis MONITOR输出的只有请求开始的时间，所以在一个非常繁忙的redis实例中，根据该请求的开始时间以及下一个请求的开始时间，可以大概估算出一个请求的执行时间。由此可以看出，redis-faina统计的时间并不是十分精确的，尤其在分析一个非常闲的redis实例时，分析的结果可能差的很多。</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Redis/">Redis</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/redis-key%E5%88%86%E5%B8%83/">redis key分布</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/08/25/2019-08-25-redis-migrate-tool/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">redis-migrate-tool使用详解</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/05/15/2019-05-15-dianping-cat-install/">
+                        <span class="hidden-mobile">CAT集群部署</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://inshub.cn/" target="_blank" rel="nofollow noopener">
+        <span>lyln</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
 </footer>
-  <!--
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
--->
-<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
 
 
-<script type="text/javascript">
-var disqus_shortname = 'lyln';
-
-(function(){
-  var dsq = document.createElement('script');
-  dsq.type = 'text/javascript';
-  dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-}());
-</script>
+  
+    <script  src="/js/lazyload.js" ></script>
+  
 
 
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
+  
+    
+  
 
 
-<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
-<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
-</div>
 
-<script src="/js/backtop.js"></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "redis性能分析工具redis-faina&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
-
-<!-- click bloom -->
-<script type="application/x-javascript" src="/js/mo.min.js"></script>
-<script type="text/javascript" src="/js/loading.mo.js"></script> 

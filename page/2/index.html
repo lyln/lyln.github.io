@@ -1,702 +1,880 @@
-<!DOCTYPE HTML>
-<html>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;light&#34;>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>第 2 页 | 落影流年</title>
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
   <meta name="author" content="Lyln">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="">
+  <title>落影流年</title>
 
-  
-  <meta property="og:site_name" content="落影流年"/>
-
-  
-    <meta property="og:image" content=""/>
-  
-
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
-
-  <script>
-	(function() {
-	    var OriginTitile = document.title, titleTime;
-	    document.addEventListener('visibilitychange', function() {
-		if (document.hidden) {
-		    document.title = '死鬼去哪里了！';
-		    clearTimeout(titleTime);
-		} else {
-		    document.title = '(つェ⊂)咦!又好了!';
-		    titleTime = setTimeout(function() {
-			document.title = OriginTitile;
-		    },2000);
-		}
-	    });
-	})();
- </script>
-</head>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
 
-<!-- add Fork me on Github -->
 
-<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
 
 <body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">落影流年</a></h1>
-  <h2><a href="/"></a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">Home</a></li>
-    
-      <li><a href="/archives">Archives</a></li>
-    
-      <li><a href="/about">About</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div>
-</header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2017-08-02T16:00:00.000Z"><a href="/2017/08/03/2017-08-03-mysql-notes-update-privileges/">2017-08-03</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2017/08/03/2017-08-03-mysql-notes-update-privileges/">MySQL笔记之版本升级和权限管理</a></h1>
-  
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>落影流年</strong>&nbsp;</a>
 
-    </header>
-    <div class="entry">
-      
-        <h3 id="数据库升级"><a href="#数据库升级" class="headerlink" title="数据库升级"></a>数据库升级</h3><h4 id="1-环境说明："><a href="#1-环境说明：" class="headerlink" title="1. 环境说明："></a>1. <strong>环境说明：</strong></h4><p>一般说来，MySQL数据库的二进制数据文件，也就是<code>my.cnf</code>中的配置项<code>datadir</code>所在的位置，和我们MySQL应用程序安装的位置，是分开的，仅仅通过配置项告诉MySQL，数据库的数据存在<code>datadir</code>这个目录下。当程序和数据分离以后，方便我们对数据库应用程序做版本的升级或者回退。</p>
-<h4 id="环境举例："><a href="#环境举例：" class="headerlink" title="环境举例："></a><strong>环境举例：</strong></h4><ul>
-<li><p><em>MySQL安装目录：</em></p>
-<ul>
-<li><strong>MySQL 5.6.27:</strong> /usr/local/mysql-5.6.27-linux-glibc2.5-x86_64</li>
-<li><strong>MySQL 5.7.9 :</strong> /usr/local/mysql-5.7.9-linux-glibc2.5-x86_64</li>
-</ul>
-</li>
-<li><p><em>datadir目录：</em></p>
-<ul>
-<li>/data/mysq_data/</li>
-</ul>
-</li>
-<li><p><em>初始环境：</em></p>
-  <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">shell&gt; ll | grep mysql</div><div class="line">lrwxrwxrwx   1 root root    34 Nov 16 13:40 mysql -&gt; mysql-5.6.27-linux-glibc2.5-x86_64</div><div class="line">drwxr-xr-x  13 root mysql  4096 Nov 16 13:37 mysql-5.6.27-linux-glibc2.5-x86_64</div><div class="line">drwxr-xr-x   9 7161 wheel 4096 Oct 12 00:29 mysql-5.7.9-linux-glibc2.5-x86_64</div><div class="line"></div><div class="line">shell&gt; ll /data/mysql_data/</div><div class="line">total 13540</div><div class="line">-rw-rw---- 1 mysql mysql    65468 Nov 16 13:50 bin.000001</div><div class="line">-rw-rw---- 1 mysql mysql  1176237 Nov 16 13:50 bin.000002</div><div class="line">-rw-rw---- 1 mysql mysql       26 Nov 16 13:50 bin.index</div><div class="line">-rw-rw---- 1 mysql mysql     6882 Nov 16 13:50 error.log</div><div class="line">-rw-rw---- 1 mysql mysql      865 Nov 16 13:50 ib_buffer_pool</div><div class="line">-rw-rw---- 1 mysql mysql 12582912 Nov 16 13:50 ibdata1</div><div class="line">drwx------ 2 mysql mysql     4096 Nov 16 13:50 mysql</div><div class="line">drwx------ 2 mysql mysql     4096 Nov 16 13:50 performance_schema</div><div class="line">drwx------ 2 mysql mysql     4096 Nov 16 13:49 <span class="built_in">test</span></div></pre></td></tr></table></figure>
-</li>
-</ul>
-      
-    </div>
-    <footer>
-      
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <div class="alignleft">
-            <a href="/2017/08/03/2017-08-03-mysql-notes-update-privileges/#more" class="more-link">阅读全文</a>
-          </div>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
         
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
         
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2017-08-01T16:00:00.000Z"><a href="/2017/08/02/2017-08-02-mysql-notes-install/">2017-08-02</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2017/08/02/2017-08-02-mysql-notes-install/">MySQL笔记之介绍和安装</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h3 id="MySQL版本选择"><a href="#MySQL版本选择" class="headerlink" title="MySQL版本选择"></a>MySQL版本选择</h3><ol>
-<li>MySQL5.6以后的版本，推荐使用官方版本。</li>
-<li>Percona：在5.6版本以后，MySQL将Percon之前优化集成到官方版本中;</li>
-<li>MariaDB：无INNODB;且核心代码较老</li>
-<li>MySQL在5.6以后不断重构源码，安装包越来越大，功能和性能在持续改进</li>
-</ol>
-<h3 id="MySQL官方网站介绍"><a href="#MySQL官方网站介绍" class="headerlink" title="MySQL官方网站介绍"></a>MySQL官方网站介绍</h3><p>官方网站：<a href="http://www.mysql.com" target="_blank" rel="external">http://www.mysql.com</a></p>
-<ol>
-<li><p><strong>Developer Zone</strong>： MySQL开发工程师板块</p>
-<ul>
-<li>Articles： Oracle工程师自己的博客</li>
-<li>Plant MySQL： 和MySQL相关从业人员的博客</li>
-<li>Bugs：MySQL BugList</li>
-<li>Worklog：开发记录</li>
-<li>Labs：MySQL实验性项目</li>
-</ul>
-</li>
-<li><p><strong>Downloads</strong>：MySQL下载</p>
-<ul>
-<li>Enterprise：MySQL企业版本相关，略过</li>
-<li>Community：社区版，我们下载和使用社区版<ul>
-<li>MySQL Community Server：MySQL Server</li>
-<li>MySQL Fabric : 和管理相关的工具</li>
-<li>MySQL Router：路由中间件</li>
-<li>MySQL Utilities：MySQL应用程序包</li>
-<li>MySQL Workbench：官方图型化管理界面</li>
-<li>MySQL Proxy：MySQL代理。Alpha版本，不推荐</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>Documentation</strong>：MySQL文档</p>
-<ul>
-<li>官方文档 版面更改，下载离线文档在左侧Menu的下面<ul>
-<li><a href="http://downloads.mysql.com/docs/refman-5.7-en.a4.pdf" target="_blank" rel="external">PDF A4</a></li>
-<li><a href="http://downloads.mysql.com/docs/refman-5.7-en.epub" target="_blank" rel="external">EPUB</a></li>
-<li><a href="http://downloads.mysql.com/docs/refman-5.7-en.html-chapter.zip" target="_blank" rel="external">HTML</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-      
-    </div>
-    <footer>
-      
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
         
-          <div class="alignleft">
-            <a href="/2017/08/02/2017-08-02-mysql-notes-install/#more" class="more-link">阅读全文</a>
-          </div>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
         
         
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2017-04-21T16:00:00.000Z"><a href="/2017/04/22/2017-04-22-pyenv-manager-python-versions/">2017-04-22</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2017/04/22/2017-04-22-pyenv-manager-python-versions/">pyenv 管理 Python 版本 </a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>pyenv 是 Python 版本管理工具。 pyenv 可以改变全局的 Python 版本，安装多个版本的 Python， 设置目录级别的 Python 版本，还能创建和管理 virtual python environments 。所有的设置都是用户级别的操作，不需要 sudo 命令。</p>
-<p>pyenv 主要用来管理 Python 的版本，比如一个项目需要 Python 2.x ，一个项目需要 Python 3.x 。 而 virtualenv 主要用来管理 Python 包的依赖，不同项目需要依赖的包版本不同，则需要使用虚拟环境。</p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2017/04/22/2017-04-22-pyenv-manager-python-versions/#more" class="more-link">阅读全文</a>
-          </div>
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
         
         
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2017-02-26T16:00:00.000Z"><a href="/2017/02/27/2017-02-27-srs-manual-install/">2017-02-27</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2017/02/27/2017-02-27-srs-manual-install/">SRS使用小记</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h3 id="SRS简介"><a href="#SRS简介" class="headerlink" title="SRS简介"></a>SRS简介</h3><p>互联网上的两种主要的分发方式：HLS和RTMP。<br>SRS支持HLS/RTMP两种成熟而且广泛应用的流媒体分发方式。</p>
-<p>HLS指Apple的HLS(Http Live Streaming)，本身就是Live（直播）的，不过Vod（点播）也能支持。HLS是Apple平台的标准流媒体协议，和RTMP在PC上一样支持得天衣无缝。</p>
-<p>SRS直播将RTMP作为基本协议，以各种方式转码为RTMP后输入到SRS，输出为RTMP和HLS，支持广泛的客户端和各种应用场景。<br>SRS点播还在计划中，不会使用RTMP作为点播协议，点播还是文件为主，即HTTP协议为主。</p>
-<p>SRS编译配置参数详解<br><a href="https://github.com/ossrs/srs/wiki/v2_CN_Build" target="_blank" rel="external">https://github.com/ossrs/srs/wiki/v2_CN_Build</a><br>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2017/02/27/2017-02-27-srs-manual-install/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-12-02T16:00:00.000Z"><a href="/2016/12/03/2016-12-03-nginx-tomcat-https/">2016-12-03</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/12/03/2016-12-03-nginx-tomcat-https/">Nginx/Tomcat添加Https支持</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>安装certbot<br><a href="https://certbot.eff.org/" target="_blank" rel="external">https://certbot.eff.org/</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget https://dl.eff.org/certbot-auto</div><div class="line">chmod a+x certbot-auto</div><div class="line">nginx生成免费证书</div><div class="line">./certbot-auto certonly --webroot -w /web/ss-panel/public -d ss.wiredtiger.org</div><div class="line">nginx生成dhparams</div><div class="line">openssl dhparam -out /etc/ssl/certs/dhparams.pem 2048</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/12/03/2016-12-03-nginx-tomcat-https/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-11-28T16:00:00.000Z"><a href="/2016/11/29/2016-11-29-how-to-add-repo-nexus/">2016-11-29</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/11/29/2016-11-29-how-to-add-repo-nexus/">如何向Nexus上添加第三方Repository</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>登陆nexus</p>
-<p>点击Repositories-&gt;Proxy Repository，如下图：<br><img src="https://lyln.oss-cn-beijing.aliyuncs.com/wiredtiger/201611/nexus-1.png" alt="添加"></p>
-<p>在打开的页面中填入以下三项，然后点保存：<br><img src="https://lyln.oss-cn-beijing.aliyuncs.com/wiredtiger/201611/nexus-2.png" alt="保存"></p>
-<p>Repository ID：仓库的唯一标识;<br>Repository Name：仓库的名称，在nexus中用这个来显示某个仓库;<br>Remote Storage Location：仓库的远程地址;</p>
-<p>能看到在nexus中已经有了：<br><img src="https://lyln.oss-cn-beijing.aliyuncs.com/wiredtiger/201611/nexus-3.png" alt="查看"><br>注：Browse Remote这个tab如果没显示出来，刷新一下页面即可。<br>这个时候Browse Remote下已经能看到远程仓库的结构了，但Browser Storage下没有任何东西，说明构件还都没有从远程仓库拉取到nexus。</p>
-<p>选择Public Repositories（这个是nexus对外的仓库地址），把getui从右边添加到左边，表示把getui的仓库添加到Public group中，这样才能对外可见。<br><img src="https://lyln.oss-cn-beijing.aliyuncs.com/wiredtiger/201611/nexus-4.png" alt="设置权限"><br>注：Browse Remote这个tab如果没显示出来，刷新一下页面即可。</p>
-<p>在自己的maven项目中，配置依赖关系：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;com.gexin.platform&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;gexin-rp-sdk-http&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;4.0.1.7&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure></p>
-<p>这样，项目首先会去nexus检索看有没有这个jar，如果没有，再在nexus中检索有没有这个jar相关的仓库配置，发现有，然后会去getui这个仓库将所有相关jar拉取到nexus中，然后下载到你本机的.m2目录下。这时，可以看到nexus的getui这个仓库的Browser Storage下也有了这些jar：<br><img src="https://lyln.oss-cn-beijing.aliyuncs.com/wiredtiger/201611/nexus-4.png" alt="结果"></p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-11-06T16:00:00.000Z"><a href="/2016/11/07/2016-11-07-from-log-recover-data/">2016-11-07</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/11/07/2016-11-07-from-log-recover-data/">从日志恢复数据</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>循环遍历日志<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">stat.txt</div><div class="line">2016-11-09 00:00:23 &quot;deviceId&quot;:&quot;F9D4F729-7EE7-467F-BF3F-7D9D008EAB&quot; &quot;userId&quot;:&quot;20048603&quot;</div><div class="line">2016-11-09 00:00:29 &quot;deviceId&quot;:&quot;c96996784f99e106c32138940da2987c&quot; &quot;osSystem&quot;:&quot;Android6.0&quot; &quot;userId&quot;:&quot;20066192&quot;</div></pre></td></tr></table></figure></p>
-<p>过滤出无用字段(类似循环处理)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">grep -i -v &quot;osSystem&quot; stat1.txt &gt;&gt; stat11.txt</div><div class="line">grep -i  &quot;osSystem&quot; stat1.txt &gt;&gt; stat12.txt</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/11/07/2016-11-07-from-log-recover-data/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-10-24T16:00:00.000Z"><a href="/2016/10/25/2016-10-25-ffmpeg-build/">2016-10-25</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/10/25/2016-10-25-ffmpeg-build/">ffmpeg 编译安装</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>系统环境<br>Ubuntu 14.04.3 LTS<br>最近测试ffmpeg转推，使用老版本ffmpeg流转推一段时间会断掉，测试发现在新版本ffmpeg效果明显好很多。但是由于依赖众多(主要问题)，编译花费了好长时间。<br>记录下编译过程。</p>
-<p>ffmpeg 编译安装<br>依赖安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">apt-get install yasm pkg-config</div><div class="line">apt-get install gnutls-bin libgnutls-dev libass-dev libfdk-aac-dev </div><div class="line">libmp3lame0 libmp3lame-dev libpulse0 libpulse-dev libsoxr0 libsoxr-dev speex libspeex-dev libopus0 libopus-dev  libvpx1 libvpx-dev</div><div class="line">libwavpack1 libwavpack-dev </div><div class="line">apt-get install libx264-dev libxvidcore-dev libopencore-amrwb-dev libopencore-amrnb-dev libfaad-dev libfaac-dev libmp3lame-dev libtwolame-dev liba52-0.7.4-dev libcddb2-dev libcdaudio-dev libcdio-cdda-dev libvorbis-dev libopenjpeg-dev</div><div class="line">add-apt-repository ppa:sunab/kdenlive-release</div><div class="line">apt-get install libvidstab1.0 libvidstab-dev</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/10/25/2016-10-25-ffmpeg-build/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-10-16T16:00:00.000Z"><a href="/2016/10/17/2016-10-17-nginx-upstream/">2016-10-17</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/10/17/2016-10-17-nginx-upstream/">nginx 负载均衡配置</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>环境介绍<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">nginx version: nginx/1.10.1</div><div class="line">负载机器：192.168.1.168 80</div><div class="line">upstream机器：192.168.1.169:81</div><div class="line">192.168.1.170:81</div></pre></td></tr></table></figure></p>
-<p>nginx安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">wget http://nginx.org/keys/nginx_signing.key</div><div class="line">apt-key add nginx_signing.key</div><div class="line">#For Ubuntu 14.04 replace codename to trusty</div><div class="line">deb http://nginx.org/packages/ubuntu/ trusty nginx</div><div class="line">deb-src http://nginx.org/packages/ubuntu/ trusty nginx</div><div class="line">apt-get update</div><div class="line">apt-get install nginx</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/10/17/2016-10-17-nginx-upstream/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-10-13T16:00:00.000Z"><a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/">2016-10-14</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/">grafana influxdb构建自定义监控</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="grafana-安装"><a href="#grafana-安装" class="headerlink" title="grafana 安装"></a>grafana 安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ wget https://grafanarel.s3.amazonaws.com/builds/grafana_3.0.4-1464167696_amd64.deb</div><div class="line">$ sudo apt-get install -y adduser libfontconfig</div><div class="line">$ sudo dpkg -i grafana_3.0.4-1464167696_amd64.deb</div><div class="line">/etc/init.d/grafana-server start/stop/status</div><div class="line">http://192.168.1.158:3000/ admin/admin</div></pre></td></tr></table></figure>
-<h4 id="influxdb-安装"><a href="#influxdb-安装" class="headerlink" title="influxdb 安装"></a>influxdb 安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">wget https://dl.influxdata.com/influxdb/releases/influxdb_1.0.2_amd64.deb</div><div class="line">sudo dpkg -i influxdb_1.0.2_amd64.deb</div><div class="line">web访问influxdb http://192.168.1.158:8083/</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-
-<nav id="pagination">
-  
-    <a href="/" class="alignleft prev">上一页</a>
-  
-  
-    <a href="/page/3/" class="alignright next">下一页</a>
-  
-  <div class="clearfix"></div>
-</nav></div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="搜索">
-    <input type="hidden" name="q" value="site:www.wiredtiger.org">
-  </form>
-</div>
-
-  
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/categories/House/">House</a><small>1</small></li>
-  
-    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
-  
-    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/categories/Linux/">Linux</a><small>18</small></li>
-  
-    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
-  
-    <li><a href="/categories/Python/">Python</a><small>2</small></li>
-  
-    <li><a href="/categories/Redis/">Redis</a><small>3</small></li>
-  
-    <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">标签</h3>
-  <ul class="entry">
-  
-    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/tags/Linux/">Linux</a><small>4</small></li>
-  
-    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
-  
-    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
-  
-    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
-  
-    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
-  
-    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
-  
-    <li><a href="/tags/Python/">Python</a><small>1</small></li>
-  
-    <li><a href="/tags/Redis/">Redis</a><small>1</small></li>
-  
-    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
-  
-    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
-  
-    <li><a href="/tags/cat/">cat</a><small>1</small></li>
-  
-    <li><a href="/tags/elk/">elk</a><small>1</small></li>
-  
-    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
-  
-    <li><a href="/tags/git/">git</a><small>1</small></li>
-  
-    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
-  
-    <li><a href="/tags/https/">https</a><small>1</small></li>
-  
-    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
-  
-    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
-  
-    <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
-  
-    <li><a href="/tags/redis/">redis</a><small>2</small></li>
-  
-    <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
-  
-    <li><a href="/tags/shell/">shell</a><small>1</small></li>
-  
-    <li><a href="/tags/srs/">srs</a><small>1</small></li>
-  
-    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
-  
-    <li><a href="/tags/yum/">yum</a><small>1</small></li>
-  
-    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
-  
-    <li><a href="/tags/买房/">买房</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
-  <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a> <a href="/tags/买房/" style="font-size: 10px;">买房</a>
-  </div>
-</div>
-
-
-  
-  <div class="widget tag">
-    <h3 class="title">友情链接</h3>
-      <ul class="entry">
-        
-          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
-        
-          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
-        
-          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
         
       </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://static.zkqiang.cn/images/20200307203002.jpg-slim') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          style=margin-top:0>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2019/04/22/2019-04-22-elasticsearch-migration-notes/">elastic 迁移</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/22/2019-04-22-elasticsearch-migration-notes/">
+          
+          
+            
+          
+          es迁移测试工具对比
+
+
+测试工具
+是否成功
+环境搭建
+迁移版本是否支持
+工具地址
+
+
+
+
+Elasticsearch Migration
+是
+简单，二进制下载即可用
+5.0-&gt;5.0
+https://github.com/medcl/esm-abandoned
+
+
+logstash迁移
+是
+更新和es对应版本
+支持跨版本,logstash5.0
+
+
+
+Elasticsearch-Expor
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-22 00:00" pubdate>
+              2019-04-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/elastic/">elastic</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/elk/">elk</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2019/03/21/2019-03-21-redis-migrate-tool/">Redis 迁移工具</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/03/21/2019-03-21-redis-migrate-tool/">
+          
+          
+            
+          
+          rmt安装Redis-Migrate-Tool集群迁移工具，基于redis复制，快速，稳定。
+github地址
+cd redis-migrate-tool
+autoreconf -fvi
+.&#x2F;configure
+make
+src&#x2F;redis-migrate-tool -h
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-03-21 00:00" pubdate>
+              2019-03-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Redis/">Redis</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/rmt-RedisShake/">rmt RedisShake</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2019/01/15/2019-01-15-redis-cluster-install/">Redis Cluster集群搭建</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/01/15/2019-01-15-redis-cluster-install/">
+          
+          
+            
+          
+          redis cluster集群构建10.16.76.144 600010.16.76.144 600110.16.76.144 6002
+集群密码：abcdefg
+配置主节点10.16.76.144 6000
+cluster meet 10.16.76.144 6001
+cluster meet 10.16.76.144 6002
+
+cluster nodes
+cluster info
+
+分配槽位
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-01-15 00:00" pubdate>
+              2019-01-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Redis/">Redis</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Redis/">Redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2018/12/08/2018-08-15-k8s-common-use/">K8S常用命令</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/12/08/2018-08-15-k8s-common-use/">
+          
+          
+            
+          
+          获取集群状态
+kubectl get componentstatus 
+kubectl get cs
+
+获取node节点
+kubectl get nodes
+
+获取node节点ip
+kubectl get node -o json |grep  &quot;address&quot; |grep -v &#39;addresses&#39; |awk  &#39;&#123; print $2&#
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-12-08 00:00" pubdate>
+              2018-12-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/K8S/">K8S</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2018/10/18/2018-10-18-nexus-oss-install/">Nexus OSS私服的安装和迁移</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/10/18/2018-10-18-nexus-oss-install/">
+          
+          
+            
+          
+          Nexus私服Nexus常用功能就是：指定私服的中央地址、将自己的Maven项目指定到私服地址、从私服下载中央库的项目索引、从私服仓库下载依赖组件、将第三方项目jar上传到私服供其他项目组使用。
+一般用到的仓库种类是hosted、proxy。 
+
+Hosted代表宿主仓库，用来发布一些第三方不允许的组件，比如Oracle驱动、比如商业软件jar包。
+Proxy代表代理远程的仓库，最典型的就是Mav
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-10-18 00:00" pubdate>
+              2018-10-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Nexus/">Nexus</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2018/07/09/2018-07-09-yum-repo-make/">YUM源制作</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/07/09/2018-07-09-yum-repo-make/">
+          
+          
+            
+          
+          安装createrepoyum install createrepo
+
+创建本地仓库
+createrepo &#x2F;data&#x2F;repo&#x2F;RPMS
+添加rpm包，更新本地仓库
+createrepo --update &#x2F;data&#x2F;repo&#x2F;RPMS
+
+此命令只能下载主机未安装的包
+yum install 包名 --downloadonly --do
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-07-09 00:00" pubdate>
+              2018-07-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/yum/">yum</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2017/08/03/2017-08-03-mysql-notes-update-privileges/">MySQL笔记之版本升级和权限管理</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2017/08/03/2017-08-03-mysql-notes-update-privileges/">
+          
+          
+            
+          
+          数据库升级1. 环境说明：一般说来，MySQL数据库的二进制数据文件，也就是my.cnf中的配置项datadir所在的位置，和我们MySQL应用程序安装的位置，是分开的，仅仅通过配置项告诉MySQL，数据库的数据存在datadir这个目录下。当程序和数据分离以后，方便我们对数据库应用程序做版本的升级或者回退。
+环境举例：
+MySQL安装目录：
+
+MySQL 5.6.27: /usr/local/m
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-08-03 00:00" pubdate>
+              2017-08-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL%E7%AC%94%E8%AE%B0/">MySQL笔记</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2017/08/02/2017-08-02-mysql-notes-install/">MySQL笔记之介绍和安装</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2017/08/02/2017-08-02-mysql-notes-install/">
+          
+          
+            
+          
+          MySQL版本选择
+MySQL5.6以后的版本，推荐使用官方版本。
+Percona：在5.6版本以后，MySQL将Percon之前优化集成到官方版本中;
+MariaDB：无INNODB;且核心代码较老
+MySQL在5.6以后不断重构源码，安装包越来越大，功能和性能在持续改进
+
+MySQL官方网站介绍官方网站：http://www.mysql.com
+
+Developer Zone： MySQL开发
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-08-02 00:00" pubdate>
+              2017-08-02
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL%E7%AC%94%E8%AE%B0/">MySQL笔记</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2017/04/22/2017-04-22-pyenv-manager-python-versions/">pyenv 管理 Python 版本 </a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2017/04/22/2017-04-22-pyenv-manager-python-versions/">
+          
+          
+            
+          
+          pyenv 是 Python 版本管理工具。 pyenv 可以改变全局的 Python 版本，安装多个版本的 Python， 设置目录级别的 Python 版本，还能创建和管理 virtual python environments 。所有的设置都是用户级别的操作，不需要 sudo 命令。
+pyenv 主要用来管理 Python 的版本，比如一个项目需要 Python 2.x ，一个项目需要 Py
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-04-22 00:00" pubdate>
+              2017-04-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Python/">Python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/pyenv/">pyenv</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2017/02/27/2017-02-27-srs-manual-install/">SRS使用小记</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2017/02/27/2017-02-27-srs-manual-install/">
+          
+          
+            
+          
+          SRS简介互联网上的两种主要的分发方式：HLS和RTMP。SRS支持HLS/RTMP两种成熟而且广泛应用的流媒体分发方式。
+HLS指Apple的HLS(Http Live Streaming)，本身就是Live（直播）的，不过Vod（点播）也能支持。HLS是Apple平台的标准流媒体协议，和RTMP在PC上一样支持得天衣无缝。
+SRS直播将RTMP作为基本协议，以各种方式转码为RTMP后输入到SR
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2017-02-27 00:00" pubdate>
+              2017-02-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/srs/">srs</a>
+            
+          </div>
+        
+      </div>
+    </article>
   </div>
 
 
-</aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-</script>
-<div class="aligncenter">
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
   
-  Copyright &copy; 2019  Lyln
-   | 
-  <span id="busuanzi_container_site_pv">
-    本站总访问量<span id="busuanzi_value_site_pv"></span>次
-  </span>
-  &nbsp <a href="/atom.xml">RSS</a>
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="clearfix"></div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://inshub.cn/" target="_blank" rel="nofollow noopener">
+        <span>lyln</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
 </footer>
-  <!--
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
--->
-<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
 
 
-<script type="text/javascript">
-var disqus_shortname = 'lyln';
-
-(function(){
-  var dsq = document.createElement('script');
-  dsq.type = 'text/javascript';
-  dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-}());
-</script>
+  
+    <script  src="/js/lazyload.js" ></script>
+  
 
 
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
+  
+    
+  
 
 
-<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
-<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
-</div>
 
-<script src="/js/backtop.js"></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "一个记录成长的博客&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
-
-<!-- click bloom -->
-<script type="application/x-javascript" src="/js/mo.min.js"></script>
-<script type="text/javascript" src="/js/loading.mo.js"></script> 

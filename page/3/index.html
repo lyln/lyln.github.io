@@ -1,645 +1,834 @@
-<!DOCTYPE HTML>
-<html>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;light&#34;>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>第 3 页 | 落影流年</title>
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
   <meta name="author" content="Lyln">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="">
+  <title>落影流年</title>
 
-  
-  <meta property="og:site_name" content="落影流年"/>
-
-  
-    <meta property="og:image" content=""/>
-  
-
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
-
-  <script>
-	(function() {
-	    var OriginTitile = document.title, titleTime;
-	    document.addEventListener('visibilitychange', function() {
-		if (document.hidden) {
-		    document.title = '死鬼去哪里了！';
-		    clearTimeout(titleTime);
-		} else {
-		    document.title = '(つェ⊂)咦!又好了!';
-		    titleTime = setTimeout(function() {
-			document.title = OriginTitile;
-		    },2000);
-		}
-	    });
-	})();
- </script>
-</head>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
 
-<!-- add Fork me on Github -->
 
-<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
 
 <body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">落影流年</a></h1>
-  <h2><a href="/"></a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">Home</a></li>
-    
-      <li><a href="/archives">Archives</a></li>
-    
-      <li><a href="/about">About</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div>
-</header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-09-17T16:00:00.000Z"><a href="/2016/09/18/2016-09-18-percona-toolkit/">2016-09-18</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/09/18/2016-09-18-percona-toolkit/">Percona Toolkit使用小结</a></h1>
-  
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>落影流年</strong>&nbsp;</a>
 
-    </header>
-    <div class="entry">
-      
-        <p>Percona Toolkit安装<br>1、<a href="https://www.percona.com/downloads/percona-toolkit/" target="_blank" rel="external">下载包</a><br>2、安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">perl Makefile.PL</div><div class="line">make</div><div class="line">make test</div><div class="line">make install</div></pre></td></tr></table></figure></p>
-<h3 id="pt-online-schema-change-在线修改表结构"><a href="#pt-online-schema-change-在线修改表结构" class="headerlink" title="pt-online-schema-change 在线修改表结构"></a>pt-online-schema-change 在线修改表结构</h3><p><strong>修改表结构前，切记备份！！!</strong><br>pt-osc原理：<br>1、创建一个和要执行 alter 操作的表一样的新的空表结构(是alter之前的结构)<br>2、在新表执行alter table 语句（速度应该很快）<br>3、在原表中创建触发器3个触发器分别对应insert,update,delete操作<br>4、以一定块大小从原表拷贝数据到临时表，拷贝过程中通过原表上的触发器在原表进行的写操作都会更新到新建的临时表<br>5、Rename 原表到old表中，在把临时表Rename为原表<br>6、如果有参考该表的外键，根据alter-foreign-keys-method参数的值，检测外键相关的表，做相应设置的处理<br>7、默认最后将旧原表删除<br>
-      
-    </div>
-    <footer>
-      
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <div class="alignleft">
-            <a href="/2016/09/18/2016-09-18-percona-toolkit/#more" class="more-link">阅读全文</a>
-          </div>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
         
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
         
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-08-31T16:00:00.000Z"><a href="/2016/09/01/2016-09-01-smokeping-nginx-install/">2016-09-01</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/09/01/2016-09-01-smokeping-nginx-install/">Smokeping nginx 安装小记</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h3 id="nginx支持cgi"><a href="#nginx支持cgi" class="headerlink" title="nginx支持cgi"></a>nginx支持cgi</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">aptitude install fcgiwrap</div></pre></td></tr></table></figure>
-<p>nginx配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">smokeping.conf</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen      80;</div><div class="line">    server_name 192.168.1.158;</div><div class="line">    #charset koi8-r;</div><div class="line">    access_log  /data/log/nginx/smokeping_access.log ;</div><div class="line">    error_log  /data/log/nginx/smokeping_error.log;</div><div class="line">    root  /opt/smokeping;</div><div class="line">    index index.html index.htm index.php portal.php default.php;</div><div class="line">    #error_page  404              /404.html;</div><div class="line">    # redirect server error pages to the static page /50x.html</div><div class="line">    error_page   500 502 503 504  /50x.html;</div><div class="line">    location = /50x.html &#123;</div><div class="line">        root   /usr/share/nginx/html;</div><div class="line">    &#125;</div><div class="line">    # Include this file on your nginx.conf to support debian cgi-bin scripts using</div><div class="line">    # fcgiwrap</div><div class="line">    location ~ .*\.fcgi$ &#123; </div><div class="line">	# Disable gzip (it makes scripts feel slower since they have to complete</div><div class="line">	# before getting gzipped)</div><div class="line">	gzip off;</div><div class="line">	# Set the root to /usr/lib (inside this location this means that we are</div><div class="line">	# giving access to the files under /usr/lib/cgi-bin)</div><div class="line">	root  /opt/smokeping/htdocs;</div><div class="line">	# Fastcgi socket</div><div class="line">	fastcgi_pass  unix:/var/run/fcgiwrap.socket;</div><div class="line">	# Fastcgi parameters, include the standard ones</div><div class="line">	include /etc/nginx/fastcgi_params;</div><div class="line">	# Adjust non standard parameters (SCRIPT_FILENAME)</div><div class="line">	#fastcgi_param SCRIPT_FILENAME  /usr/lib$fastcgi_script_name;</div><div class="line">	fastcgi_param   SCRIPT_FILENAME /opt/smokeping/htdocs$fastcgi_script_name;</div><div class="line">    &#125;</div><div class="line">    # deny access to .htaccess files, if Apache&apos;s document root</div><div class="line">    location ~ /\.ht &#123;</div><div class="line">        deny  all;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
         
-          <div class="alignleft">
-            <a href="/2016/09/01/2016-09-01-smokeping-nginx-install/#more" class="more-link">阅读全文</a>
-          </div>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
         
         
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-08-14T16:00:00.000Z"><a href="/2016/08/15/2016-08-15-zabbix-manual-install/">2016-08-15</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/08/15/2016-08-15-zabbix-manual-install/">Zabbix 3.0 安装小记</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h3 id="zabbix-server部署"><a href="#zabbix-server部署" class="headerlink" title="zabbix_server部署"></a>zabbix_server部署</h3><p>1、Zabbix 3.0 for Ubuntu 14.04 LTS:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">wget http://repo.zabbix.com/zabbix/3.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_3.0-1+trusty_all.deb</div><div class="line">dpkg -i zabbix-release_3.0-1+trusty_all.deb</div><div class="line">apt-get update</div><div class="line">apt-get install zabbix-server-mysql zabbix-frontend-php #安装server和frontend</div><div class="line">apt-get install zabbix-agent #安装agent</div></pre></td></tr></table></figure></p>
-<p>2、初始化数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd /usr/share/doc/zabbix-server-mysql</div><div class="line">zcat create.sql.gz | mysql -uroot zabbix</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/08/15/2016-08-15-zabbix-manual-install/#more" class="more-link">阅读全文</a>
-          </div>
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
         
         
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-08-11T16:00:00.000Z"><a href="/2016/08/12/2016-08-12-supervisor/">2016-08-12</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/08/12/2016-08-12-supervisor/">Supervisor进程管理</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>Supervisor (<a href="http://supervisord.org" target="_blank" rel="external">http://supervisord.org</a>) 是一个用 Python 写的进程管理工具，可以很方便的用来启动、重启、关闭进程。</p>
-<h4 id="Supervisor安装"><a href="#Supervisor安装" class="headerlink" title="Supervisor安装"></a>Supervisor安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-get install supervisor</div></pre></td></tr></table></figure>
-<h4 id="Supervisor配置文件"><a href="#Supervisor配置文件" class="headerlink" title="Supervisor配置文件"></a>Supervisor配置文件</h4><p>默认配置文件/etc/supervisor/supervisord.conf<br>如过没有,生成默认配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">echo_supervisord_conf &gt; /etc/supervisor/supervisord.conf</div><div class="line">[supervisord] #supervisord本身的日志配置</div><div class="line">logfile=/var/log/supervisor/supervisord.log ;</div><div class="line">pidfile=/var/run/supervisord.pid ;</div></pre></td></tr></table></figure></p>
-<p>添加管理的java进程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">hello.conf</div><div class="line">[program:showchat]</div><div class="line">directory = /home/ljd/hello</div><div class="line">command = /usr/local/jdk/bin/java -Xmx512M -Xms512M -classpath hello.jar com.ljd.Hello</div><div class="line">autostart = true #子进程随supervisord启动而启动</div><div class="line">startsecs = 5 #进程启动后跑了几秒，才被认定为成功启动。默认1</div><div class="line">autorestart = true #子进程挂掉将被无条件重启</div><div class="line">numprocs=1 #启动线程数目</div><div class="line">user = rgbvr  #指定运行用户</div><div class="line">environment=CHAT_SETTING_HOME=/opt/hello/config #指定程序环境变量 </div><div class="line">stdout_logfile_maxbytes = 20MB</div><div class="line">stdout_logfile_backups = 20</div><div class="line">redirect_stderr = true</div><div class="line">stdout_logfile = /home/ljd/hello.log</div></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-08-10T16:00:00.000Z"><a href="/2016/08/11/2016-08-11-kafka-install-manual/">2016-08-11</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/08/11/2016-08-11-kafka-install-manual/">Kafka操作小结</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="Kafka操作小结"><a href="#Kafka操作小结" class="headerlink" title="Kafka操作小结"></a>Kafka操作小结</h4><p>kafka依赖zookeeper，所以要先安装zookeeper。</p>
-<p>下载安装包<br>省略，解压即可食用，方便快捷</p>
-<h4 id="zookeeper安装"><a href="#zookeeper安装" class="headerlink" title="zookeeper安装"></a>zookeeper安装</h4><p>1、zoo.cfg参数解释<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">dataDir：数据目录</div><div class="line">dataLogDir：日志目录</div><div class="line">clientPort：客户端连接端口</div><div class="line">tickTime：Zookeeper 服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个 tickTime 时间就会发送一个心跳。</div><div class="line">initLimit：Zookeeper的Leader 接受客户端（Follower）初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过 5个心跳的时间（也就是tickTime）长度后 Zookeeper 服务器还没有收到客户端的返回信息，那么表明这个客户端连接失败。总的时间长度就是 5*2000=10 秒</div><div class="line">syncLimit：表示 Leader 与 Follower 之间发送消息时请求和应答时间长度，最长不能超过多少个tickTime 的时间长度，总的时间长度就是 2*2000=4 秒。</div><div class="line">server.A=B：C：D：其中A 是一个数字，表示这个是第几号服务器；B 是这个服务器的 ip 地址；C 表示的是这个服务器与集群中的 Leader 服务器交换信息的端口；D 表示的是万一集群中的 Leader 服务器挂了，需要一个端口来重新进行选举，选出一个新的 Leader，而这个端口就是用来执行选举时服务器相互通信的端口。如果是伪集群的配置方式，由于 B 都是一样，所以不同的 Zookeeper 实例通信端口号不能一样，所以要给它们分配不同的端口号。</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/08/11/2016-08-11-kafka-install-manual/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-08-05T16:00:00.000Z"><a href="/2016/08/06/2016-08-06-discuz-install/">2016-08-06</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/08/06/2016-08-06-discuz-install/">Discuz! X3.2 安装问题小记</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>Discuz 安装本来很简单，但是由于不熟悉和本身代码的问题，花了快一天才解决。现在将问题罗列如下：</p>
-<h4 id="Can’t-connect-to-local-MySQL-server-through-socket"><a href="#Can’t-connect-to-local-MySQL-server-through-socket" class="headerlink" title="Can’t connect to local MySQL server through socket"></a>Can’t connect to local MySQL server through socket</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mysqli_connect() 不支持 advice_mysqli_connect</div><div class="line">Discuz 安装完成后，后台打开Ucenter出现404</div><div class="line">头像上传不能成功</div><div class="line">Can’t connect to <span class="built_in">local</span> MySQL server through socket</div><div class="line">指定host使用的socket，格式如下：</div><div class="line"><span class="variable">$dbhost</span> = ‘localhost:/temp/mysql.sock’;</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/08/06/2016-08-06-discuz-install/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-06-30T16:00:00.000Z"><a href="/2016/07/01/2016-07-01-anemometer-slow-log/">2016-07-01</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/07/01/2016-07-01-anemometer-slow-log/">Anemometer 展示示MySQL慢查询日志</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>安装部署<br>nginx,mysql,php环境可参考博客其他文章<br>Anemometer部署过程参考官网Quickstart</p>
-<p>问题小结<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">配置多个数据源，只是指定不同db即可。</div><div class="line"></div><div class="line"><span class="variable">$conf</span>[<span class="string">'datasources'</span>][<span class="string">'192.168.1.87'</span>] = array(</div><div class="line">        <span class="string">'host'</span>  =&gt; <span class="string">'192.168.1.87'</span>,</div><div class="line">        <span class="string">'port'</span>  =&gt; 3306,</div><div class="line">        <span class="string">'db'</span>    =&gt; <span class="string">'slow_query_log'</span>,</div><div class="line">        <span class="string">'user'</span>  =&gt; <span class="string">'ljd'</span>,</div><div class="line">        <span class="string">'password'</span> =&gt; <span class="string">'root123'</span>,</div><div class="line">        <span class="string">'tables'</span> =&gt; array(</div><div class="line">                <span class="string">'global_query_review'</span> =&gt; <span class="string">'fact'</span>,</div><div class="line">                <span class="string">'global_query_review_history'</span> =&gt; <span class="string">'dimension'</span></div><div class="line">        ),</div><div class="line">        <span class="string">'source_type'</span> =&gt; <span class="string">'slow_query_log'</span></div><div class="line">);</div><div class="line"><span class="variable">$conf</span>[<span class="string">'datasources'</span>][<span class="string">'online'</span>] = array(</div><div class="line">        <span class="string">'host'</span>  =&gt; <span class="string">'192.168.1.87'</span>,</div><div class="line">        <span class="string">'port'</span>  =&gt; 3306,</div><div class="line">        <span class="string">'db'</span>    =&gt; <span class="string">'slow_online'</span>,</div><div class="line">        <span class="string">'user'</span>  =&gt; <span class="string">'ljd'</span>,</div><div class="line">        <span class="string">'password'</span> =&gt; <span class="string">'root123'</span>,</div><div class="line">        <span class="string">'tables'</span> =&gt; array(</div><div class="line">                <span class="string">'global_query_review'</span> =&gt; <span class="string">'fact'</span>,</div><div class="line">                <span class="string">'global_query_review_history'</span> =&gt; <span class="string">'dimension'</span></div><div class="line">        ),</div><div class="line">        <span class="string">'source_type'</span> =&gt; <span class="string">'slow_query_log'</span></div><div class="line">);</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/07/01/2016-07-01-anemometer-slow-log/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2016-05-21T16:00:00.000Z"><a href="/2016/05/22/2016-05-22-shell-common-ops-01/">2016-05-22</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2016/05/22/2016-05-22-shell-common-ops-01/">Shell常用命令</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>1、防止rm,mv惨案，环境变量添加/etc/profile</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">alias rm=&apos;rm -i&apos;</div><div class="line">alias mv=&apos;mv -i&apos;</div><div class="line">alias vi=&apos;vim&apos;</div><div class="line">alias cp=&apos;cp -i&apos;</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2016/05/22/2016-05-22-shell-common-ops-01/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-11-20T16:00:00.000Z"><a href="/2015/11/21/2015-11-21-mysql-stu03/">2015-11-21</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/11/21/2015-11-21-mysql-stu03/">MySQL5.7模拟role，5.6添加审计功能,SSL连接，多实例</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="mysql5-7可以模拟role"><a href="#mysql5-7可以模拟role" class="headerlink" title="mysql5.7可以模拟role"></a>mysql5.7可以模拟role</h4><p>1、创建tom，junior_dba用户<br>2、将tom加入<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grant proxy on <span class="string">'junior_dba'</span>@<span class="string">'localhost'</span> to <span class="string">'tom'</span>@<span class="string">'localhost'</span>;</div></pre></td></tr></table></figure></p>
-<p>3、授予junior_dba权限后，tom将拥有和junior_dba相同的权限。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grant select on *.* to <span class="string">'junior_dba'</span>@<span class="string">'localhost'</span>;</div></pre></td></tr></table></figure></p>
-<p>4、登陆测试<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">show database;</div><div class="line">SELECT USER(), CURRENT_USER();</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/11/21/2015-11-21-mysql-stu03/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-11-15T16:00:00.000Z"><a href="/2015/11/16/2015-11-16-mysql-stu02/">2015-11-16</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/11/16/2015-11-16-mysql-stu02/">MySQL安装升级</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="mysql-dba应该关注的网站"><a href="#mysql-dba应该关注的网站" class="headerlink" title="mysql dba应该关注的网站"></a>mysql dba应该关注的网站</h4><p><a href="http://www.mysql.com/" target="_blank" rel="external">http://www.mysql.com/</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mysql包的生命周期 Milestone Release(MR)&gt;Release Candidate(RC) </div><div class="line">&gt;Generally Avaialble(GA)&gt;Archived Version</div></pre></td></tr></table></figure></p>
-<h4 id="为什么推荐选择MySQL官方版本"><a href="#为什么推荐选择MySQL官方版本" class="headerlink" title="为什么推荐选择MySQL官方版本"></a>为什么推荐选择MySQL官方版本</h4><p>Oracle MySQL，Percona, MariaDB,Drizzle 推荐级别由前到后。<br>Oracle MySQL 官方MysSQL数据库版本，mysql5.6后将Percona的优化集成到官方版本。<br>Percona 使用XtraDB引擎。<br>MariaDB 核心代码相对较老。<br>Drizzle 采用C++语言重构各个模块，它与MySQL不兼容。</p>
-<h4 id="MySQL版本的选择及注意"><a href="#MySQL版本的选择及注意" class="headerlink" title="MySQL版本的选择及注意"></a>MySQL版本的选择及注意</h4><p>推荐安装linux-generic，同时选择mysql5.6以上的版本。因为mysql5.6修复了5.5的好多bug。<br>线上使用注意从<a href="http://dev.mysql.com/downloads/mysql/" target="_blank" rel="external">http://dev.mysql.com/downloads/mysql/</a>下载并用md5sum校验文件的MD5值。</p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/11/16/2015-11-16-mysql-stu02/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-
-<nav id="pagination">
-  
-    <a href="/page/2/" class="alignleft prev">上一页</a>
-  
-  
-    <a href="/page/4/" class="alignright next">下一页</a>
-  
-  <div class="clearfix"></div>
-</nav></div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="搜索">
-    <input type="hidden" name="q" value="site:www.wiredtiger.org">
-  </form>
-</div>
-
-  
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/categories/House/">House</a><small>1</small></li>
-  
-    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
-  
-    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/categories/Linux/">Linux</a><small>18</small></li>
-  
-    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
-  
-    <li><a href="/categories/Python/">Python</a><small>2</small></li>
-  
-    <li><a href="/categories/Redis/">Redis</a><small>3</small></li>
-  
-    <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">标签</h3>
-  <ul class="entry">
-  
-    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/tags/Linux/">Linux</a><small>4</small></li>
-  
-    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
-  
-    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
-  
-    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
-  
-    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
-  
-    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
-  
-    <li><a href="/tags/Python/">Python</a><small>1</small></li>
-  
-    <li><a href="/tags/Redis/">Redis</a><small>1</small></li>
-  
-    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
-  
-    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
-  
-    <li><a href="/tags/cat/">cat</a><small>1</small></li>
-  
-    <li><a href="/tags/elk/">elk</a><small>1</small></li>
-  
-    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
-  
-    <li><a href="/tags/git/">git</a><small>1</small></li>
-  
-    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
-  
-    <li><a href="/tags/https/">https</a><small>1</small></li>
-  
-    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
-  
-    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
-  
-    <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
-  
-    <li><a href="/tags/redis/">redis</a><small>2</small></li>
-  
-    <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
-  
-    <li><a href="/tags/shell/">shell</a><small>1</small></li>
-  
-    <li><a href="/tags/srs/">srs</a><small>1</small></li>
-  
-    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
-  
-    <li><a href="/tags/yum/">yum</a><small>1</small></li>
-  
-    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
-  
-    <li><a href="/tags/买房/">买房</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
-  <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a> <a href="/tags/买房/" style="font-size: 10px;">买房</a>
-  </div>
-</div>
-
-
-  
-  <div class="widget tag">
-    <h3 class="title">友情链接</h3>
-      <ul class="entry">
-        
-          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
-        
-          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
-        
-          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
         
       </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://static.zkqiang.cn/images/20200307203002.jpg-slim') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          style=margin-top:0>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/12/03/2016-12-03-nginx-tomcat-https/">Nginx/Tomcat添加Https支持</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/12/03/2016-12-03-nginx-tomcat-https/">
+          
+          
+            
+          
+          安装certbothttps://certbot.eff.org/wget https:&#x2F;&#x2F;dl.eff.org&#x2F;certbot-auto
+chmod a+x certbot-auto
+nginx生成免费证书
+.&#x2F;certbot-auto certonly --webroot -w &#x2F;web&#x2F;ss-panel&#x2F;public -d
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-12-03 00:00" pubdate>
+              2016-12-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/https/">https</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/11/29/2016-11-29-how-to-add-repo-nexus/">如何向Nexus上添加第三方Repository</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/11/29/2016-11-29-how-to-add-repo-nexus/">
+          
+          
+            
+          
+          登陆nexus
+点击Repositories-&gt;Proxy Repository，如下图：
+在打开的页面中填入以下三项，然后点保存：
+Repository ID：仓库的唯一标识;Repository Name：仓库的名称，在nexus中用这个来显示某个仓库;Remote Storage Location：仓库的远程地址;
+能看到在nexus中已经有了：注：Browse Remote这个tab
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-11-29 00:00" pubdate>
+              2016-11-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Linux/">Linux</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/11/07/2016-11-07-from-log-recover-data/">从日志恢复数据</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/11/07/2016-11-07-from-log-recover-data/">
+          
+          
+            
+          
+          循环遍历日志stat.txt
+2016-11-09 00:00:23 &quot;deviceId&quot;:&quot;F9D4F729-7EE7-467F-BF3F-7D9D008EAB&quot; &quot;userId&quot;:&quot;20048603&quot;
+2016-11-09 00:00:29 &quot;deviceId&quot;:&quot;c96996784f
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-11-07 00:00" pubdate>
+              2016-11-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/shell/">shell</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/10/25/2016-10-25-ffmpeg-build/">ffmpeg 编译安装</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/10/25/2016-10-25-ffmpeg-build/">
+          
+          
+            
+          
+          系统环境Ubuntu 14.04.3 LTS最近测试ffmpeg转推，使用老版本ffmpeg流转推一段时间会断掉，测试发现在新版本ffmpeg效果明显好很多。但是由于依赖众多(主要问题)，编译花费了好长时间。记录下编译过程。
+ffmpeg 编译安装依赖安装apt-get install yasm pkg-config
+apt-get install gnutls-bin libgnutls-dev
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-10-25 00:00" pubdate>
+              2016-10-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ffmpeg/">ffmpeg</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/10/17/2016-10-17-nginx-upstream/">nginx 负载均衡配置</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/10/17/2016-10-17-nginx-upstream/">
+          
+          
+            
+          
+          环境介绍nginx version: nginx&#x2F;1.10.1
+负载机器：192.168.1.168 80
+upstream机器：192.168.1.169:81
+192.168.1.170:81nginx安装wget http:&#x2F;&#x2F;nginx.org&#x2F;keys&#x2F;nginx_signing.key
+apt-key add nginx_signing
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-10-17 00:00" pubdate>
+              2016-10-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/nginx/">nginx</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/">grafana influxdb构建自定义监控</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/">
+          
+          
+            
+          
+          grafana 安装$ wget https:&#x2F;&#x2F;grafanarel.s3.amazonaws.com&#x2F;builds&#x2F;grafana_3.0.4-1464167696_amd64.deb
+$ sudo apt-get install -y adduser libfontconfig
+$ sudo dpkg -i grafana_3.0.4-14641676
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-10-14 00:00" pubdate>
+              2016-10-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/grafana-influxdb/">grafana influxdb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/09/18/2016-09-18-percona-toolkit/">Percona Toolkit使用小结</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/09/18/2016-09-18-percona-toolkit/">
+          
+          
+            
+          
+          Percona Toolkit安装1、下载包2、安装perl Makefile.PL
+make
+make test
+make install
+pt-online-schema-change 在线修改表结构修改表结构前，切记备份！！!pt-osc原理：1、创建一个和要执行 alter 操作的表一样的新的空表结构(是alter之前的结构)2、在新表执行alter table 语句（速度应该很快）3、在
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-09-18 00:00" pubdate>
+              2016-09-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Percona-Toolkit/">Percona Toolkit</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/09/01/2016-09-01-smokeping-nginx-install/">Smokeping nginx 安装小记</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/09/01/2016-09-01-smokeping-nginx-install/">
+          
+          
+            
+          
+          nginx支持cgiaptitude install fcgiwrap
+nginx配置smokeping.conf
+
+server &#123;
+    listen      80;
+    server_name 192.168.1.158;
+    #charset koi8-r;
+    access_log  &#x2F;data&#x2F;log&#x2F;nginx&#x2F;smo
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-09-01 00:00" pubdate>
+              2016-09-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Smokeping/">Smokeping</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/08/15/2016-08-15-zabbix-manual-install/">Zabbix 3.0 安装小记</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/08/15/2016-08-15-zabbix-manual-install/">
+          
+          
+            
+          
+          zabbix_server部署1、Zabbix 3.0 for Ubuntu 14.04 LTS:wget http:&#x2F;&#x2F;repo.zabbix.com&#x2F;zabbix&#x2F;3.0&#x2F;ubuntu&#x2F;pool&#x2F;main&#x2F;z&#x2F;zabbix-release&#x2F;zabbix-release_3.0-1+trusty_
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-08-15 00:00" pubdate>
+              2016-08-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/zabbix/">zabbix</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/08/12/2016-08-12-supervisor/">Supervisor进程管理</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/08/12/2016-08-12-supervisor/">
+          
+          
+            
+          
+          Supervisor (http://supervisord.org) 是一个用 Python 写的进程管理工具，可以很方便的用来启动、重启、关闭进程。
+Supervisor安装apt-get install supervisor
+Supervisor配置文件默认配置文件/etc/supervisor/supervisord.conf如过没有,生成默认配置文件echo_supervisord_co
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-08-12 00:00" pubdate>
+              2016-08-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/supervisor/">supervisor</a>
+            
+          </div>
+        
+      </div>
+    </article>
   </div>
 
 
-</aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-</script>
-<div class="aligncenter">
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/2/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
   
-  Copyright &copy; 2019  Lyln
-   | 
-  <span id="busuanzi_container_site_pv">
-    本站总访问量<span id="busuanzi_value_site_pv"></span>次
-  </span>
-  &nbsp <a href="/atom.xml">RSS</a>
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="clearfix"></div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://inshub.cn/" target="_blank" rel="nofollow noopener">
+        <span>lyln</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
 </footer>
-  <!--
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
--->
-<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
 
 
-<script type="text/javascript">
-var disqus_shortname = 'lyln';
-
-(function(){
-  var dsq = document.createElement('script');
-  dsq.type = 'text/javascript';
-  dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-}());
-</script>
+  
+    <script  src="/js/lazyload.js" ></script>
+  
 
 
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
+  
+    
+  
 
 
-<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
-<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
-</div>
 
-<script src="/js/backtop.js"></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "一个记录成长的博客&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
-
-<!-- click bloom -->
-<script type="application/x-javascript" src="/js/mo.min.js"></script>
-<script type="text/javascript" src="/js/loading.mo.js"></script> 

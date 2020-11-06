@@ -1,104 +1,230 @@
-<!DOCTYPE HTML>
-<html>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;light&#34;>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>redis-migrate-tool使用详解 | 落影流年</title>
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
   <meta name="author" content="Lyln">
-  
-  <meta name="description" content="rmt介绍redis-migrate-tool 是维品会开源的一款redis数据迁移工具，基于redis复制，快速，稳定，github地址为：https://github.com/vipshop/redis-migrate-tool 。
+  <meta name="keywords" content="">
+  <title>redis-migrate-tool使用详解 - 落影流年</title>
 
-快速。
-多线程。
-基于redis复制。
-实时迁移。
-迁移过程中，源集群不影响对外提供服务。
-异构迁移。
-支持Twemproxy集群，redis cluster集群，rdb文件 和 aof文件。
-过滤功能。
-当目标集群是Twemproxy，数据会跳过Twemproxy直接导入到后端的redis。
-迁移状态显示。
-完善的数据抽样校验(-C redis_check)。
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
-划重点 实时迁移 迁移过程中，源集群不影响对外提供服务">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="redis-migrate-tool使用详解"/>
-  <meta property="og:site_name" content="落影流年"/>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
   
-    <meta property="og:image" content=""/>
+    
+    
+      
+      
+        
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/prism/1.21.0/themes/prism.min.css" />
+      
+    
   
 
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   
 
-  <script>
-	(function() {
-	    var OriginTitile = document.title, titleTime;
-	    document.addEventListener('visibilitychange', function() {
-		if (document.hidden) {
-		    document.title = '死鬼去哪里了！';
-		    clearTimeout(titleTime);
-		} else {
-		    document.title = '(つェ⊂)咦!又好了!';
-		    titleTime = setTimeout(function() {
-			document.title = OriginTitile;
-		    },2000);
-		}
-	    });
-	})();
- </script>
-</head>
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
 
 
-<!-- add Fork me on Github -->
 
-<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
 
 <body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">落影流年</a></h1>
-  <h2><a href="/"></a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">Home</a></li>
-    
-      <li><a href="/archives">Archives</a></li>
-    
-      <li><a href="/about">About</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>落影流年</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
 </nav>
-<div class="clearfix"></div>
-</header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
-<article class="post">
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://static.zkqiang.cn/images/20190728030406.jpeg-slim') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
   
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2019-08-24T16:00:00.000Z"><a href="/2019/08/25/2019-08-25-redis-migrate-tool/">2019-08-25</a></time>
-      
-      
   
-    <h1 class="title">redis-migrate-tool使用详解</h1>
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-08-25 00:00" pubdate>
+        2019年8月25日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.3k 字
+    </span>
   
 
-    </header>
-    <div class="entry">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
       
-        <h3 id="rmt介绍"><a href="#rmt介绍" class="headerlink" title="rmt介绍"></a>rmt介绍</h3><p>redis-migrate-tool 是维品会开源的一款redis数据迁移工具，基于redis复制，快速，稳定，github地址为：<a href="https://github.com/vipshop/redis-migrate-tool" target="_blank" rel="external">https://github.com/vipshop/redis-migrate-tool</a> 。</p>
+      
+      31
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">redis-migrate-tool使用详解</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h3 id="rmt介绍"><a href="#rmt介绍" class="headerlink" title="rmt介绍"></a>rmt介绍</h3><p>redis-migrate-tool 是维品会开源的一款redis数据迁移工具，基于redis复制，快速，稳定，github地址为：<a target="_blank" rel="noopener" href="https://github.com/vipshop/redis-migrate-tool">https://github.com/vipshop/redis-migrate-tool</a> 。</p>
 <ul>
 <li>快速。</li>
 <li>多线程。</li>
@@ -114,285 +240,429 @@
 </ul>
 <p>划重点 实时迁移 迁移过程中，源集群不影响对外提供服务<br><a id="more"></a></p>
 <h3 id="安装redis-migrate-tool"><a href="#安装redis-migrate-tool" class="headerlink" title="安装redis-migrate-tool"></a>安装redis-migrate-tool</h3><p>依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install automake libtool autoconf bzip2 git</div></pre></td></tr></table></figure>
-<p>构建<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ cd redis-migrate-tool</div><div class="line">$ autoreconf -fvi</div><div class="line">$ ./configure</div><div class="line">$ make</div><div class="line">$ src/redis-migrate-tool -h</div></pre></td></tr></table></figure></p>
+<pre class="language-none"><code class="language-none">yum -y install automake libtool autoconf bzip2 git</code></pre>
+<p>构建<br><pre class="language-none"><code class="language-none">$ cd redis-migrate-tool
+$ autoreconf -fvi
+$ .&#x2F;configure
+$ make
+$ src&#x2F;redis-migrate-tool -h</code></pre></p>
 <p>警告</p>
 <p>在运行工具之前，确保源redis所在的机器有足够的内存可以允许至少一个redis生成.rdb文件，如果源机器有大量足够的内存允许所有的redis生成.rdb，可以在配置文件rmt.conf设置source_safe: false。</p>
-<p>下列命令不支持传播给target redis组，因为这些命令下的keys可能交叉了不同的目标redis节点。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">RENAME,RENAMENX,RPOPLPUSH,BRPOPLPUSH,FLUSHALL,FLUSHDB,BITOP,MOVE,GEORADIUS,GEORADIUSBYMEMBE</div></pre></td></tr></table></figure></p>
-<h3 id="redis-migrate-tool-命令详解"><a href="#redis-migrate-tool-命令详解" class="headerlink" title="redis-migrate-tool 命令详解"></a>redis-migrate-tool 命令详解</h3><p>出现下列帮助说明表示安装成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">This is redis-migrate-tool-0.1.0</div><div class="line"></div><div class="line">Usage: redis-migrate-tool [-?hVdIn] [-v verbosity level] [-o output file]</div><div class="line">                  [-c conf file] [-C command]</div><div class="line">                  [-f source address] [-t target address]</div><div class="line">                  [-p pid file] [-m mbuf size] [-r target role]</div><div class="line">                  [-T thread number] [-b buffer size]</div><div class="line"></div><div class="line">Options:</div><div class="line">  -h, --help             : this help</div><div class="line">  -V, --version          : show version and exit</div><div class="line">  -d, --daemonize        : run as a daemon</div><div class="line">  -I, --information      : print some useful information</div><div class="line">  -n, --noreply          : don&apos;t receive the target redis reply</div><div class="line">  -v, --verbosity=N      : set logging level (default: 5, min: 0, max: 11)</div><div class="line">  -o, --output=S         : set logging file (default: stderr)</div><div class="line">  -c, --conf-file=S      : set configuration file (default: rmt.conf)</div><div class="line">  -p, --pid-file=S       : set pid file (default: off)</div><div class="line">  -m, --mbuf-size=N      : set mbuf size (default: 512)</div><div class="line">  -C, --command=S        : set command to execute (default: redis_migrate)</div><div class="line">  -r, --source-role=S    : set the source role (default: single, you can input: single, twemproxy or redis_cluster)</div><div class="line">  -R, --target-role=S    : set the target role (default: single, you can input: single, twemproxy or redis_cluster)</div><div class="line">  -T, --thread=N         : set how many threads to run the job(default: 4)</div><div class="line">  -b, --buffer=S         : set buffer size to run the job (default: 140720309534720 byte, unit:G/M/K)</div><div class="line">  -f, --from=S           : set source redis address (default: 127.0.0.1:6379)</div><div class="line">  -t, --to=S             : set target redis group address (default: 127.0.0.1:6380)</div><div class="line">  -s, --step=N           : set step (default: 1)</div><div class="line"></div><div class="line">Commands:</div><div class="line">    redis_migrate        : Migrate data from source group to target group.</div><div class="line">    redis_check          : Compare data between source group and target group. Default compare 1000 keys. You can set a key count behind.</div><div class="line">    redis_testinsert     : Just for test! Insert some string, list, set, zset and hash keys into the source redis group. Default 1000 keys. You can set key type and key count behind.</div></pre></td></tr></table></figure></p>
-<p>部分指令解析：</p>
+<p>下列命令不支持传播给target redis组，因为这些命令下的keys可能交叉了不同的目标redis节点。<br><pre class="language-none"><code class="language-none">RENAME,RENAMENX,RPOPLPUSH,BRPOPLPUSH,FLUSHALL,FLUSHDB,BITOP,MOVE,GEORADIUS,GEORADIUSBYMEMBE</code></pre></p>
+<h3 id="redis-migrate-tool-命令详解"><a href="#redis-migrate-tool-命令详解" class="headerlink" title="redis-migrate-tool 命令详解"></a>redis-migrate-tool 命令详解</h3><p>出现下列帮助说明表示安装成功<br><pre class="language-none"><code class="language-none">This is redis-migrate-tool-0.1.0
+
+Usage: redis-migrate-tool [-?hVdIn] [-v verbosity level] [-o output file]
+                  [-c conf file] [-C command]
+                  [-f source address] [-t target address]
+                  [-p pid file] [-m mbuf size] [-r target role]
+                  [-T thread number] [-b buffer size]
+
+Options:
+  -h, --help             : this help
+  -V, --version          : show version and exit
+  -d, --daemonize        : run as a daemon
+  -I, --information      : print some useful information
+  -n, --noreply          : don&#39;t receive the target redis reply
+  -v, --verbosity&#x3D;N      : set logging level (default: 5, min: 0, max: 11)
+  -o, --output&#x3D;S         : set logging file (default: stderr)
+  -c, --conf-file&#x3D;S      : set configuration file (default: rmt.conf)
+  -p, --pid-file&#x3D;S       : set pid file (default: off)
+  -m, --mbuf-size&#x3D;N      : set mbuf size (default: 512)
+  -C, --command&#x3D;S        : set command to execute (default: redis_migrate)
+  -r, --source-role&#x3D;S    : set the source role (default: single, you can input: single, twemproxy or redis_cluster)
+  -R, --target-role&#x3D;S    : set the target role (default: single, you can input: single, twemproxy or redis_cluster)
+  -T, --thread&#x3D;N         : set how many threads to run the job(default: 4)
+  -b, --buffer&#x3D;S         : set buffer size to run the job (default: 140720309534720 byte, unit:G&#x2F;M&#x2F;K)
+  -f, --from&#x3D;S           : set source redis address (default: 127.0.0.1:6379)
+  -t, --to&#x3D;S             : set target redis group address (default: 127.0.0.1:6380)
+  -s, --step&#x3D;N           : set step (default: 1)
+
+Commands:
+    redis_migrate        : Migrate data from source group to target group.
+    redis_check          : Compare data between source group and target group. Default compare 1000 keys. You can set a key count behind.
+    redis_testinsert     : Just for test! Insert some string, list, set, zset and hash keys into the source redis group. Default 1000 keys. You can set key type and key count behind.</code></pre><br>部分指令解析：</p>
 <p>-h, –help：帮助<br>-V, –version：显示版本<br>-d, –daemonize：后台进程运行<br>-I, –information：打印一些有用的信息，包括可以解析的指令（126个），不支持的指令（14个）等等<br>-v, –verbosity=N：设置日志等级。(默认: 5, 最低: 0, 最高: 11)<br>-o, –output=S：设置输出的日志文件<br>-c, –conf-file=S：设置配置文件。(默认: rmt.conf)<br>-C, –command=S：设置运行的指令(默认: redis_migrate ，迁移)。redis_check 比较源和目的，默认1000个样本key。redis_testinsert测试插入Keys，默认所有类型总共1000个。<br>-T, –thread=N：设置多少个线程用来运行工具。(默认: 4)</p>
 <ol>
-<li>运行迁移<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ src/redis-migrate-tool -c rmt.conf -o log -d</div></pre></td></tr></table></figure>
-</li>
+<li>运行迁移<pre class="language-none"><code class="language-none">$ src&#x2F;redis-migrate-tool -c rmt.conf -o log -d
+</code></pre>
+注意：-d指定为后台运行，如果再次运行可能需要杀死占用当前端口的进程。netstat -tnulp查看找到redis-migrate-tool的端口号，kill -9 [端口号]杀死再运行。</li>
 </ol>
-<p>注意：-d指定为后台运行，如果再次运行可能需要杀死占用当前端口的进程。netstat -tnulp查看找到redis-migrate-tool的端口号，kill -9 [端口号]杀死再运行。</p>
 <p>指定输出日志文件为log，可通过tail -200 log等查看日志。</p>
 <ol>
-<li>抽样检查<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ src/redis-migrate-tool -c rmt.conf -o log -C redis_check</div><div class="line">Check job is running...</div><div class="line"></div><div class="line">Checked keys: 1000</div><div class="line">Inconsistent value keys: 0</div><div class="line">Inconsistent expire keys : 0</div><div class="line">Other check error keys: 0</div><div class="line">Checked OK keys: 1000</div><div class="line"></div><div class="line">All keys checked OK!</div><div class="line">Check job finished, used 1.041s</div></pre></td></tr></table></figure>
+<li>抽样检查<pre class="language-none"><code class="language-none">$ src&#x2F;redis-migrate-tool -c rmt.conf -o log -C redis_check
+Check job is running...
+
+Checked keys: 1000
+Inconsistent value keys: 0
+Inconsistent expire keys : 0
+Other check error keys: 0
+Checked OK keys: 1000
+
+All keys checked OK!
+Check job finished, used 1.041s
+</code></pre>
+抽样检查源组和目标组的数据，默认为1000个。如果需要检查更多的数据，<pre class="language-none"><code class="language-none">$ src&#x2F;redis-migrate-tool -c rmt.conf -o log -C &quot;redis_check 200000&quot;
+Check job is running...
+
+Checked keys: 200000
+Inconsistent value keys: 0
+Inconsistent expire keys : 0
+Other check error keys: 0
+Checked OK keys: 200000
+
+All keys checked OK!
+Check job finished, used 11.962s</code></pre>
 </li>
 </ol>
-<p>抽样检查源组和目标组的数据，默认为1000个。如果需要检查更多的数据，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ src/redis-migrate-tool -c rmt.conf -o log -C &quot;redis_check 200000&quot;</div><div class="line">Check job is running...</div><div class="line"></div><div class="line">Checked keys: 200000</div><div class="line">Inconsistent value keys: 0</div><div class="line">Inconsistent expire keys : 0</div><div class="line">Other check error keys: 0</div><div class="line">Checked OK keys: 200000</div><div class="line"></div><div class="line">All keys checked OK!</div><div class="line">Check job finished, used 11.962s</div></pre></td></tr></table></figure></p>
 <h3 id="rmt-conf配置文件"><a href="#rmt-conf配置文件" class="headerlink" title="rmt.conf配置文件"></a>rmt.conf配置文件</h3><p>配置文件包含三部分：[source], [target] 和 [common]</p>
-<p>迁移工具的来源（source）可以是：单独的redis实例，twemproxy集群，redis cluster，rdb文件，aof文件。<br>迁移工具的目标（target）可以是：单独的redis实例，twemproxy集群，redis cluster，rdb文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">[source]/[target]：</div><div class="line"></div><div class="line">type：</div><div class="line">single：单独的redis实例</div><div class="line">twemproxy：twemproxy集群</div><div class="line">redis cluster：redis集群</div><div class="line">rdb file：.rdb文件</div><div class="line">aof file：.aof文件</div><div class="line">servers：redis地址组，如果type:twemproxy，则为twemproxy配置文件，如果type:rdb file，则为rdb文件名。</div><div class="line">redis_auth：连接redis服务的认证auth。</div><div class="line">timeout：读写redis服务的超时时间(ms)，默认为120000ms</div><div class="line">hash：哈希方法名。仅当type:twemproxy有效。可以为one_at_a_time、md5、crc16、crc32、crc32a、fnv1_64、fnv1a_64、fnv1_32、fnv1a_32、hsieh、murmur、jenkins。</div><div class="line">hash_tag：用来哈希的关键key的两个字符，例如&quot;&#123;&#125;&quot; 或 &quot;$$&quot;。仅当type:twemproxy有效。只要标签内的关键key是相同的，能够将不同的键映射到同一服务器。</div><div class="line">distribution：键的分布模式。仅当type:twemproxy有效。可以为 ketama、modula、random。</div><div class="line">[common]：</div><div class="line"></div><div class="line">listen：监听的地址和端口。默认为127.0.0.1:8888</div><div class="line">max_clients：可监听端口的最大连接数。默认为100</div><div class="line">threads：工具可用的最多线程数。默认为cpu内核数。</div><div class="line">step：解析请求的步数。默认为1，数字越大，迁移越快，需要越多的内存。</div><div class="line">mbuf_size：请求的缓存大小（M），默认为512M</div><div class="line">noreply：是否检查目标组的回复，默认为false</div><div class="line">source_safe：是否保护源组机器的内存安全。默认为true，工具将允许在源组的同一台机器同时只有一个redis生成.rdb。</div><div class="line">dir：工作目录。用来存储文件，例如rdb文件，默认为当前目录。</div><div class="line">filter：过滤不符合表达式的Key，默认为NULL，支持通配符为glob-style风格</div><div class="line">? ：1个任意字符。例如 h?llo 匹配 hello, hallo , hxllo</div><div class="line">* ：0个或多个任意字符。例如 h*llo 匹配 hllo ， heeeello</div><div class="line">[characters]：匹配任意一个方括号内的字符，比如[abc]，要么匹配a，要么匹配b，要么匹配c。例如 h[ae]llo 匹配 hello ， hallo, 但不匹配 hillo。</div><div class="line">[^character]：排除方括号内的字符。例如h[^e]llo 匹配 hallo, hbllo, ... 但不匹配 hello。</div><div class="line">[character-character]：表示2个字符范围内的都可以匹配，如[a-z]，[0-9]。例如h[a-b]llo 匹配 hallo 和 hbllo。</div><div class="line">\用来转移特殊字符。</div></pre></td></tr></table></figure></p>
-<p>更多例子见<br><a href="https://github.com/vipshop/redis-migrate-tool" target="_blank" rel="external">https://github.com/vipshop/redis-migrate-tool</a></p>
+<p>迁移工具的来源（source）可以是：单独的redis实例，twemproxy集群，redis cluster，rdb文件，aof文件。<br>迁移工具的目标（target）可以是：单独的redis实例，twemproxy集群，redis cluster，rdb文件。<br><pre class="language-none"><code class="language-none">[source]&#x2F;[target]：
+
+type：
+single：单独的redis实例
+twemproxy：twemproxy集群
+redis cluster：redis集群
+rdb file：.rdb文件
+aof file：.aof文件
+servers：redis地址组，如果type:twemproxy，则为twemproxy配置文件，如果type:rdb file，则为rdb文件名。
+redis_auth：连接redis服务的认证auth。
+timeout：读写redis服务的超时时间(ms)，默认为120000ms
+hash：哈希方法名。仅当type:twemproxy有效。可以为one_at_a_time、md5、crc16、crc32、crc32a、fnv1_64、fnv1a_64、fnv1_32、fnv1a_32、hsieh、murmur、jenkins。
+hash_tag：用来哈希的关键key的两个字符，例如&quot;&#123;&#125;&quot; 或 &quot;$$&quot;。仅当type:twemproxy有效。只要标签内的关键key是相同的，能够将不同的键映射到同一服务器。
+distribution：键的分布模式。仅当type:twemproxy有效。可以为 ketama、modula、random。
+[common]：
+
+listen：监听的地址和端口。默认为127.0.0.1:8888
+max_clients：可监听端口的最大连接数。默认为100
+threads：工具可用的最多线程数。默认为cpu内核数。
+step：解析请求的步数。默认为1，数字越大，迁移越快，需要越多的内存。
+mbuf_size：请求的缓存大小（M），默认为512M
+noreply：是否检查目标组的回复，默认为false
+source_safe：是否保护源组机器的内存安全。默认为true，工具将允许在源组的同一台机器同时只有一个redis生成.rdb。
+dir：工作目录。用来存储文件，例如rdb文件，默认为当前目录。
+filter：过滤不符合表达式的Key，默认为NULL，支持通配符为glob-style风格
+? ：1个任意字符。例如 h?llo 匹配 hello, hallo , hxllo
+* ：0个或多个任意字符。例如 h*llo 匹配 hllo ， heeeello
+[characters]：匹配任意一个方括号内的字符，比如[abc]，要么匹配a，要么匹配b，要么匹配c。例如 h[ae]llo 匹配 hello ， hallo, 但不匹配 hillo。
+[^character]：排除方括号内的字符。例如h[^e]llo 匹配 hallo, hbllo, ... 但不匹配 hello。
+[character-character]：表示2个字符范围内的都可以匹配，如[a-z]，[0-9]。例如h[a-b]llo 匹配 hallo 和 hbllo。
+\用来转移特殊字符。</code></pre><br>更多例子见<br><a target="_blank" rel="noopener" href="https://github.com/vipshop/redis-migrate-tool">https://github.com/vipshop/redis-migrate-tool</a></p>
 <h3 id="监听redis-migrate-tool"><a href="#监听redis-migrate-tool" class="headerlink" title="监听redis-migrate-tool"></a>监听redis-migrate-tool</h3><p>可以使用redis-cli连接工具，监听地址和端口设置在配置文件的[common]下的listen，默认为127.0.0.1:8888</p>
 <ol>
 <li><p>info指令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">$redis-cli -h 127.0.0.1 -p 8888</div><div class="line">127.0.0.1:8888&gt; info</div><div class="line"># Server</div><div class="line">version:0.1.0                                   # 工具的版本号</div><div class="line">os:Linux 2.6.32-573.12.1.el6.x86_64 x86_64      # 操作系统信息</div><div class="line">multiplexing_api:epoll                          # 多路复用接口</div><div class="line">gcc_version:4.4.7                               # gcc版本</div><div class="line">process_id:9199                                 # 工具的进程id</div><div class="line">tcp_port:8888                                   # 工具监听的tcp端口号</div><div class="line">uptime_in_seconds:1662                          # 工具运行的时间（秒）</div><div class="line">uptime_in_days:0                                # 工具运行的时间（天）</div><div class="line">config_file:/ect/rmt.conf                       # 工具运行的配置文件名称</div><div class="line"></div><div class="line"># Clients</div><div class="line">connected_clients:1                             # 当前连接的客户端数</div><div class="line">max_clients_limit:100                           # 客户端同时连接最大限制</div><div class="line">total_connections_received:3                    # 至今总共连接</div><div class="line"></div><div class="line"># Memory</div><div class="line">mem_allocator:jemalloc-4.0.4</div><div class="line"></div><div class="line"># Group</div><div class="line">source_nodes_count:32                          # 源redis组的节点数</div><div class="line">target_nodes_count:48                          # 目的redis组的节点数</div><div class="line"></div><div class="line"># Stats</div><div class="line">all_rdb_received:1                             # 是否已接收源redis组节点的所有.rdb文件</div><div class="line">all_rdb_parsed:1                               # 是否已解析源redis组节点的所有.rdb文件</div><div class="line">all_aof_loaded:0                               # 是否已加载源redis组节点的所有.aof文件</div><div class="line">rdb_received_count:32                          # 已接收的源redis组节点.rdb文件数</div><div class="line">rdb_parsed_count:32                            # 已解析的源redis组节点.rdb文件数</div><div class="line">aof_loaded_count:0                             # 已加载的源redis组节点.aof文件数</div><div class="line">total_msgs_recv:7753587                        # 从源组节点接收的所有消息数</div><div class="line">total_msgs_sent:7753587                        # 所有已发送目标节点并且收到的响应的消息数</div><div class="line">total_net_input_bytes:234636318                # 从源组接收的输入字节的总数</div><div class="line">total_net_output_bytes:255384129               # 已发送到目标组的输出字节的总数</div><div class="line">total_net_input_bytes_human:223.77M            # 同total_net_input_bytes，而是转换成人类可读的。</div><div class="line">total_net_output_bytes_human:243.55M           # 同total_net_output_bytes，而是转换成人类可读的。</div><div class="line">total_mbufs_inqueue:0                          # 来自源组的mbufs输入缓存的命令数据(不包括rdb数据)</div><div class="line">total_msgs_outqueue:0                          # 将被发送到目标组，和已被发送到目标，但正在等待响应的消息数</div></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">$redis-cli -h 127.0.0.1 -p 8888
+127.0.0.1:8888&gt; info
+# Server
+version:0.1.0                                   # 工具的版本号
+os:Linux 2.6.32-573.12.1.el6.x86_64 x86_64      # 操作系统信息
+multiplexing_api:epoll                          # 多路复用接口
+gcc_version:4.4.7                               # gcc版本
+process_id:9199                                 # 工具的进程id
+tcp_port:8888                                   # 工具监听的tcp端口号
+uptime_in_seconds:1662                          # 工具运行的时间（秒）
+uptime_in_days:0                                # 工具运行的时间（天）
+config_file:&#x2F;ect&#x2F;rmt.conf                       # 工具运行的配置文件名称
+
+# Clients
+connected_clients:1                             # 当前连接的客户端数
+max_clients_limit:100                           # 客户端同时连接最大限制
+total_connections_received:3                    # 至今总共连接
+
+# Memory
+mem_allocator:jemalloc-4.0.4
+
+# Group
+source_nodes_count:32                          # 源redis组的节点数
+target_nodes_count:48                          # 目的redis组的节点数
+
+# Stats
+all_rdb_received:1                             # 是否已接收源redis组节点的所有.rdb文件
+all_rdb_parsed:1                               # 是否已解析源redis组节点的所有.rdb文件
+all_aof_loaded:0                               # 是否已加载源redis组节点的所有.aof文件
+rdb_received_count:32                          # 已接收的源redis组节点.rdb文件数
+rdb_parsed_count:32                            # 已解析的源redis组节点.rdb文件数
+aof_loaded_count:0                             # 已加载的源redis组节点.aof文件数
+total_msgs_recv:7753587                        # 从源组节点接收的所有消息数
+total_msgs_sent:7753587                        # 所有已发送目标节点并且收到的响应的消息数
+total_net_input_bytes:234636318                # 从源组接收的输入字节的总数
+total_net_output_bytes:255384129               # 已发送到目标组的输出字节的总数
+total_net_input_bytes_human:223.77M            # 同total_net_input_bytes，而是转换成人类可读的。
+total_net_output_bytes_human:243.55M           # 同total_net_output_bytes，而是转换成人类可读的。
+total_mbufs_inqueue:0                          # 来自源组的mbufs输入缓存的命令数据(不包括rdb数据)
+total_msgs_outqueue:0                          # 将被发送到目标组，和已被发送到目标，但正在等待响应的消息数</code></pre>
 </li>
 <li><p>shutdown [seconds|asap]</p>
 </li>
 </ol>
 <p>执行指令后的行为：</p>
 <p>停止从源redis复制<br>尝试将工具中的缓存数据发送到目标redis<br>Redis-migrate-tool 停止，退出<br>参数：</p>
-<p>seconds：工具用于在退出之前将缓存的数据发送到目标redis的大多数时间。默认为10秒。<br>asap：不关心缓存的数据，立即退出。<br>例如，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ redis-cli -h 127.0.0.1 -p 8888</div><div class="line">127.0.0.1:8888&gt; shutdown 5</div><div class="line">OK</div><div class="line">(5.00s)</div></pre></td></tr></table></figure></p>
+<p>seconds：工具用于在退出之前将缓存的数据发送到目标redis的大多数时间。默认为10秒。<br>asap：不关心缓存的数据，立即退出。<br>例如，<br><pre class="language-none"><code class="language-none">$ redis-cli -h 127.0.0.1 -p 8888
+127.0.0.1:8888&gt; shutdown 5
+OK
+(5.00s)
+</code></pre></p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>不适用redis4.0.x及以上版本<br>当源中存在多库时，避免发生键值覆盖，最好换别的方式迁移<br>多源要不都不带密码，要不源是同一个密码，否则无法启动，在线变更密码可以通过config set requirepass [密码]</p>
 
-      
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Redis/">Redis</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/redis/">redis</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/10/27/2019-10-27-redis-cluster-install-manual/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Redis Cluster搭建、扩容、缩容</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/07/07/2019-07-07-redis-faina/">
+                        <span class="hidden-mobile">redis性能分析工具redis-faina</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
     </div>
-    <footer>
-      
-        
-  
-  <div class="categories">
-    <a href="/categories/Linux/">Linux</a>
-  </div>
-
-        
-  
-  <div class="tags">
-    <a href="/tags/redis/">redis</a>
-  </div>
-
-        
-  <div class="addthis addthis_toolbox addthis_default_style">
     
-      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-    
-    
-      <a class="addthis_button_tweet"></a>
-    
-    
-      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-    
-    
-      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
-    
-    <a class="addthis_counter addthis_pill_style"></a>
-  </div>
-  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
-
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-<section id="comment">
-  <h1 class="title">留言</h1>
-
-  
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-  
-</section>
-
-
-
-
-<!--
-<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
-<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
 </div>
 
-<script src="/js/backtop.js"></script>
--->
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="搜索">
-    <input type="hidden" name="q" value="site:www.wiredtiger.org">
-  </form>
-</div>
-
-  
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/categories/House/">House</a><small>1</small></li>
-  
-    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
-  
-    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/categories/Linux/">Linux</a><small>18</small></li>
-  
-    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
-  
-    <li><a href="/categories/Python/">Python</a><small>2</small></li>
-  
-    <li><a href="/categories/Redis/">Redis</a><small>3</small></li>
-  
-    <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">标签</h3>
-  <ul class="entry">
-  
-    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/tags/Linux/">Linux</a><small>4</small></li>
-  
-    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
-  
-    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
-  
-    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
-  
-    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
-  
-    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
-  
-    <li><a href="/tags/Python/">Python</a><small>1</small></li>
-  
-    <li><a href="/tags/Redis/">Redis</a><small>1</small></li>
-  
-    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
-  
-    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
-  
-    <li><a href="/tags/cat/">cat</a><small>1</small></li>
-  
-    <li><a href="/tags/elk/">elk</a><small>1</small></li>
-  
-    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
-  
-    <li><a href="/tags/git/">git</a><small>1</small></li>
-  
-    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
-  
-    <li><a href="/tags/https/">https</a><small>1</small></li>
-  
-    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
-  
-    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
-  
-    <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
-  
-    <li><a href="/tags/redis/">redis</a><small>2</small></li>
-  
-    <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
-  
-    <li><a href="/tags/shell/">shell</a><small>1</small></li>
-  
-    <li><a href="/tags/srs/">srs</a><small>1</small></li>
-  
-    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
-  
-    <li><a href="/tags/yum/">yum</a><small>1</small></li>
-  
-    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
-  
-    <li><a href="/tags/买房/">买房</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
-  <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a> <a href="/tags/买房/" style="font-size: 10px;">买房</a>
+      </div>
+    
   </div>
 </div>
 
+<!-- Custom -->
+
+
+    
+  </main>
 
   
-  <div class="widget tag">
-    <h3 class="title">友情链接</h3>
-      <ul class="entry">
-        
-          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
-        
-          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
-        
-          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
-        
-      </ul>
-  </div>
-
-
-</aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-</script>
-<div class="aligncenter">
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
   
-  Copyright &copy; 2019  Lyln
-   | 
-  <span id="busuanzi_container_site_pv">
-    本站总访问量<span id="busuanzi_value_site_pv"></span>次
-  </span>
-  &nbsp <a href="/atom.xml">RSS</a>
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="clearfix"></div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://inshub.cn/" target="_blank" rel="nofollow noopener">
+        <span>lyln</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
 </footer>
-  <!--
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
--->
-<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
 
 
-<script type="text/javascript">
-var disqus_shortname = 'lyln';
-
-(function(){
-  var dsq = document.createElement('script');
-  dsq.type = 'text/javascript';
-  dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-}());
-</script>
+  
+    <script  src="/js/lazyload.js" ></script>
+  
 
 
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
+  
+    
+  
 
 
-<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
-<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
-</div>
 
-<script src="/js/backtop.js"></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "redis-migrate-tool使用详解&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
-
-<!-- click bloom -->
-<script type="application/x-javascript" src="/js/mo.min.js"></script>
-<script type="text/javascript" src="/js/loading.mo.js"></script> 

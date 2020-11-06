@@ -1,118 +1,356 @@
-<!DOCTYPE HTML>
-<html>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;light&#34;>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>my.cnf配置文件注释 | 落影流年</title>
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
   <meta name="author" content="Lyln">
+  <meta name="keywords" content="">
+  <title>my.cnf配置文件注释 - 落影流年</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
   
-  <meta name="description" content="MySQL 5.6 &amp;amp; 5.7最优配置文件模板http://www.innomysql.net/article/21730.html
-my.cnf配置文件注释123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596[client]user=rootpassword=rootdefault-character-set=utf8mb4[mysqld]########basic settings########server-id = 11 port = 3306user = mysqlbind_address = 10.166.224.32autocommit = 0character_set_server=utf8mb4skip_name_resolve = 1max_connections = 800max_connect_errors = 1000datadir = /data/mysql_datatransaction_isolation = READ-COMMITTEDexplicit_defaults_for_timestamp = 1join_buffer_size = 134217728sort_buffer_size = 33554432tmp_table_size = 67108864tmpdir = /tmpmax_allowed_packet = 16777216sql_mode = &#34;STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER&#34;interactive_timeout = 1800wait_timeout = 1800read_buffer_size = 16777216read_rnd_buffer_size = 33554432########log settings########log_error = error.logslow_query_log = 1slow_query_log_file = slow.loglog_queries_not_using_indexes = 1log_slow_admin_statements = 1log_slow_slave_statements = 1log_throttle_queries_not_using_indexes = 10expire_logs_days = 90long_query_time = 2min_examined_row_limit = 100########replication settings########master_info_repository = TABLErelay_log_info_repository = TABLElog_bin = bin.logsync_binlog = 1gtid_mode = onenforce_gtid_consistency = 1log_slave_updatesbinlog_format = row relay_log = relay.logrelay_log_recovery = 1binlog_gtid_simple_recovery = 1slave_skip_errors = ddl_exist_errors########innodb settings########innodb_page_size = 8192innodb_buffer_pool_size = 6Ginnodb_buffer_pool_instances = 8innodb_buffer_pool_load_at_startup = 1innodb_buffer_pool_dump_at_shutdown = 1innodb_lru_scan_depth = 2000innodb_lock_wait_timeout = 5innodb_io_capacity = 4000innodb_io_capacity_max = 8000innodb_flush_method = O_DIRECTinnodb_file_format = Barracudainnodb_file_format_max = Barracudainnodb_log_group_home_dir = /redolog/innodb_undo_directory = /undolog/innodb_undo_logs = 128innodb_undo_tablespaces = 3innodb_flush_neighbors = 1innodb_log_file_size = 4Ginnodb_log_buffer_size = 16777216innodb_purge_threads = 4innodb_large_prefix = 1innodb_thread_concurrency = 64innodb_print_all_deadlocks = 1innodb_strict_mode = 1innodb_sort_buffer_size = 67108864 ########semi sync replication settings########plugin_dir=/usr/local/mysql/lib/pluginplugin_load = &#34;rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so&#34;loose_rpl_semi_sync_master_enabled = 1loose_rpl_semi_sync_slave_enabled = 1loose_rpl_semi_sync_master_timeout = 5000[mysqld-5.7]innodb_buffer_pool_dump_pct = 40innodb_page_cleaners = 4innodb_undo_log_truncate = 1innodb_max_undo_log_size = 2Ginnodb_purge_rseg_truncate_frequency = 128binlog_gtid_simple_recovery=1log_timestamps=systemtransaction_write_set_extraction=MURMUR32show_compatibility_56=on">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <meta property="og:title" content="my.cnf配置文件注释"/>
-  <meta property="og:site_name" content="落影流年"/>
-
-  
-    <meta property="og:image" content=""/>
+    
+    
+      
+      
+        
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/prism/1.21.0/themes/prism.min.css" />
+      
+    
   
 
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   
 
-  <script>
-	(function() {
-	    var OriginTitile = document.title, titleTime;
-	    document.addEventListener('visibilitychange', function() {
-		if (document.hidden) {
-		    document.title = '死鬼去哪里了！';
-		    clearTimeout(titleTime);
-		} else {
-		    document.title = '(つェ⊂)咦!又好了!';
-		    titleTime = setTimeout(function() {
-			document.title = OriginTitile;
-		    },2000);
-		}
-	    });
-	})();
- </script>
-</head>
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
 
 
-<!-- add Fork me on Github -->
 
-<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
 
 <body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">落影流年</a></h1>
-  <h2><a href="/"></a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">Home</a></li>
-    
-      <li><a href="/archives">Archives</a></li>
-    
-      <li><a href="/about">About</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>落影流年</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
 </nav>
-<div class="clearfix"></div>
-</header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
-<article class="post">
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://static.zkqiang.cn/images/20190728030406.jpeg-slim') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
   
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-11-09T16:00:00.000Z"><a href="/2015/11/10/2015-11-10-my-cnf-note/">2015-11-10</a></time>
-      
-      
   
-    <h1 class="title">my.cnf配置文件注释</h1>
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2015-11-10 00:00" pubdate>
+        2015年11月10日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.7k 字
+    </span>
   
 
-    </header>
-    <div class="entry">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
       
-        <h4 id="MySQL-5-6-amp-5-7最优配置文件模板"><a href="#MySQL-5-6-amp-5-7最优配置文件模板" class="headerlink" title="MySQL 5.6 &amp; 5.7最优配置文件模板"></a>MySQL 5.6 &amp; 5.7最优配置文件模板</h4><p><a href="http://www.innomysql.net/article/21730.html" target="_blank" rel="external">http://www.innomysql.net/article/21730.html</a></p>
-<h4 id="my-cnf配置文件注释"><a href="#my-cnf配置文件注释" class="headerlink" title="my.cnf配置文件注释"></a>my.cnf配置文件注释</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line">[client]</div><div class="line">user=root</div><div class="line">password=root</div><div class="line">default-character-set=utf8mb4</div><div class="line"></div><div class="line">[mysqld]</div><div class="line"><span class="comment">########basic settings########</span></div><div class="line">server-id = 11 </div><div class="line">port = 3306</div><div class="line">user = mysql</div><div class="line">bind_address = 10.166.224.32</div><div class="line">autocommit = 0</div><div class="line">character_set_server=utf8mb4</div><div class="line">skip_name_resolve = 1</div><div class="line">max_connections = 800</div><div class="line">max_connect_errors = 1000</div><div class="line">datadir = /data/mysql_data</div><div class="line">transaction_isolation = READ-COMMITTED</div><div class="line">explicit_defaults_for_timestamp = 1</div><div class="line">join_buffer_size = 134217728</div><div class="line">sort_buffer_size = 33554432</div><div class="line">tmp_table_size = 67108864</div><div class="line">tmpdir = /tmp</div><div class="line">max_allowed_packet = 16777216</div><div class="line">sql_mode = <span class="string">"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER"</span></div><div class="line">interactive_timeout = 1800</div><div class="line">wait_timeout = 1800</div><div class="line">read_buffer_size = 16777216</div><div class="line">read_rnd_buffer_size = 33554432</div><div class="line"><span class="comment">########log settings########</span></div><div class="line">log_error = error.log</div><div class="line">slow_query_log = 1</div><div class="line">slow_query_log_file = slow.log</div><div class="line">log_queries_not_using_indexes = 1</div><div class="line">log_slow_admin_statements = 1</div><div class="line">log_slow_slave_statements = 1</div><div class="line">log_throttle_queries_not_using_indexes = 10</div><div class="line">expire_logs_days = 90</div><div class="line">long_query_time = 2</div><div class="line">min_examined_row_limit = 100</div><div class="line"><span class="comment">########replication settings########</span></div><div class="line">master_info_repository = TABLE</div><div class="line">relay_log_info_repository = TABLE</div><div class="line">log_bin = bin.log</div><div class="line">sync_binlog = 1</div><div class="line">gtid_mode = on</div><div class="line">enforce_gtid_consistency = 1</div><div class="line">log_slave_updates</div><div class="line">binlog_format = row </div><div class="line">relay_log = relay.log</div><div class="line">relay_log_recovery = 1</div><div class="line">binlog_gtid_simple_recovery = 1</div><div class="line">slave_skip_errors = ddl_exist_errors</div><div class="line"><span class="comment">########innodb settings########</span></div><div class="line">innodb_page_size = 8192</div><div class="line">innodb_buffer_pool_size = 6G</div><div class="line">innodb_buffer_pool_instances = 8</div><div class="line">innodb_buffer_pool_load_at_startup = 1</div><div class="line">innodb_buffer_pool_dump_at_shutdown = 1</div><div class="line">innodb_lru_scan_depth = 2000</div><div class="line">innodb_lock_wait_timeout = 5</div><div class="line">innodb_io_capacity = 4000</div><div class="line">innodb_io_capacity_max = 8000</div><div class="line">innodb_flush_method = O_DIRECT</div><div class="line">innodb_file_format = Barracuda</div><div class="line">innodb_file_format_max = Barracuda</div><div class="line">innodb_log_group_home_dir = /redolog/</div><div class="line">innodb_undo_directory = /undolog/</div><div class="line">innodb_undo_logs = 128</div><div class="line">innodb_undo_tablespaces = 3</div><div class="line">innodb_flush_neighbors = 1</div><div class="line">innodb_log_file_size = 4G</div><div class="line">innodb_log_buffer_size = 16777216</div><div class="line">innodb_purge_threads = 4</div><div class="line">innodb_large_prefix = 1</div><div class="line">innodb_thread_concurrency = 64</div><div class="line">innodb_print_all_deadlocks = 1</div><div class="line">innodb_strict_mode = 1</div><div class="line">innodb_sort_buffer_size = 67108864 </div><div class="line"><span class="comment">########semi sync replication settings########</span></div><div class="line">plugin_dir=/usr/<span class="built_in">local</span>/mysql/lib/plugin</div><div class="line">plugin_load = <span class="string">"rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so"</span></div><div class="line">loose_rpl_semi_sync_master_enabled = 1</div><div class="line">loose_rpl_semi_sync_slave_enabled = 1</div><div class="line">loose_rpl_semi_sync_master_timeout = 5000</div><div class="line"></div><div class="line">[mysqld-5.7]</div><div class="line">innodb_buffer_pool_dump_pct = 40</div><div class="line">innodb_page_cleaners = 4</div><div class="line">innodb_undo_log_truncate = 1</div><div class="line">innodb_max_undo_log_size = 2G</div><div class="line">innodb_purge_rseg_truncate_frequency = 128</div><div class="line">binlog_gtid_simple_recovery=1</div><div class="line">log_timestamps=system</div><div class="line">transaction_write_set_extraction=MURMUR32</div><div class="line">show_compatibility_56=on</div></pre></td></tr></table></figure>
+      
+      36
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">my.cnf配置文件注释</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h4 id="MySQL-5-6-amp-5-7最优配置文件模板"><a href="#MySQL-5-6-amp-5-7最优配置文件模板" class="headerlink" title="MySQL 5.6 &amp; 5.7最优配置文件模板"></a>MySQL 5.6 &amp; 5.7最优配置文件模板</h4><p><a target="_blank" rel="noopener" href="http://www.innomysql.net/article/21730.html">http://www.innomysql.net/article/21730.html</a></p>
+<h4 id="my-cnf配置文件注释"><a href="#my-cnf配置文件注释" class="headerlink" title="my.cnf配置文件注释"></a>my.cnf配置文件注释</h4><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>client<span class="token punctuation">]</span>
+<span class="token assign-left variable">user</span><span class="token operator">=</span>root
+<span class="token assign-left variable">password</span><span class="token operator">=</span>root
+default-character-set<span class="token operator">=</span>utf8mb4
+
+<span class="token punctuation">[</span>mysqld<span class="token punctuation">]</span>
+<span class="token comment">########basic settings########</span>
+server-id <span class="token operator">=</span> <span class="token number">11</span> 
+port <span class="token operator">=</span> <span class="token number">3306</span>
+user <span class="token operator">=</span> mysql
+bind_address <span class="token operator">=</span> <span class="token number">10.166</span>.224.32
+autocommit <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token assign-left variable">character_set_server</span><span class="token operator">=</span>utf8mb4
+skip_name_resolve <span class="token operator">=</span> <span class="token number">1</span>
+max_connections <span class="token operator">=</span> <span class="token number">800</span>
+max_connect_errors <span class="token operator">=</span> <span class="token number">1000</span>
+datadir <span class="token operator">=</span> /data/mysql_data
+transaction_isolation <span class="token operator">=</span> READ-COMMITTED
+explicit_defaults_for_timestamp <span class="token operator">=</span> <span class="token number">1</span>
+join_buffer_size <span class="token operator">=</span> <span class="token number">134217728</span>
+sort_buffer_size <span class="token operator">=</span> <span class="token number">33554432</span>
+tmp_table_size <span class="token operator">=</span> <span class="token number">67108864</span>
+tmpdir <span class="token operator">=</span> /tmp
+max_allowed_packet <span class="token operator">=</span> <span class="token number">16777216</span>
+sql_mode <span class="token operator">=</span> <span class="token string">"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER"</span>
+interactive_timeout <span class="token operator">=</span> <span class="token number">1800</span>
+wait_timeout <span class="token operator">=</span> <span class="token number">1800</span>
+read_buffer_size <span class="token operator">=</span> <span class="token number">16777216</span>
+read_rnd_buffer_size <span class="token operator">=</span> <span class="token number">33554432</span>
+<span class="token comment">########log settings########</span>
+log_error <span class="token operator">=</span> error.log
+slow_query_log <span class="token operator">=</span> <span class="token number">1</span>
+slow_query_log_file <span class="token operator">=</span> slow.log
+log_queries_not_using_indexes <span class="token operator">=</span> <span class="token number">1</span>
+log_slow_admin_statements <span class="token operator">=</span> <span class="token number">1</span>
+log_slow_slave_statements <span class="token operator">=</span> <span class="token number">1</span>
+log_throttle_queries_not_using_indexes <span class="token operator">=</span> <span class="token number">10</span>
+expire_logs_days <span class="token operator">=</span> <span class="token number">90</span>
+long_query_time <span class="token operator">=</span> <span class="token number">2</span>
+min_examined_row_limit <span class="token operator">=</span> <span class="token number">100</span>
+<span class="token comment">########replication settings########</span>
+master_info_repository <span class="token operator">=</span> TABLE
+relay_log_info_repository <span class="token operator">=</span> TABLE
+log_bin <span class="token operator">=</span> bin.log
+sync_binlog <span class="token operator">=</span> <span class="token number">1</span>
+gtid_mode <span class="token operator">=</span> on
+enforce_gtid_consistency <span class="token operator">=</span> <span class="token number">1</span>
+log_slave_updates
+binlog_format <span class="token operator">=</span> row 
+relay_log <span class="token operator">=</span> relay.log
+relay_log_recovery <span class="token operator">=</span> <span class="token number">1</span>
+binlog_gtid_simple_recovery <span class="token operator">=</span> <span class="token number">1</span>
+slave_skip_errors <span class="token operator">=</span> ddl_exist_errors
+<span class="token comment">########innodb settings########</span>
+innodb_page_size <span class="token operator">=</span> <span class="token number">8192</span>
+innodb_buffer_pool_size <span class="token operator">=</span> 6G
+innodb_buffer_pool_instances <span class="token operator">=</span> <span class="token number">8</span>
+innodb_buffer_pool_load_at_startup <span class="token operator">=</span> <span class="token number">1</span>
+innodb_buffer_pool_dump_at_shutdown <span class="token operator">=</span> <span class="token number">1</span>
+innodb_lru_scan_depth <span class="token operator">=</span> <span class="token number">2000</span>
+innodb_lock_wait_timeout <span class="token operator">=</span> <span class="token number">5</span>
+innodb_io_capacity <span class="token operator">=</span> <span class="token number">4000</span>
+innodb_io_capacity_max <span class="token operator">=</span> <span class="token number">8000</span>
+innodb_flush_method <span class="token operator">=</span> O_DIRECT
+innodb_file_format <span class="token operator">=</span> Barracuda
+innodb_file_format_max <span class="token operator">=</span> Barracuda
+innodb_log_group_home_dir <span class="token operator">=</span> /redolog/
+innodb_undo_directory <span class="token operator">=</span> /undolog/
+innodb_undo_logs <span class="token operator">=</span> <span class="token number">128</span>
+innodb_undo_tablespaces <span class="token operator">=</span> <span class="token number">3</span>
+innodb_flush_neighbors <span class="token operator">=</span> <span class="token number">1</span>
+innodb_log_file_size <span class="token operator">=</span> 4G
+innodb_log_buffer_size <span class="token operator">=</span> <span class="token number">16777216</span>
+innodb_purge_threads <span class="token operator">=</span> <span class="token number">4</span>
+innodb_large_prefix <span class="token operator">=</span> <span class="token number">1</span>
+innodb_thread_concurrency <span class="token operator">=</span> <span class="token number">64</span>
+innodb_print_all_deadlocks <span class="token operator">=</span> <span class="token number">1</span>
+innodb_strict_mode <span class="token operator">=</span> <span class="token number">1</span>
+innodb_sort_buffer_size <span class="token operator">=</span> <span class="token number">67108864</span> 
+<span class="token comment">########semi sync replication settings########</span>
+<span class="token assign-left variable">plugin_dir</span><span class="token operator">=</span>/usr/local/mysql/lib/plugin
+plugin_load <span class="token operator">=</span> <span class="token string">"rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so"</span>
+loose_rpl_semi_sync_master_enabled <span class="token operator">=</span> <span class="token number">1</span>
+loose_rpl_semi_sync_slave_enabled <span class="token operator">=</span> <span class="token number">1</span>
+loose_rpl_semi_sync_master_timeout <span class="token operator">=</span> <span class="token number">5000</span>
+
+<span class="token punctuation">[</span>mysqld-5.7<span class="token punctuation">]</span>
+innodb_buffer_pool_dump_pct <span class="token operator">=</span> <span class="token number">40</span>
+innodb_page_cleaners <span class="token operator">=</span> <span class="token number">4</span>
+innodb_undo_log_truncate <span class="token operator">=</span> <span class="token number">1</span>
+innodb_max_undo_log_size <span class="token operator">=</span> 2G
+innodb_purge_rseg_truncate_frequency <span class="token operator">=</span> <span class="token number">128</span>
+<span class="token assign-left variable">binlog_gtid_simple_recovery</span><span class="token operator">=</span><span class="token number">1</span>
+<span class="token assign-left variable">log_timestamps</span><span class="token operator">=</span>system
+<span class="token assign-left variable">transaction_write_set_extraction</span><span class="token operator">=</span>MURMUR32
+<span class="token assign-left variable">show_compatibility_56</span><span class="token operator">=</span>on</code></pre>
 <a id="more"></a>
-<h4 id="注释："><a href="#注释：" class="headerlink" title="注释："></a>注释：</h4><p>1、server-id = n  给服务器分配一个独一无二的ID编号;n的取值范围是1~2的32次方。<br><br><a href="http://blogread.cn/it/article/2354" target="_blank" rel="external">http://blogread.cn/it/article/2354</a><br><a href="http://www.mysqlsystems.com/2010/06/dba-job-experience-two.html" target="_blank" rel="external">http://www.mysqlsystems.com/2010/06/dba-job-experience-two.html</a></p>
-<p>2、autocommit = 0  如果设置成0，你必须commit去提交事务。<br><a href="http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_autocommit" target="_blank" rel="external">http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_autocommit</a></p>
-<p>3、字符设定<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[mysqld]</div><div class="line">character-set-server=utf8mb4</div><div class="line">collation-server=utf8mb4_general_ci</div><div class="line">[clent]</div><div class="line">default-character-set=utf8mb4</div></pre></td></tr></table></figure></p>
+<h4 id="注释："><a href="#注释：" class="headerlink" title="注释："></a>注释：</h4><p>1、server-id = n  给服务器分配一个独一无二的ID编号;n的取值范围是1~2的32次方。<br><br><a target="_blank" rel="noopener" href="http://blogread.cn/it/article/2354">http://blogread.cn/it/article/2354</a><br><a target="_blank" rel="noopener" href="http://www.mysqlsystems.com/2010/06/dba-job-experience-two.html">http://www.mysqlsystems.com/2010/06/dba-job-experience-two.html</a></p>
+<p>2、autocommit = 0  如果设置成0，你必须commit去提交事务。<br><a target="_blank" rel="noopener" href="http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_autocommit">http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_autocommit</a></p>
+<p>3、字符设定<br><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>mysqld<span class="token punctuation">]</span>
+character-set-server<span class="token operator">=</span>utf8mb4
+collation-server<span class="token operator">=</span>utf8mb4_general_ci
+<span class="token punctuation">[</span>clent<span class="token punctuation">]</span>
+default-character-set<span class="token operator">=</span>utf8mb4</code></pre></p>
 <p>4、skip_name_resolve=1<br>禁止MySQL对外部连接进行DNS解析，使用这一选项可以消除MySQL进行DNS解析的时间。但需要注意，如果开启该选项，<br>则所有远程主机连接授权都要使用IP地址方式，否则MySQL将无法正常处理连接请求。</p>
 <p>5、max_connections<br>一般设置800-100，max_used_connections一般不做设置。<br>max_used_connections / max_connections * 100% （理想值≈ 85%） </p>
-<p>6、max_connect_errors = 1000<br>max_connect_errors是一个MySQL中与安全有关的计数器值，它负责阻止过多尝试失败的客户端以防止暴力破解密码的情况。max_connect_errors的值与性能并无太大关系。<br><br><a href="http://www.bootf.com/514.html" target="_blank" rel="external">http://www.bootf.com/514.html</a></p>
-<p>7、transaction_isolation = READ-COMMITTED<br><a href="http://www.cnblogs.com/zemliu/archive/2012/06/17/2552301.html" target="_blank" rel="external">http://www.cnblogs.com/zemliu/archive/2012/06/17/2552301.html</a></p>
-<p>8、explicit_defaults_for_timestamp = 1<br>修改TIMESTAMP的默认行为。<br><a href="http://www.williamsang.com/archives/818.html" target="_blank" rel="external">http://www.williamsang.com/archives/818.html</a></p>
+<p>6、max_connect_errors = 1000<br>max_connect_errors是一个MySQL中与安全有关的计数器值，它负责阻止过多尝试失败的客户端以防止暴力破解密码的情况。max_connect_errors的值与性能并无太大关系。<br><br><a target="_blank" rel="noopener" href="http://www.bootf.com/514.html">http://www.bootf.com/514.html</a></p>
+<p>7、transaction_isolation = READ-COMMITTED<br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/zemliu/archive/2012/06/17/2552301.html">http://www.cnblogs.com/zemliu/archive/2012/06/17/2552301.html</a></p>
+<p>8、explicit_defaults_for_timestamp = 1<br>修改TIMESTAMP的默认行为。<br><a target="_blank" rel="noopener" href="http://www.williamsang.com/archives/818.html">http://www.williamsang.com/archives/818.html</a></p>
 <p>9、tmp_table_size = 67108864（67M）<br>规定内部内存临时表的最大值<br>max_heap_table_size(为什么不设置这个值？)此定义用户可以创建的内存表的大小。<br><br>max_heap_table_size与tmp_table_size一起限制了内部内存表的大小。建议不超过128M。</p>
-<p>10、max_allowed_packet = 16777216（16M）mysql允许你发送的最大数据包的请求。<br><br><a href="http://www.cnblogs.com/yeahgis/archive/2012/03/16/2399985.html" target="_blank" rel="external">http://www.cnblogs.com/yeahgis/archive/2012/03/16/2399985.html</a></p>
-<p>11、sql_mode =<br>“STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,<br>ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER”<br><br>sql_mode常用的三个， ANSI，STRICT_TRANS_TABLES，TRADITIONAL。<br><br>NO_ENGINE_SUBSTITUTION 如果需要的存储引擎被禁用或未编译，可以防止自动替换存储引擎。<br><br>STRICT_TRANS_TABLES 启用了对所有事务表的严格模式。<br><br>STRICT_ALL_TABLES启用了对所有表的严格模式。<br><br>ERROR_FOR_DIVISION_BY_ZERO  除0插入NULL并产生警告。<br><br>NO_AUTO_CREATE_USER 授权用户时必须知道制定用户密码。<br><br><a href="http://www.cnblogs.com/ainiaa/archive/2010/12/31/1923002.html" target="_blank" rel="external">http://www.cnblogs.com/ainiaa/archive/2010/12/31/1923002.html</a></p>
+<p>10、max_allowed_packet = 16777216（16M）mysql允许你发送的最大数据包的请求。<br><br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/yeahgis/archive/2012/03/16/2399985.html">http://www.cnblogs.com/yeahgis/archive/2012/03/16/2399985.html</a></p>
+<p>11、sql_mode =<br>“STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,<br>ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER”<br><br>sql_mode常用的三个， ANSI，STRICT_TRANS_TABLES，TRADITIONAL。<br><br>NO_ENGINE_SUBSTITUTION 如果需要的存储引擎被禁用或未编译，可以防止自动替换存储引擎。<br><br>STRICT_TRANS_TABLES 启用了对所有事务表的严格模式。<br><br>STRICT_ALL_TABLES启用了对所有表的严格模式。<br><br>ERROR_FOR_DIVISION_BY_ZERO  除0插入NULL并产生警告。<br><br>NO_AUTO_CREATE_USER 授权用户时必须知道制定用户密码。<br><br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/ainiaa/archive/2010/12/31/1923002.html">http://www.cnblogs.com/ainiaa/archive/2010/12/31/1923002.html</a></p>
 <p>12、interactive_timeout = 1800（30分） 服务器关闭交互式连接前等待活动的秒数。<br>wait_timeout = 1800（30分）服务器关闭非交互连接之前等待活动的秒数。</p>
 <p>13、read_buffer_size = 16777216 （16M）<br>是MySql读入缓冲区大小。对表进行顺序扫描的请求将分配一个读入缓冲区，MySql会为它分配一段内存缓冲区。<br><br>read_rnd_buffer_size = 33554432 (32M)<br>是MySql的随机读缓冲区大小。当按任意顺序读取行时(例如，按照排序顺序)，将分配一个随机读缓存区。<br><br>join_buffer_size = 134217728 (134M) 联合查询操作所能使用的缓冲区大小 <br><br>sort_buffer_size = 33554432(33M) 每个需要进行排序的线程分配该大小的一个缓冲区。<br>增加这值加速ORDER BY或GROUP BY操作。</p>
 <p>14、log_queries_not_using_indexes=1 如果log_queries_not_using_indexes为ON的话，当执行一个sql语句的时候，如果一个表没有索引就会把这个信息记录在慢查询文件中。<br><br>log_throttle_queries_not_using_indexes 限制每分钟写入慢查询日志中不使用索引的查询语句的数量，<br>默认值为0,表示无限制<br><br>min_examined_row_limit = 100 扫描记录少于该值的sql不记录到慢查询日志中，前提是必须满足long_query_time<br>和log_queries_not_using_indexes约束。</p>
 <p>15、log_slow_admin_statements = 1<br>指定执行过慢的DDL语句写入慢日志，包含：ALTER TABLE, ANALYZE TABLE, CHECK TABLE, CREATE INDEX, DROP INDEX,<br>OPTIMIZE TABLE及REPAIR TABLE。 <br><br>log_slow_slave_statements = 1 备库将复制查询语句写入慢日志，默认不会写入</p>
-<p>16、innodb_page_size = 8192(8K) 设置Innodb数据页大小，默认为16K <br><br><a href="http://mysqllover.com/?p=1329" target="_blank" rel="external">http://mysqllover.com/?p=1329</a></p>
+<p>16、innodb_page_size = 8192(8K) 设置Innodb数据页大小，默认为16K <br><br><a target="_blank" rel="noopener" href="http://mysqllover.com/?p=1329">http://mysqllover.com/?p=1329</a></p>
 <p>17、innodb_buffer_pool_size = 6G<br>分配足够 innodb_buffer_pool_size,来将整个InnoDB 文件加载到内存,减少从磁盘上读。<br>内存的70-80%  innodb对缓冲更为敏感。Innodb引擎会把数据和索引都缓存起来。无需给操作系统留太多的内存。<br>如果数据量比较小，则无需把innodb_buffer_pool_size设置的过大。</p>
-<p>18、innodb_buffer_pool_instances = 8<br> innodb_buffer_pool_instances的值主要用于将innodb buffer pool进行划分，通过划分innodb buffer pool为多个实例，可以提高并发能力，并且减少了不同线程读写造成的缓冲页。每一页从其中一个buffer pool中使用hash函数随机的读取和写入。每个buffer pool管理和维护各自的信息，包括free lists、flush lists、LRUs等。<br><br><a href="http://blog.chinaunix.net/uid-26896862-id-3345441.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-26896862-id-3345441.html</a></p>
-<p>19、innodb_buffer_pool_load_at_startup = 1  在启动时把热数据加载到内存。<br>innodb_buffer_pool_dump_at_shutdown = 1 在关闭时把热数据dump到本地磁盘<br><a href="http://blog.csdn.net/zhu19774279/article/details/38645663" target="_blank" rel="external">http://blog.csdn.net/zhu19774279/article/details/38645663</a></p>
-<p>20、innodb_io_capacity = 4000  默认值为200 innodb_io_capacity越大，一次刷新的脏页的数量也就越大.<br><br>innodb_io_capacity_max = 8000 <br><br>innodb_lru_scan_depth = 2000  默认值为 1024. 这是mysql 5.6中引入的一个新选项. Mark Callaghan 提供了 一些配置建议. 简单来说,如果增大了 innodb_io_capacity 值, 应该同时增加 innodb_lru_scan_depth.<br><br><a href="https://opvps.com/mysql-innodb-performance-tuning/" target="_blank" rel="external">https://opvps.com/mysql-innodb-performance-tuning/</a></p>
-<p>21、innodb_lock_wait_timeout = 5 默认值为 50 秒。<br>在回滚(rooled back)之前，InnoDB 事务将等待超时的时间(单位 秒)。InnoDB 会自动检查自身在锁定表与事务回滚时的事务死锁。如果使用 LOCK TABLES 命令，或在同一个事务中使用其它事务安全型表处理器(transaction safe table handlers than InnoDB)，那么可能会发生一个 InnoDB 无法注意到的死锁。在这种情况下超时将用来解决这个问题。<br><a href="http://man.chinaunix.net/database/mysql/inonodb_zh/2.htm" target="_blank" rel="external">http://man.chinaunix.net/database/mysql/inonodb_zh/2.htm</a></p>
-<p>22、innodb_flush_method = O_DIRECT  数据文件的写入操作是直接从mysql innodb buffer到磁盘的，并不用通过操作系统的缓冲，而真正的完成也是在flush这步,日志还是要经过OS缓冲。<br><a href="http://www.orczhou.com/index.php/2009/08/innodb_flush_method-file-io/" target="_blank" rel="external">http://www.orczhou.com/index.php/2009/08/innodb_flush_method-file-io/</a><br><a href="http://blog.csdn.net/jiao_fuyou/article/details/16113403" target="_blank" rel="external">http://blog.csdn.net/jiao_fuyou/article/details/16113403</a></p>
-<p>23、innodb_file_format = Barracuda <br><br>innodb_file_format_max = Barracuda <br><br>目前，在InnoDB Plugin（1.0.6）配置文件中innodb_file_format支持两种：Antelope/ˈæntɪləʊp/、Barracuda/ˌbærəˈkjuːdə/。他们分别是两种文件格式的代号，在未来版本中，InnoDB将继续延续这种代号机制，它们会是Antelope, Barracuda, Cheetah, Dragon, Elk, Fox等等。<br><br><a href="http://www.orczhou.com/index.php/2010/03/innodb-plugin-file-format/" target="_blank" rel="external">http://www.orczhou.com/index.php/2010/03/innodb-plugin-file-format/</a></p>
+<p>18、innodb_buffer_pool_instances = 8<br> innodb_buffer_pool_instances的值主要用于将innodb buffer pool进行划分，通过划分innodb buffer pool为多个实例，可以提高并发能力，并且减少了不同线程读写造成的缓冲页。每一页从其中一个buffer pool中使用hash函数随机的读取和写入。每个buffer pool管理和维护各自的信息，包括free lists、flush lists、LRUs等。<br><br><a target="_blank" rel="noopener" href="http://blog.chinaunix.net/uid-26896862-id-3345441.html">http://blog.chinaunix.net/uid-26896862-id-3345441.html</a></p>
+<p>19、innodb_buffer_pool_load_at_startup = 1  在启动时把热数据加载到内存。<br>innodb_buffer_pool_dump_at_shutdown = 1 在关闭时把热数据dump到本地磁盘<br><a target="_blank" rel="noopener" href="http://blog.csdn.net/zhu19774279/article/details/38645663">http://blog.csdn.net/zhu19774279/article/details/38645663</a></p>
+<p>20、innodb_io_capacity = 4000  默认值为200 innodb_io_capacity越大，一次刷新的脏页的数量也就越大.<br><br>innodb_io_capacity_max = 8000 <br><br>innodb_lru_scan_depth = 2000  默认值为 1024. 这是mysql 5.6中引入的一个新选项. Mark Callaghan 提供了 一些配置建议. 简单来说,如果增大了 innodb_io_capacity 值, 应该同时增加 innodb_lru_scan_depth.<br><br><a target="_blank" rel="noopener" href="https://opvps.com/mysql-innodb-performance-tuning/">https://opvps.com/mysql-innodb-performance-tuning/</a></p>
+<p>21、innodb_lock_wait_timeout = 5 默认值为 50 秒。<br>在回滚(rooled back)之前，InnoDB 事务将等待超时的时间(单位 秒)。InnoDB 会自动检查自身在锁定表与事务回滚时的事务死锁。如果使用 LOCK TABLES 命令，或在同一个事务中使用其它事务安全型表处理器(transaction safe table handlers than InnoDB)，那么可能会发生一个 InnoDB 无法注意到的死锁。在这种情况下超时将用来解决这个问题。<br><a target="_blank" rel="noopener" href="http://man.chinaunix.net/database/mysql/inonodb_zh/2.htm">http://man.chinaunix.net/database/mysql/inonodb_zh/2.htm</a></p>
+<p>22、innodb_flush_method = O_DIRECT  数据文件的写入操作是直接从mysql innodb buffer到磁盘的，并不用通过操作系统的缓冲，而真正的完成也是在flush这步,日志还是要经过OS缓冲。<br><a target="_blank" rel="noopener" href="http://www.orczhou.com/index.php/2009/08/innodb_flush_method-file-io/">http://www.orczhou.com/index.php/2009/08/innodb_flush_method-file-io/</a><br><a target="_blank" rel="noopener" href="http://blog.csdn.net/jiao_fuyou/article/details/16113403">http://blog.csdn.net/jiao_fuyou/article/details/16113403</a></p>
+<p>23、innodb_file_format = Barracuda <br><br>innodb_file_format_max = Barracuda <br><br>目前，在InnoDB Plugin（1.0.6）配置文件中innodb_file_format支持两种：Antelope/ˈæntɪləʊp/、Barracuda/ˌbærəˈkjuːdə/。他们分别是两种文件格式的代号，在未来版本中，InnoDB将继续延续这种代号机制，它们会是Antelope, Barracuda, Cheetah, Dragon, Elk, Fox等等。<br><br><a target="_blank" rel="noopener" href="http://www.orczhou.com/index.php/2010/03/innodb-plugin-file-format/">http://www.orczhou.com/index.php/2010/03/innodb-plugin-file-format/</a></p>
 <p>24、innodb_log_group_home_dir = /redolog/ InnoDB 日志文件的路径。必须与innodb_log_arch_dir设置相同值。 如果没有明确指定将默认在 MySQL 的datadir目录下建立两个 5 MB 大小的 ib_logfile… 文件。</p>
-<p>25、innodb_undo_logs = 128 用于表示回滚段的个数<br><br>innodb_undo_tablespaces = 3   用于设定创建的undo表空间的个数，在Install db时初始化后，就再也不能被改动了；<br><br>innodb_undo_directory = /undolog/  当开启独立undo表空间时，指定undo文件存放的目录<br><br><a href="http://mysqllover.com/?p=873" target="_blank" rel="external">http://mysqllover.com/?p=873</a></p>
+<p>25、innodb_undo_logs = 128 用于表示回滚段的个数<br><br>innodb_undo_tablespaces = 3   用于设定创建的undo表空间的个数，在Install db时初始化后，就再也不能被改动了；<br><br>innodb_undo_directory = /undolog/  当开启独立undo表空间时，指定undo文件存放的目录<br><br><a target="_blank" rel="noopener" href="http://mysqllover.com/?p=873">http://mysqllover.com/?p=873</a></p>
 <p>26、innodb_flush_neighbors = 1 刷新邻接页，当刷新一个脏页时，InnoDB存储引擎会检测该页所在区（extent）的所有页，如果是脏页，那么一起进行刷新。<br>对于传统机械硬盘建议启用该特性，而对于固态硬盘有着超高IOPS性能的磁盘，则建议将该参数设置为0，即关闭此特性。</p>
 <p>27、innodb_log_file_size = 4G redo日志的大小。redo日志被用于确保写操作快速而可靠并且在崩溃时恢复。<br><br>innodb_log_buffer_size = 16777216 (16M)  缓冲器的字节大小的InnoDB使用写入到日志文件在磁盘上。</p>
 <p>28、innodb_purge_threads = 4 Purge Thread(清洗线程)数，默认为4<br>增加值大于1创建许多单独的清洗线程，从而可以提高在其中的系统效率的DML上多个表执行操作。</p>
@@ -121,264 +359,281 @@ my.cnf配置文件注释12345678910111213141516171819202122232425262728293031323
 <p>31、innodb_print_all_deadlocks = 1<br>将所有的死锁信息全写入错误日志中</p>
 <p>32、innodb_strict_mode = 1 InnoDB 对一些条件是否返回错误而不是警告。默认是ON。</p>
 <p>33、innodb_sort_buffer_size = 67108864 (64M) 默认1M<br>通过CREATE INDEX、ALTER TABLE创建索引时，分配的缓冲区大小。</p>
-<p>34、master_info_repository = TABLE <br><br>relay_log_info_repository = TABLE <br><br>多源复制需开启这两个项，MySQL存储master-info和relay-info的方式，即从文件存储改为表存储。可用于实现在奔溃时保证二进制及从服务器的安全的功能。<br><br><a href="https://www.longlong.asia/2015/10/21/mysql57-new-features.html" target="_blank" rel="external">https://www.longlong.asia/2015/10/21/mysql57-new-features.html</a></p>
-<p>35、sync_binlog = 1 控制数据库的binlog刷到磁盘上去<br><a href="http://www.cnblogs.com/Cherie/p/3309503.html" target="_blank" rel="external">http://www.cnblogs.com/Cherie/p/3309503.html</a></p>
+<p>34、master_info_repository = TABLE <br><br>relay_log_info_repository = TABLE <br><br>多源复制需开启这两个项，MySQL存储master-info和relay-info的方式，即从文件存储改为表存储。可用于实现在奔溃时保证二进制及从服务器的安全的功能。<br><br><a target="_blank" rel="noopener" href="https://www.longlong.asia/2015/10/21/mysql57-new-features.html">https://www.longlong.asia/2015/10/21/mysql57-new-features.html</a></p>
+<p>35、sync_binlog = 1 控制数据库的binlog刷到磁盘上去<br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/Cherie/p/3309503.html">http://www.cnblogs.com/Cherie/p/3309503.html</a></p>
 <p>36、gtid_mode = on 开启gtid<br><br>log_slave_updates <br><br>enforce_gtid_consistency = 1 如果要开启GTID功能，需要同时开启log-bin和log_slave_updates功能，<br>另外还需要开启enforce_gtid_consistency功能。</p>
-<p>37、binlog_format = row 基于行的复制<br><a href="http://blog.csdn.net/vhomes/article/details/8082734" target="_blank" rel="external">http://blog.csdn.net/vhomes/article/details/8082734</a></p>
-<p>38、slave_skip_errors = ddl_exist_errors<br>slave_skip_errors选项有四个可用值，分别为：off，all，ErorCode，ddl_exist_errors。<br>默认情况下该参数值是off，我们可以列出具体的error code，也可以选择all，mysql5.6及MySQL Cluster NDB 7.3以及后续版本增加了参数ddl_exist_errors，该参数包含一系列error code（1007,1008,1050,1051,1054,1060,1061,1068,1094,1146）<br><a href="http://blog.csdn.net/jesseyoung/article/details/40585809" target="_blank" rel="external">http://blog.csdn.net/jesseyoung/article/details/40585809</a></p>
-<p>39、plugin_dir=/usr/local/mysql/lib/plugin <br><br>plugin_load = “rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so” <br><br>loose_rpl_semi_sync_master_enabled = 1 <br><br>loose_rpl_semi_sync_slave_enabled = 1 <br><br>loose_rpl_semi_sync_master_timeout = 5000 <br><br><a href="http://www.mike.org.cn/articles/how-to-install-the-mysql-plugin/" target="_blank" rel="external">http://www.mike.org.cn/articles/how-to-install-the-mysql-plugin/</a><br><a href="http://www.orczhou.com/index.php/2011/06/mysql-5-5-semi-sync-replication-setup-config/" target="_blank" rel="external">http://www.orczhou.com/index.php/2011/06/mysql-5-5-semi-sync-replication-setup-config/</a></p>
-<h4 id="5-7新增参数"><a href="#5-7新增参数" class="headerlink" title="5.7新增参数"></a>5.7新增参数</h4><p>40、innodb_buffer_pool_dump_pct = 40<br>表示转储每个bp instance LRU上最热的page的百分比。通过设置该参数可以减少转储的page数。<br>相关参考19项。<br><a href="http://mysqllover.com/?p=1123" target="_blank" rel="external">http://mysqllover.com/?p=1123</a></p>
+<p>37、binlog_format = row 基于行的复制<br><a target="_blank" rel="noopener" href="http://blog.csdn.net/vhomes/article/details/8082734">http://blog.csdn.net/vhomes/article/details/8082734</a></p>
+<p>38、slave_skip_errors = ddl_exist_errors<br>slave_skip_errors选项有四个可用值，分别为：off，all，ErorCode，ddl_exist_errors。<br>默认情况下该参数值是off，我们可以列出具体的error code，也可以选择all，mysql5.6及MySQL Cluster NDB 7.3以及后续版本增加了参数ddl_exist_errors，该参数包含一系列error code（1007,1008,1050,1051,1054,1060,1061,1068,1094,1146）<br><a target="_blank" rel="noopener" href="http://blog.csdn.net/jesseyoung/article/details/40585809">http://blog.csdn.net/jesseyoung/article/details/40585809</a></p>
+<p>39、plugin_dir=/usr/local/mysql/lib/plugin <br><br>plugin_load = “rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so” <br><br>loose_rpl_semi_sync_master_enabled = 1 <br><br>loose_rpl_semi_sync_slave_enabled = 1 <br><br>loose_rpl_semi_sync_master_timeout = 5000 <br><br><a target="_blank" rel="noopener" href="http://www.mike.org.cn/articles/how-to-install-the-mysql-plugin/">http://www.mike.org.cn/articles/how-to-install-the-mysql-plugin/</a><br><a target="_blank" rel="noopener" href="http://www.orczhou.com/index.php/2011/06/mysql-5-5-semi-sync-replication-setup-config/">http://www.orczhou.com/index.php/2011/06/mysql-5-5-semi-sync-replication-setup-config/</a></p>
+<h4 id="5-7新增参数"><a href="#5-7新增参数" class="headerlink" title="5.7新增参数"></a>5.7新增参数</h4><p>40、innodb_buffer_pool_dump_pct = 40<br>表示转储每个bp instance LRU上最热的page的百分比。通过设置该参数可以减少转储的page数。<br>相关参考19项。<br><a target="_blank" rel="noopener" href="http://mysqllover.com/?p=1123">http://mysqllover.com/?p=1123</a></p>
 <p>41、innodb_page_cleaners = 4  设置多个page cleaner线程提高脏页刷新效率</p>
 <p>42、innodb_undo_log_truncate = 1 自动删除不用的 undo log</p>
 <p>43、innodb_max_undo_log_size = 2G  控制最大undo tablespace文件的大小，超过这个阀值时才会去尝试truncate。truncate后的大小默认为10M。</p>
 <p>44、innodb_purge_rseg_truncate_frequency = 128<br>用于控制purge回滚段的频度。 Innodb Purge操作的协调线程每隔这么多次purge事务分发后，就会触发一次History purge，并检查当前的undo log 表空间状态是否会触发truncate。</p>
-<p>45、log_timestamps=system 控制写入一般查询日志（慢查询日志和错误日志）的时间戳时区信息，当写入日志表时的时区信息根据time_zone系统变量来设定。<br><a href="http://debugo.com/mysql-reading-note-the-general-query-log" target="_blank" rel="external">http://debugo.com/mysql-reading-note-the-general-query-log</a></p>
+<p>45、log_timestamps=system 控制写入一般查询日志（慢查询日志和错误日志）的时间戳时区信息，当写入日志表时的时区信息根据time_zone系统变量来设定。<br><a target="_blank" rel="noopener" href="http://debugo.com/mysql-reading-note-the-general-query-log">http://debugo.com/mysql-reading-note-the-general-query-log</a></p>
 <p>46、transaction_write_set_extraction=MURMUR32 预留<br>show_compatibility_56=on 兼容5.6版本</p>
 
-      
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2015/11/16/2015-11-16-mysql-stu02/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL安装升级</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2015/07/07/2015-07-07-iptables-notes/">
+                        <span class="hidden-mobile">iptables notes</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
     </div>
-    <footer>
-      
-        
-  
-  <div class="categories">
-    <a href="/categories/MySQL/">MySQL</a>
-  </div>
-
-        
-  
-  <div class="tags">
-    <a href="/tags/MySQL/">MySQL</a>
-  </div>
-
-        
-  <div class="addthis addthis_toolbox addthis_default_style">
     
-      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-    
-    
-      <a class="addthis_button_tweet"></a>
-    
-    
-      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-    
-    
-      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
-    
-    <a class="addthis_counter addthis_pill_style"></a>
-  </div>
-  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
-
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-<section id="comment">
-  <h1 class="title">留言</h1>
-
-  
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-  
-</section>
-
-
-
-
-<!--
-<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
-<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
 </div>
 
-<script src="/js/backtop.js"></script>
--->
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="搜索">
-    <input type="hidden" name="q" value="site:www.wiredtiger.org">
-  </form>
-</div>
-
-  
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/categories/House/">House</a><small>1</small></li>
-  
-    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
-  
-    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/categories/Linux/">Linux</a><small>18</small></li>
-  
-    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
-  
-    <li><a href="/categories/Python/">Python</a><small>2</small></li>
-  
-    <li><a href="/categories/Redis/">Redis</a><small>3</small></li>
-  
-    <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">标签</h3>
-  <ul class="entry">
-  
-    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/tags/Linux/">Linux</a><small>4</small></li>
-  
-    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
-  
-    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
-  
-    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
-  
-    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
-  
-    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
-  
-    <li><a href="/tags/Python/">Python</a><small>1</small></li>
-  
-    <li><a href="/tags/Redis/">Redis</a><small>1</small></li>
-  
-    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
-  
-    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
-  
-    <li><a href="/tags/cat/">cat</a><small>1</small></li>
-  
-    <li><a href="/tags/elk/">elk</a><small>1</small></li>
-  
-    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
-  
-    <li><a href="/tags/git/">git</a><small>1</small></li>
-  
-    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
-  
-    <li><a href="/tags/https/">https</a><small>1</small></li>
-  
-    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
-  
-    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
-  
-    <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
-  
-    <li><a href="/tags/redis/">redis</a><small>2</small></li>
-  
-    <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
-  
-    <li><a href="/tags/shell/">shell</a><small>1</small></li>
-  
-    <li><a href="/tags/srs/">srs</a><small>1</small></li>
-  
-    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
-  
-    <li><a href="/tags/yum/">yum</a><small>1</small></li>
-  
-    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
-  
-    <li><a href="/tags/买房/">买房</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
-  <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a> <a href="/tags/买房/" style="font-size: 10px;">买房</a>
+      </div>
+    
   </div>
 </div>
 
+<!-- Custom -->
+
+
+    
+  </main>
 
   
-  <div class="widget tag">
-    <h3 class="title">友情链接</h3>
-      <ul class="entry">
-        
-          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
-        
-          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
-        
-          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
-        
-      </ul>
-  </div>
-
-
-</aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-</script>
-<div class="aligncenter">
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
   
-  Copyright &copy; 2019  Lyln
-   | 
-  <span id="busuanzi_container_site_pv">
-    本站总访问量<span id="busuanzi_value_site_pv"></span>次
-  </span>
-  &nbsp <a href="/atom.xml">RSS</a>
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="clearfix"></div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://inshub.cn/" target="_blank" rel="nofollow noopener">
+        <span>lyln</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
 </footer>
-  <!--
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
--->
-<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
 
 
-<script type="text/javascript">
-var disqus_shortname = 'lyln';
-
-(function(){
-  var dsq = document.createElement('script');
-  dsq.type = 'text/javascript';
-  dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-}());
-</script>
+  
+    <script  src="/js/lazyload.js" ></script>
+  
 
 
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
+  
+    
+  
 
 
-<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
-<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
-</div>
 
-<script src="/js/backtop.js"></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "my.cnf配置文件注释&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
-
-<!-- click bloom -->
-<script type="application/x-javascript" src="/js/mo.min.js"></script>
-<script type="text/javascript" src="/js/loading.mo.js"></script> 

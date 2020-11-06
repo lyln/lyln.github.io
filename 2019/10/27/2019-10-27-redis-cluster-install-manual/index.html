@@ -1,0 +1,595 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;light&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Lyln">
+  <meta name="keywords" content="">
+  <title>Redis Cluster搭建、扩容、缩容 - 落影流年</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      
+        
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/prism/1.21.0/themes/prism.min.css" />
+      
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>落影流年</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://static.zkqiang.cn/images/20190728030406.jpeg-slim') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-10-27 00:00" pubdate>
+        2019年10月27日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.2k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      17
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">Redis Cluster搭建、扩容、缩容</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h4 id="集群机器列表"><a href="#集群机器列表" class="headerlink" title="集群机器列表"></a>集群机器列表</h4><p>redis版本 redis-cli 3.2.11<br><pre class="language-none"><code class="language-none">10.16.76.116
+10.16.76.117
+10.16.76.119
+
+集群安装跑ansible脚本
+
+master 
+10.16.76.116:6000  	
+10.16.76.117:6000  
+10.16.76.119:6000    
+
+slave
+10.16.76.116:7000
+10.16.76.117:7000
+10.16.76.119:7000</code></pre><br><a id="more"></a></p>
+<h4 id="初始化集群"><a href="#初始化集群" class="headerlink" title="初始化集群"></a>初始化集群</h4><p>配置主节点</p>
+<p>方法1:<br>redis-trib.rb 直接初始化机器。</p>
+<p>方法2:</p>
+<p>a. 添加节点： cluster meet ip port<br>CLUSTER nodes<br>CLUSTER info</p>
+<p>b. 分配槽点 16384<br>5462+5461+5461</p>
+<p>sh addslots.sh分配槽点</p>
+<p>cluster addslots {0…5461}<br>cluster addslots {5462…10922}<br>cluster addslots {10923…16384}</p>
+<p>以上cluste就完成了，是单点的。<br>c.保证各个节点的高可用，给每个主节点添加一个从节点。<br>cluster meet ip port</p>
+<p>slave节点上关联,必须在对应的从节点上执行<br>cluster replicate node_id </p>
+<pre class="language-none"><code class="language-none">3d401353114a1fd6359e51859f022dfdc5861bc9 10.16.76.116:6000 myself,master - 0 0 1 connected 0-5461
+ec1e5df312f947c540cc64fac3cfe3aa8df1799a 10.16.76.117:6000 master - 0 1571987989678 0 connected 5462-10922
+0af9d4868039dfe5c9dd212d75695a2607ada12f 10.16.76.119:6000 master - 0 1571987994688 2 connected 10923-16383
+</code></pre>
+<h3 id="测试数据"><a href="#测试数据" class="headerlink" title="测试数据"></a>测试数据</h3><p>set a,b,c分别hash到不同节点<br><pre class="language-none"><code class="language-none">get a
+-&gt; Redirected to slot [15495] located at 10.16.76.119:6000
+&quot;1&quot;
+10.16.76.119:6000&gt; get b
+-&gt; Redirected to slot [3300] located at 10.16.76.116:6000
+&quot;2&quot;
+10.16.76.116:6000&gt; get c
+-&gt; Redirected to slot [7365] located at 10.16.76.117:6000
+&quot;3&quot;</code></pre></p>
+<h3 id="Redis-Cluster常用命令"><a href="#Redis-Cluster常用命令" class="headerlink" title="Redis Cluster常用命令"></a>Redis Cluster常用命令</h3><pre class="language-none"><code class="language-none">CLUSTER info：打印集群的信息。
+CLUSTER nodes：列出集群当前已知的所有节点（node）的相关信息。
+
+CLUSTER meet &lt;ip&gt; &lt;port&gt;：将ip和port所指定的节点添加到集群当中。
+CLUSTER replicate &lt;node_id&gt;：将当前节点设置为指定节点的从节点。
+CLUSTER saveconfig：手动执行命令保存保存集群的配置文件，集群默认在配置修改的时候会自动保存配置文件。
+
+CLUSTER failover：手动进行故障转移，在slave上执行。
+
+CLUSTER keyslot &lt;key&gt;：列出key被放置在哪个槽上。
+CLUSTER countkeysinslot &lt;slot&gt;：返回槽目前包含的键值对数量。
+CLUSTER getkeysinslot &lt;slot&gt; &lt;count&gt;：返回count个槽中的键。
+
+迁移槽和数据相关命令
+CLUSTER setslot &lt;slot&gt; importing &lt;node_id&gt; 从 node_id (sourceNodeId)指定的节点中导入槽 slot 到本节点
+CLUSTER setslot &lt;slot&gt; migrating &lt;node_id&gt; 将本节点的槽迁移到指定的节点node_id (targetNodeId)中。
+CLUSTER getkeysinslot &lt;slot&gt; &lt;count&gt;：源节点循环执行，获取count个属于槽&#123;slot&#125;的键。
+在源节点迁移槽位中的key到目标节点：MIGRATE host port key destination-db timeout [COPY] [REPLACE]
+逐个迁移：migrate 10.16.76.116 8000 key:test:x1 0 5000 replace
+批量迁移：migrate 10.16.76.116 8000 &quot;&quot; 0 5000 keys key:test:x1 key:test:x2 key:test:x3
+CLUSTER setslot &lt;slot&gt; node &lt;node_id&gt; :通知槽分配给目标节点，node_id (targetNodeId)
+
+cluster setslot &lt;slot&gt; stable
+取消 slot 的导入（import）或者迁移（migrate）。</code></pre>
+<h3 id="集群扩容"><a href="#集群扩容" class="headerlink" title="集群扩容"></a>集群扩容</h3><pre class="language-none"><code class="language-none">10.16.76.116:8000
+10.16.76.117:8000
+10.16.76.119:8000
+
+原集群槽点5461-5460-5460
+4096-4096-4096-4096
+
+3d401353114a1fd6359e51859f022dfdc5861bc9 10.16.76.116:6000 master - 0 1572246866662 8 connected 0-5461
+f9fb5268c416b82dc4ea7d4948895454be4186a0 10.16.76.116:8000 master - 0 1572246863153 0 connected
+0af9d4868039dfe5c9dd212d75695a2607ada12f 10.16.76.119:6000 master - 0 1572246869667 2 connected 10923-16383
+ec1e5df312f947c540cc64fac3cfe3aa8df1799a 10.16.76.117:6000 master - 0 1572246864657 9 connected 5462-10922</code></pre>
+<h3 id="迁移数据流程"><a href="#迁移数据流程" class="headerlink" title="迁移数据流程"></a>迁移数据流程</h3><pre class="language-none"><code class="language-none">目的节点：
+CLUSTER setslot 4096 importing 3d401353114a1fd6359e51859f022dfdc5861bc9
+
+源节点：
+CLUSTER setslot 4096 migrating f9fb5268c416b82dc4ea7d4948895454be4186a0
+
+获取count属于槽slot的键:
+CLUSTER getkeysinslot 4096 100
+
+迁移数据到目的节点：
+migrate 10.16.76.116 8000 key:test:5028 0 5000 replace
+migrate 10.16.76.116 8000 &quot;&quot; 0 5000 keys key:test:68253 key:test:79212 
+
+遍历所有主节点执行：
+CLUSTER setslot 4096 node f9fb5268c416b82dc4ea7d4948895454be4186a0</code></pre>
+<h3 id="集群收缩"><a href="#集群收缩" class="headerlink" title="集群收缩"></a>集群收缩</h3><pre class="language-none"><code class="language-none">redis-trib.rb reshard 10.16.76.116:6000
+
+下线节点槽点迁出完成后，剩剩下的步骤需要让集群忘记该节点。
+线上操场不建议直接使用cluster forget下线节点
+建议使用redis-trib.rb del-node &#123;host:port&#125; &#123;downNodeId&#125;
+
+从节点
+redis-trib.rb del-node 10.16.76.117:8000 75202671eb18e504357ea8761ab6dc729b8526a2
+主节点
+redis-trib.rb del-node 10.16.76.116:8000 f9fb5268c416b82dc4ea7d4948895454be4186a0</code></pre>
+<h3 id="故障转移"><a href="#故障转移" class="headerlink" title="故障转移"></a>故障转移</h3><p>主观下线： 指某个节点认为另一个节点不可用，即下线状态。</p>
+<p>客观下线： 集群内多个节点都认为该节点不可用。</p>
+<h3 id="集群倾斜"><a href="#集群倾斜" class="headerlink" title="集群倾斜"></a>集群倾斜</h3><p>数据倾斜</p>
+<p>redis-trib.rb info 查看节点槽点不均的情况。<br>hash数据分别，导致集群qps差距很大。</p>
+<h3 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h3><p>问题描述：<br>Moving slot 4096 from 10.16.76.116:8000 to 10.16.76.116:6000:<br>[ERR] Calling MIGRATE: ERR Syntax error, try CLIENT (LIST | KILL | GETNAME | SETNAME | PAUSE | REPLY)</p>
+<p>问题解决：<br>1、ruby gem安装的redis库，版本不能使用最新的4.0，否则redis-trib.rb reshard 127.0.0.1:7000 重新分片时会报语法错误。<br>   卸载最新redis库，gem uninstall redis<br>   安装3.x版本，gem install redis -v 3.3.5 测试3.2.1到3.3.5都可以，4.x以上的分片报错<br>2、使用fix来进行修复，具体命令如下：<br>   redis-trib.rb fix 10.16.76.116:6000</p>
+<h3 id="redis参数"><a href="#redis参数" class="headerlink" title="redis参数"></a>redis参数</h3><p>//connectionTimeout 连接超时（默认2000ms）<br>//soTimeout 响应超时（默认2000ms）</p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Redis/">Redis</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Redis/">Redis</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/03/13/2020-03-14-grafana-prometheus-notes-md/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Prometheus Grafana学习笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/08/25/2019-08-25-redis-migrate-tool/">
+                        <span class="hidden-mobile">redis-migrate-tool使用详解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://inshub.cn/" target="_blank" rel="nofollow noopener">
+        <span>lyln</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+    
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "Redis Cluster搭建、扩容、缩容&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,668 +1,854 @@
-<!DOCTYPE HTML>
-<html>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;light&#34;>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>第 4 页 | 落影流年</title>
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
   <meta name="author" content="Lyln">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="keywords" content="">
+  <title>落影流年</title>
 
-  
-  <meta property="og:site_name" content="落影流年"/>
-
-  
-    <meta property="og:image" content=""/>
-  
-
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
-
-  <script>
-	(function() {
-	    var OriginTitile = document.title, titleTime;
-	    document.addEventListener('visibilitychange', function() {
-		if (document.hidden) {
-		    document.title = '死鬼去哪里了！';
-		    clearTimeout(titleTime);
-		} else {
-		    document.title = '(つェ⊂)咦!又好了!';
-		    titleTime = setTimeout(function() {
-			document.title = OriginTitile;
-		    },2000);
-		}
-	    });
-	})();
- </script>
-</head>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
 
-<!-- add Fork me on Github -->
 
-<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
 
 <body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">落影流年</a></h1>
-  <h2><a href="/"></a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">Home</a></li>
-    
-      <li><a href="/archives">Archives</a></li>
-    
-      <li><a href="/about">About</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div>
-</header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-11-09T16:00:00.000Z"><a href="/2015/11/10/2015-11-10-my-cnf-note/">2015-11-10</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/11/10/2015-11-10-my-cnf-note/">my.cnf配置文件注释</a></h1>
-  
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>落影流年</strong>&nbsp;</a>
 
-    </header>
-    <div class="entry">
-      
-        <h4 id="MySQL-5-6-amp-5-7最优配置文件模板"><a href="#MySQL-5-6-amp-5-7最优配置文件模板" class="headerlink" title="MySQL 5.6 &amp; 5.7最优配置文件模板"></a>MySQL 5.6 &amp; 5.7最优配置文件模板</h4><p><a href="http://www.innomysql.net/article/21730.html" target="_blank" rel="external">http://www.innomysql.net/article/21730.html</a></p>
-<h4 id="my-cnf配置文件注释"><a href="#my-cnf配置文件注释" class="headerlink" title="my.cnf配置文件注释"></a>my.cnf配置文件注释</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line">[client]</div><div class="line">user=root</div><div class="line">password=root</div><div class="line">default-character-set=utf8mb4</div><div class="line"></div><div class="line">[mysqld]</div><div class="line"><span class="comment">########basic settings########</span></div><div class="line">server-id = 11 </div><div class="line">port = 3306</div><div class="line">user = mysql</div><div class="line">bind_address = 10.166.224.32</div><div class="line">autocommit = 0</div><div class="line">character_set_server=utf8mb4</div><div class="line">skip_name_resolve = 1</div><div class="line">max_connections = 800</div><div class="line">max_connect_errors = 1000</div><div class="line">datadir = /data/mysql_data</div><div class="line">transaction_isolation = READ-COMMITTED</div><div class="line">explicit_defaults_for_timestamp = 1</div><div class="line">join_buffer_size = 134217728</div><div class="line">sort_buffer_size = 33554432</div><div class="line">tmp_table_size = 67108864</div><div class="line">tmpdir = /tmp</div><div class="line">max_allowed_packet = 16777216</div><div class="line">sql_mode = <span class="string">"STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER"</span></div><div class="line">interactive_timeout = 1800</div><div class="line">wait_timeout = 1800</div><div class="line">read_buffer_size = 16777216</div><div class="line">read_rnd_buffer_size = 33554432</div><div class="line"><span class="comment">########log settings########</span></div><div class="line">log_error = error.log</div><div class="line">slow_query_log = 1</div><div class="line">slow_query_log_file = slow.log</div><div class="line">log_queries_not_using_indexes = 1</div><div class="line">log_slow_admin_statements = 1</div><div class="line">log_slow_slave_statements = 1</div><div class="line">log_throttle_queries_not_using_indexes = 10</div><div class="line">expire_logs_days = 90</div><div class="line">long_query_time = 2</div><div class="line">min_examined_row_limit = 100</div><div class="line"><span class="comment">########replication settings########</span></div><div class="line">master_info_repository = TABLE</div><div class="line">relay_log_info_repository = TABLE</div><div class="line">log_bin = bin.log</div><div class="line">sync_binlog = 1</div><div class="line">gtid_mode = on</div><div class="line">enforce_gtid_consistency = 1</div><div class="line">log_slave_updates</div><div class="line">binlog_format = row </div><div class="line">relay_log = relay.log</div><div class="line">relay_log_recovery = 1</div><div class="line">binlog_gtid_simple_recovery = 1</div><div class="line">slave_skip_errors = ddl_exist_errors</div><div class="line"><span class="comment">########innodb settings########</span></div><div class="line">innodb_page_size = 8192</div><div class="line">innodb_buffer_pool_size = 6G</div><div class="line">innodb_buffer_pool_instances = 8</div><div class="line">innodb_buffer_pool_load_at_startup = 1</div><div class="line">innodb_buffer_pool_dump_at_shutdown = 1</div><div class="line">innodb_lru_scan_depth = 2000</div><div class="line">innodb_lock_wait_timeout = 5</div><div class="line">innodb_io_capacity = 4000</div><div class="line">innodb_io_capacity_max = 8000</div><div class="line">innodb_flush_method = O_DIRECT</div><div class="line">innodb_file_format = Barracuda</div><div class="line">innodb_file_format_max = Barracuda</div><div class="line">innodb_log_group_home_dir = /redolog/</div><div class="line">innodb_undo_directory = /undolog/</div><div class="line">innodb_undo_logs = 128</div><div class="line">innodb_undo_tablespaces = 3</div><div class="line">innodb_flush_neighbors = 1</div><div class="line">innodb_log_file_size = 4G</div><div class="line">innodb_log_buffer_size = 16777216</div><div class="line">innodb_purge_threads = 4</div><div class="line">innodb_large_prefix = 1</div><div class="line">innodb_thread_concurrency = 64</div><div class="line">innodb_print_all_deadlocks = 1</div><div class="line">innodb_strict_mode = 1</div><div class="line">innodb_sort_buffer_size = 67108864 </div><div class="line"><span class="comment">########semi sync replication settings########</span></div><div class="line">plugin_dir=/usr/<span class="built_in">local</span>/mysql/lib/plugin</div><div class="line">plugin_load = <span class="string">"rpl_semi_sync_master=semisync_master.so;rpl_semi_sync_slave=semisync_slave.so"</span></div><div class="line">loose_rpl_semi_sync_master_enabled = 1</div><div class="line">loose_rpl_semi_sync_slave_enabled = 1</div><div class="line">loose_rpl_semi_sync_master_timeout = 5000</div><div class="line"></div><div class="line">[mysqld-5.7]</div><div class="line">innodb_buffer_pool_dump_pct = 40</div><div class="line">innodb_page_cleaners = 4</div><div class="line">innodb_undo_log_truncate = 1</div><div class="line">innodb_max_undo_log_size = 2G</div><div class="line">innodb_purge_rseg_truncate_frequency = 128</div><div class="line">binlog_gtid_simple_recovery=1</div><div class="line">log_timestamps=system</div><div class="line">transaction_write_set_extraction=MURMUR32</div><div class="line">show_compatibility_56=on</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
         
-          <div class="alignleft">
-            <a href="/2015/11/10/2015-11-10-my-cnf-note/#more" class="more-link">阅读全文</a>
-          </div>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
         
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
         
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-07-06T16:00:00.000Z"><a href="/2015/07/07/2015-07-07-iptables-notes/">2015-07-07</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/07/07/2015-07-07-iptables-notes/">iptables notes</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="链"><a href="#链" class="headerlink" title="链"></a>链</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">INPUT：位于filter表，匹配目的ip是本机的数据包</div><div class="line">FORWARD： 位于filter表，匹配穿越本机的数据包</div><div class="line">PREROUTING： 位于 nat 表，用于修改目的地址（DNAT）</div><div class="line">POSTROUTING：位于 nat 表，用于修改源地址（SNAT）</div><div class="line">OUTPUT：位于filter表，匹配源ip是本机的数据包</div></pre></td></tr></table></figure>
-<h4 id="清空"><a href="#清空" class="headerlink" title="清空"></a>清空</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">iptables -F 清空所有规则链(谨慎用，尤其是默认策略是DROP)</div><div class="line">iptables -X 删除特定手工设置的链</div><div class="line">iptables -Z 清空计数器</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
         
-          <div class="alignleft">
-            <a href="/2015/07/07/2015-07-07-iptables-notes/#more" class="more-link">阅读全文</a>
-          </div>
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
         
         
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-06-11T16:00:00.000Z"><a href="/2015/06/12/2015-06-12-mysql-partition/">2015-06-12</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/06/12/2015-06-12-mysql-partition/">mysql表分区基础</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h5 id="表结构文件"><a href="#表结构文件" class="headerlink" title="表结构文件"></a>表结构文件</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">.frm  表结构文件</div><div class="line">.par  partition申明一个分区表</div><div class="line">.ibd  数据索引文件   innodb引擎表</div><div class="line"></div><div class="line">.MYD  数据文件       myisam表数据文件</div><div class="line">.MYI  索引文件       myisam表索引文件</div><div class="line"></div><div class="line">Myisam 存储引擎，它默认使用独立表空间</div><div class="line">InnoDB 存储引擎，默认使用共享表空间,默认存到ibdata1</div><div class="line"></div><div class="line">查看表空间设置 </div><div class="line">SHOW VARIABLES LIKE <span class="string">'%innodb_file_per_table%'</span>;</div><div class="line">修改表空间设置(/ect/my.cnf)</div><div class="line">innodb_file_per_table=1</div><div class="line"></div><div class="line">查看mysql是否支持分区</div><div class="line">show plugins;</div><div class="line">or</div><div class="line">show variables like <span class="string">'%part%'</span>;</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/06/12/2015-06-12-mysql-partition/#more" class="more-link">阅读全文</a>
-          </div>
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
         
         
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-06-08T16:00:00.000Z"><a href="/2015/06/09/2015-06-09-mysql-stu01/">2015-06-09</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/06/09/2015-06-09-mysql-stu01/">mysql学习笔记之一</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="下载mysql安装包"><a href="#下载mysql安装包" class="headerlink" title="下载mysql安装包"></a>下载mysql安装包</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">http://downloads.mysql.com/archives/community/</div><div class="line">RPM Bundle</div><div class="line">MySQL-client-5.6.16-1.el6.x86_64.rpm  客户端      </div><div class="line">MySQL-server-5.6.16-1.el6.x86_64.rpm  服务端</div><div class="line">MySQL-devel-5.6.16-1.el6.x86_64.rpm 库和头文件</div><div class="line">MySQL-shared-5.6.16-1.el6.x86_64.rpm 共享库</div><div class="line">MySQL-shared-compat-5.6.16-1.el6.x86_64.rpm 兼容包</div><div class="line">MySQL-embedded-5.6.16-1.el6.x86_64.rpm 嵌入式版本</div><div class="line">MySQL-test-5.6.16-1.el6.x86_64.rpm 测试包</div><div class="line">详细解释参考：http://dev.mysql.com/doc/refman/5.6/en/linux-installation-rpm.html</div><div class="line">默认库的作用</div><div class="line">Information_Schema提供了访问数据库元数据的方式。</div><div class="line">元数据是关于数据的数据，如数据库名或表名，列的数据类型，或访问权限等。有些时候用于表述该信息的其他术语包括“数据词典”和“系统目录”。</div><div class="line">Performance_Schema是MySQL较为底层的性能监控特性，提供一系列、具备自定义收集粒度的监控体系。</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/06/09/2015-06-09-mysql-stu01/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-06-04T16:00:00.000Z"><a href="/2015/06/05/2015-06-05-update-mysql/">2015-06-05</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/06/05/2015-06-05-update-mysql/">Centos 升级mysql5.1到5.6</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>系统：CentOS release 6.5 <br><br>升级前mysql版本：5.1.73-log <br><br>升级后mysql版本：5.6.25 <br></p>
-<h4 id="升级原因"><a href="#升级原因" class="headerlink" title="升级原因"></a>升级原因</h4><p>MySQL 5.1.x不支持四个字节的utf-8编码，只有5.5.x以后才支持</p>
-<h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mkdir /data/update_mysql</div><div class="line">备份my.cnf、/etc/init.d/mysqld</div><div class="line">备份整个数据库</div><div class="line">mysqldump -uroot -p -q --all-databases &gt; alldatabases.sql</div><div class="line">备份数据目录</div><div class="line">tar -zxvf datadir.tar.gz /var/lib/mysql</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/06/05/2015-06-05-update-mysql/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-06-03T16:00:00.000Z"><a href="/2015/06/04/2015-06-04-postgresql-stu-01/">2015-06-04</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/06/04/2015-06-04-postgresql-stu-01/">PostgreSQL笔记--初识PostgreSQL</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="PostgreSQL安装"><a href="#PostgreSQL安装" class="headerlink" title="PostgreSQL安装"></a>PostgreSQL安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">./configure --prefix   安装路径</div><div class="line">--with-pgport=NUMBER  设置默认端口（5432）</div><div class="line">--with-segsize=SEGSIZE 段大小（单位gb）</div><div class="line">--with-blocksize=BLOCKSIZW 块大小（单位kb）</div><div class="line">--with-wal-segsize=SEGSIZE wal日志(单位mb)</div><div class="line">--with-wal-blocksize=BLOCKSIZE wal日志块大小(单位kb)</div><div class="line"></div><div class="line">gmake</div><div class="line">gmake install</div><div class="line">useradd postgres</div><div class="line"></div><div class="line">initdb -D /opt/pgsql/data --locale=C --encoding=UTF8 初始化数据库</div><div class="line">or pg_ctl -D /opt/pgsql/data initdb</div><div class="line">使用D参数或设置环境变量PGDATA</div><div class="line"></div><div class="line">postgres -D /opt/pgsql/data &gt; logfile 2&gt;&amp;1 &amp;启动数据库</div><div class="line">or pg_ctl start -l logfile</div></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/06/04/2015-06-04-postgresql-stu-01/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-05-28T16:00:00.000Z"><a href="/2015/05/29/2015-05-29-docker-stu-notes/">2015-05-29</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/05/29/2015-05-29-docker-stu-notes/">Docker笔记</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>在Ubuntu 14.04.2 LTS安装docker<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install docker.io</div><div class="line">依赖安装aufs-tools cgroup-lite git git-man liberror-perl</div></pre></td></tr></table></figure></p>
-<p>查看docker版本和系统信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker version</div><div class="line">docker info</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/05/29/2015-05-29-docker-stu-notes/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-05-14T16:00:00.000Z"><a href="/2015/05/15/2015-05-15-python-help/">2015-05-15</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/05/15/2015-05-15-python-help/">python小技巧</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>dir查看对象的属性<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; dir(re)</div><div class="line">[<span class="string">'DEBUG'</span>, <span class="string">'DOTALL'</span>, <span class="string">'I'</span>, ...<span class="string">'compile'</span>....]</div></pre></td></tr></table></figure></p>
-<p>help查看模块方法的使用<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;<span class="built_in">help</span>(<span class="string">'compile'</span>)</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/05/15/2015-05-15-python-help/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-03-15T16:00:00.000Z"><a href="/2015/03/16/2015-03-16-mysql-ha-mha/">2015-03-16</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/03/16/2015-03-16-mysql-ha-mha/">MySQL MHA高可用方案</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>mha是用perl写的一套MySql故障切换方案，保证数据库系统的高可用。支持在线切换，从当前运行master到新master只需很短时间（0.5-2s内），此时仅仅阻塞写操作，并不影响读操作。</p>
-<h3 id="环境部署"><a href="#环境部署" class="headerlink" title="环境部署"></a>环境部署</h3><p>MHA要求一个复制集群中必须至少三台数据库</p>
-<p>实验环境（RHEL release 5.9）</p>
-<table>
-<thead>
-<tr>
-<th>服务器</th>
-<th>IP</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>主服务器</td>
-<td>10.16.34.208</td>
-<td></td>
-</tr>
-<tr>
-<td>从服务器</td>
-<td>10.16.34.201</td>
-<td>主备份、管理节点</td>
-</tr>
-<tr>
-<td>从服务器</td>
-<td>10.16.34.194</td>
-</tr>
-</tbody>
-</table>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/03/16/2015-03-16-mysql-ha-mha/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2014-08-26T16:00:00.000Z"><a href="/2014/08/27/2014-08-27-mysql-common-ops/">2014-08-27</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2014/08/27/2014-08-27-mysql-common-ops/">MySQL常用操作</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>以下常用命令适用于MySQL 5.6</p>
-<p>多表更新<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">UPDATE s_chat c,s_room r</div><div class="line">SET c.`anchor_user_id`=r.`user_id`WHERE c.`room_id`=r.`room_id`;</div></pre></td></tr></table></figure></p>
-<p>显示表中列名称<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show columns from mysql.user;</div></pre></td></tr></table></figure></p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2014/08/27/2014-08-27-mysql-common-ops/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-
-<nav id="pagination">
-  
-    <a href="/page/3/" class="alignleft prev">上一页</a>
-  
-  
-    <a href="/page/5/" class="alignright next">下一页</a>
-  
-  <div class="clearfix"></div>
-</nav></div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="搜索">
-    <input type="hidden" name="q" value="site:www.wiredtiger.org">
-  </form>
-</div>
-
-  
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/categories/House/">House</a><small>1</small></li>
-  
-    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
-  
-    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/categories/Linux/">Linux</a><small>18</small></li>
-  
-    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
-  
-    <li><a href="/categories/Python/">Python</a><small>2</small></li>
-  
-    <li><a href="/categories/Redis/">Redis</a><small>3</small></li>
-  
-    <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">标签</h3>
-  <ul class="entry">
-  
-    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/tags/Linux/">Linux</a><small>4</small></li>
-  
-    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
-  
-    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
-  
-    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
-  
-    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
-  
-    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
-  
-    <li><a href="/tags/Python/">Python</a><small>1</small></li>
-  
-    <li><a href="/tags/Redis/">Redis</a><small>1</small></li>
-  
-    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
-  
-    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
-  
-    <li><a href="/tags/cat/">cat</a><small>1</small></li>
-  
-    <li><a href="/tags/elk/">elk</a><small>1</small></li>
-  
-    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
-  
-    <li><a href="/tags/git/">git</a><small>1</small></li>
-  
-    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
-  
-    <li><a href="/tags/https/">https</a><small>1</small></li>
-  
-    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
-  
-    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
-  
-    <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
-  
-    <li><a href="/tags/redis/">redis</a><small>2</small></li>
-  
-    <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
-  
-    <li><a href="/tags/shell/">shell</a><small>1</small></li>
-  
-    <li><a href="/tags/srs/">srs</a><small>1</small></li>
-  
-    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
-  
-    <li><a href="/tags/yum/">yum</a><small>1</small></li>
-  
-    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
-  
-    <li><a href="/tags/买房/">买房</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
-  <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a> <a href="/tags/买房/" style="font-size: 10px;">买房</a>
-  </div>
-</div>
-
-
-  
-  <div class="widget tag">
-    <h3 class="title">友情链接</h3>
-      <ul class="entry">
-        
-          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
-        
-          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
-        
-          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
         
       </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://static.zkqiang.cn/images/20200307203002.jpg-slim') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-md">
+        <div class="py-5" id="board"
+          style=margin-top:0>
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/08/11/2016-08-11-kafka-install-manual/">Kafka操作小结</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/08/11/2016-08-11-kafka-install-manual/">
+          
+          
+            
+          
+          Kafka操作小结kafka依赖zookeeper，所以要先安装zookeeper。
+下载安装包省略，解压即可食用，方便快捷
+zookeeper安装1、zoo.cfg参数解释dataDir：数据目录
+dataLogDir：日志目录
+clientPort：客户端连接端口
+tickTime：Zookeeper 服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个 tickTime 时间就会发送
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-08-11 00:00" pubdate>
+              2016-08-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Kafka/">Kafka</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Kafka/">Kafka</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/08/06/2016-08-06-discuz-install/">Discuz! X3.2 安装问题小记</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/08/06/2016-08-06-discuz-install/">
+          
+          
+            
+          
+          Discuz 安装本来很简单，但是由于不熟悉和本身代码的问题，花了快一天才解决。现在将问题罗列如下：
+Can’t connect to local MySQL server through socketmysqli_connect() 不支持 advice_mysqli_connect
+Discuz 安装完成后，后台打开Ucenter出现404
+头像上传不能成功
+Can’t connect to 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-08-06 00:00" pubdate>
+              2016-08-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Linux/">Linux</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/07/01/2016-07-01-anemometer-slow-log/">Anemometer 展示示MySQL慢查询日志</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/07/01/2016-07-01-anemometer-slow-log/">
+          
+          
+            
+          
+          安装部署nginx,mysql,php环境可参考博客其他文章Anemometer部署过程参考官网Quickstart
+问题小结配置多个数据源，只是指定不同db即可。
+
+$conf['datasources']['192.168.1.87'] = array(
+        'host'  => '192.168.1.87',
+        'port'  => 3306,
+        'd
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-07-01 00:00" pubdate>
+              2016-07-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/05/22/2016-05-22-shell-common-ops-01/">Shell常用命令</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/05/22/2016-05-22-shell-common-ops-01/">
+          
+          
+            
+          
+          1、防止rm,mv惨案，环境变量添加/etc/profile
+alias rm&#x3D;&#39;rm -i&#39;
+alias mv&#x3D;&#39;mv -i&#39;
+alias vi&#x3D;&#39;vim&#39;
+alias cp&#x3D;&#39;cp -i&#39;
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-05-22 00:00" pubdate>
+              2016-05-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Shell/">Shell</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2015/11/21/2015-11-21-mysql-stu03/">MySQL5.7模拟role，5.6添加审计功能,SSL连接，多实例</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2015/11/21/2015-11-21-mysql-stu03/">
+          
+          
+            
+          
+          mysql5.7可以模拟role1、创建tom，junior_dba用户2、将tom加入grant proxy on 'junior_dba'@'localhost' to 'tom'@'localhost';3、授予junior_dba权限后，tom将拥有和junior_dba相同的权限。grant select on *.* to 'junior_dba'@'localhost';4、登陆测试
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2015-11-21 00:00" pubdate>
+              2015-11-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2015/11/16/2015-11-16-mysql-stu02/">MySQL安装升级</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2015/11/16/2015-11-16-mysql-stu02/">
+          
+          
+            
+          
+          mysql dba应该关注的网站http://www.mysql.com/mysql包的生命周期 Milestone Release(MR)>Release Candidate(RC) 
+>Generally Avaialble(GA)>Archived Version
+为什么推荐选择MySQL官方版本Oracle MySQL，Percona, MariaDB,Drizzle 推荐级别由前到后。O
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2015-11-16 00:00" pubdate>
+              2015-11-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2015/11/10/2015-11-10-my-cnf-note/">my.cnf配置文件注释</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2015/11/10/2015-11-10-my-cnf-note/">
+          
+          
+            
+          
+          MySQL 5.6 &amp; 5.7最优配置文件模板http://www.innomysql.net/article/21730.html
+my.cnf配置文件注释[client]
+user=root
+password=root
+default-character-set=utf8mb4
+
+[mysqld]
+########basic settings########
+server-id = 1
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2015-11-10 00:00" pubdate>
+              2015-11-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2015/07/07/2015-07-07-iptables-notes/">iptables notes</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2015/07/07/2015-07-07-iptables-notes/">
+          
+          
+            
+          
+          链INPUT：位于filter表，匹配目的ip是本机的数据包
+FORWARD： 位于filter表，匹配穿越本机的数据包
+PREROUTING： 位于 nat 表，用于修改目的地址（DNAT）
+POSTROUTING：位于 nat 表，用于修改源地址（SNAT）
+OUTPUT：位于filter表，匹配源ip是本机的数据包
+清空iptables -F 清空所有规则链(谨慎用，尤其是默认策略是DROP
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2015-07-07 00:00" pubdate>
+              2015-07-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Linux/">Linux</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2015/06/12/2015-06-12-mysql-partition/">mysql表分区基础</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2015/06/12/2015-06-12-mysql-partition/">
+          
+          
+            
+          
+          表结构文件.frm  表结构文件
+.par  partition申明一个分区表
+.ibd  数据索引文件   innodb引擎表
+
+.MYD  数据文件       myisam表数据文件
+.MYI  索引文件       myisam表索引文件
+
+Myisam 存储引擎，它默认使用独立表空间
+InnoDB 存储引擎，默认使用共享表空间,默认存到ibdata1
+
+查看表空间设置 
+SHOW VAR
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2015-06-12 00:00" pubdate>
+              2015-06-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2015/06/09/2015-06-09-mysql-stu01/">mysql学习笔记之一</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2015/06/09/2015-06-09-mysql-stu01/">
+          
+          
+            
+          
+          下载mysql安装包http://downloads.mysql.com/archives/community/
+RPM Bundle
+MySQL-client-5.6.16-1.el6.x86_64.rpm  客户端      
+MySQL-server-5.6.16-1.el6.x86_64.rpm  服务端
+MySQL-devel-5.6.16-1.el6.x86_64.rpm 库和头文件
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2015-06-09 00:00" pubdate>
+              2015-06-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
   </div>
 
 
-</aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-</script>
-<div class="aligncenter">
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
   
-  Copyright &copy; 2019  Lyln
-   | 
-  <span id="busuanzi_container_site_pv">
-    本站总访问量<span id="busuanzi_value_site_pv"></span>次
-  </span>
-  &nbsp <a href="/atom.xml">RSS</a>
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="clearfix"></div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://inshub.cn/" target="_blank" rel="nofollow noopener">
+        <span>lyln</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
 </footer>
-  <!--
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
--->
-<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
 
 
-<script type="text/javascript">
-var disqus_shortname = 'lyln';
-
-(function(){
-  var dsq = document.createElement('script');
-  dsq.type = 'text/javascript';
-  dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-}());
-</script>
+  
+    <script  src="/js/lazyload.js" ></script>
+  
 
 
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
+  
+    
+  
 
 
-<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
-<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
-</div>
 
-<script src="/js/backtop.js"></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "一个记录成长的博客&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
-
-<!-- click bloom -->
-<script type="application/x-javascript" src="/js/mo.min.js"></script>
-<script type="text/javascript" src="/js/loading.mo.js"></script> 

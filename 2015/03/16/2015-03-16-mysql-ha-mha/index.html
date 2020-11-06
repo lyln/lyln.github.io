@@ -1,114 +1,230 @@
-<!DOCTYPE HTML>
-<html>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;light&#34;>
+
+
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>MySQL MHA高可用方案 | 落影流年</title>
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
   <meta name="author" content="Lyln">
-  
-  <meta name="description" content="概述mha是用perl写的一套MySql故障切换方案，保证数据库系统的高可用。支持在线切换，从当前运行master到新master只需很短时间（0.5-2s内），此时仅仅阻塞写操作，并不影响读操作。
-环境部署MHA要求一个复制集群中必须至少三台数据库
-实验环境（RHEL release 5.9）
+  <meta name="keywords" content="">
+  <title>MySQL MHA高可用方案 - 落影流年</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
 
-
-服务器
-IP
-备注
-
-
-
-
-主服务器
-10.16.34.208
-
-
-
-从服务器
-10.16.34.201
-主备份、管理节点
-
-
-从服务器
-10.16.34.194">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <meta property="og:title" content="MySQL MHA高可用方案"/>
-  <meta property="og:site_name" content="落影流年"/>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
 
   
-    <meta property="og:image" content=""/>
+    
+    
+      
+      
+        
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/prism/1.21.0/themes/prism.min.css" />
+      
+    
   
 
-  <link href="/favicon.png" rel="icon">
-  <link rel="alternate" href="/atom.xml" title="落影流年" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   
 
-  <script>
-	(function() {
-	    var OriginTitile = document.title, titleTime;
-	    document.addEventListener('visibilitychange', function() {
-		if (document.hidden) {
-		    document.title = '死鬼去哪里了！';
-		    clearTimeout(titleTime);
-		} else {
-		    document.title = '(つェ⊂)咦!又好了!';
-		    titleTime = setTimeout(function() {
-			document.title = OriginTitile;
-		    },2000);
-		}
-	    });
-	})();
- </script>
-</head>
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
 
 
-<!-- add Fork me on Github -->
 
-<a href="https://github.com/lyln"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
 
 <body>
-  <header id="header" class="inner"><div class="alignleft">
-  <h1><a href="/">落影流年</a></h1>
-  <h2><a href="/"></a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">Home</a></li>
-    
-      <li><a href="/archives">Archives</a></li>
-    
-      <li><a href="/about">About</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>落影流年</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
 </nav>
-<div class="clearfix"></div>
-</header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
-<article class="post">
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://static.zkqiang.cn/images/20190728030406.jpeg-slim') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
   
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-03-15T16:00:00.000Z"><a href="/2015/03/16/2015-03-16-mysql-ha-mha/">2015-03-16</a></time>
-      
-      
   
-    <h1 class="title">MySQL MHA高可用方案</h1>
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2015-03-16 00:00" pubdate>
+        2015年3月16日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      810 字
+    </span>
   
 
-    </header>
-    <div class="entry">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
       
-        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>mha是用perl写的一套MySql故障切换方案，保证数据库系统的高可用。支持在线切换，从当前运行master到新master只需很短时间（0.5-2s内），此时仅仅阻塞写操作，并不影响读操作。</p>
+      
+      13
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">MySQL MHA高可用方案</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>mha是用perl写的一套MySql故障切换方案，保证数据库系统的高可用。支持在线切换，从当前运行master到新master只需很短时间（0.5-2s内），此时仅仅阻塞写操作，并不影响读操作。</p>
 <h3 id="环境部署"><a href="#环境部署" class="headerlink" title="环境部署"></a>环境部署</h3><p>MHA要求一个复制集群中必须至少三台数据库</p>
 <p>实验环境（RHEL release 5.9）</p>
 <table>
@@ -137,268 +253,337 @@ IP
 </tbody>
 </table>
 <a id="more"></a>
-<h3 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">（略）</div></pre></td></tr></table></figure>
-<h3 id="安装mha-node节点"><a href="#安装mha-node节点" class="headerlink" title="安装mha node节点"></a>安装mha node节点</h3><p>三台机器都安装mha node节点,所需安装包在packages文件夹中。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">shell&gt; rpm -ivh  mha4mysql-node-0.56-0.el5.noarch.rpm</div></pre></td></tr></table></figure></p>
-<h3 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">1、在master上授权</div><div class="line"> grant replication slave on _._ to &apos;repl&apos;@&apos;10.16.34.%&apos; identified by &apos;1234&apos;;</div><div class="line">flush privileges;</div><div class="line">查看权限</div><div class="line">show grants for &apos;repl&apos;@&apos;10.16.34.%&apos;;</div></pre></td></tr></table></figure>
+<h3 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h3><pre class="language-none"><code class="language-none">（略）</code></pre>
+<h3 id="安装mha-node节点"><a href="#安装mha-node节点" class="headerlink" title="安装mha node节点"></a>安装mha node节点</h3><p>三台机器都安装mha node节点,所需安装包在packages文件夹中。<br><pre class="language-none"><code class="language-none">shell&gt; rpm -ivh  mha4mysql-node-0.56-0.el5.noarch.rpm</code></pre></p>
+<h3 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h3><pre class="language-none"><code class="language-none">1、在master上授权
+ grant replication slave on _._ to &#39;repl&#39;@&#39;10.16.34.%&#39; identified by &#39;1234&#39;;
+flush privileges;
+查看权限
+show grants for &#39;repl&#39;@&#39;10.16.34.%&#39;;</code></pre>
 <h4 id="tips"><a href="#tips" class="headerlink" title="tips"></a>tips</h4><p>授权必须<em>.</em> ,luck.* 报错ERROR 1221 (HY000): Incorrect usage of DB GRANT and GLOBAL PRIVILEGES</p>
-<p>2、修改my.cnf(三台同时修改)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">binlog-do-db=luck</div><div class="line">binlog-ignore-db=mysql</div><div class="line">server-id = 1 从库自增</div><div class="line"></div><div class="line">show master status \G;</div><div class="line">File: mysql-bin.000004</div><div class="line">      Position: 107</div></pre></td></tr></table></figure></p>
-<p>3、在slave上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">change master to</div><div class="line">     master_host=&apos;10.16.34.208&apos;,</div><div class="line">     master_user=&apos;repl&apos;,</div><div class="line">     master_password=&apos;1234&apos;,</div><div class="line">     master_log_file=&apos;mysql-bin.000004&apos;,</div><div class="line">     master_log_pos=107;</div><div class="line">start slave ;</div><div class="line">show slave status \G;</div><div class="line">如果</div><div class="line">Slave_IO_Running: Yes</div><div class="line">Slave_SQL_Running: Yes</div><div class="line">说明主从ok</div></pre></td></tr></table></figure></p>
+<p>2、修改my.cnf(三台同时修改)<br><pre class="language-none"><code class="language-none">binlog-do-db&#x3D;luck
+binlog-ignore-db&#x3D;mysql
+server-id &#x3D; 1 从库自增
+
+show master status \G;
+File: mysql-bin.000004
+      Position: 107</code></pre></p>
+<p>3、在slave上<br><pre class="language-none"><code class="language-none">change master to
+     master_host&#x3D;&#39;10.16.34.208&#39;,
+     master_user&#x3D;&#39;repl&#39;,
+     master_password&#x3D;&#39;1234&#39;,
+     master_log_file&#x3D;&#39;mysql-bin.000004&#39;,
+     master_log_pos&#x3D;107;
+start slave ;
+show slave status \G;
+如果
+Slave_IO_Running: Yes
+Slave_SQL_Running: Yes
+说明主从ok</code></pre></p>
 <h4 id="tips-1"><a href="#tips-1" class="headerlink" title="tips"></a>tips</h4><p>如果Slave_SQL_Running为NO，说明很可能是从库与主库的数据不一致。</p>
-<h3 id="安装管理节点"><a href="#安装管理节点" class="headerlink" title="安装管理节点"></a>安装管理节点</h3><p>1、安装manager<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">shell&gt; rpm -ivh perl-DBD-MySQL</div><div class="line">shell&gt; rpm -ivh perl-Config-Tiny</div><div class="line">shell&gt; rpm -ivh perl-Log-Dispatch</div><div class="line">shell&gt; rpm -ivh perl-Parallel-ForkManager</div><div class="line">shell&gt; rpm -ivh mha4mysql-manager-0.56-0.el5.noarch.rpm</div></pre></td></tr></table></figure></p>
-<p>2、修改/etc/masterha_app.cnf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[server default]</div><div class="line">user=root</div><div class="line">password=12345678</div><div class="line">ssh_user=root</div><div class="line">manager_workdir=/var/log/masterha/application</div><div class="line">manager_log=/var/log/masterha/application/app.log</div><div class="line">remote_workdir=/var/log/masterha/application</div><div class="line">master_binlog_dir=/opt/mysql-5.5.17/data/ mysqlbinlog的日志目录</div><div class="line">check_repl_delay=0</div><div class="line">[server_master]</div><div class="line">hostname=10.16.34.208</div><div class="line">candidate_master=1</div><div class="line">[server_slave1]</div><div class="line">hostname=10.16.34.201</div><div class="line">candidate_master=1</div><div class="line">[server_slave2]</div><div class="line">hostname=10.16.34.194</div><div class="line">no_master=1</div><div class="line">3、设置从为只读</div><div class="line">set global read_only=1;</div><div class="line">show variables like &apos;read_only&apos;;</div><div class="line">4、设置主机和其他从机位relay_log_purge：</div><div class="line">set global relay_log_purge=0;</div><div class="line">show variables like &apos;relay_log_purge&apos;;</div></pre></td></tr></table></figure></p>
-<h3 id="MHA常用命令"><a href="#MHA常用命令" class="headerlink" title="MHA常用命令"></a>MHA常用命令</h3><p>启动mha<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">masterha_manager --conf=/etc/masterha_app.cnf</div><div class="line">nohup masterha_manager --conf=/etc/masterha_app.cnf  &gt; /var/log/masterha/master.log 2&amp;1</div></pre></td></tr></table></figure></p>
-<p>查看mha状态<br>masterha_check_ssh –conf=/etc/masterha_app.cnf<br><img src="https://cloud.githubusercontent.com/assets/5628396/6664313/830f3b30-cc09-11e4-9c78-44a14d49ecda.png" alt="check_ssh"></p>
-<p>masterha_check_repl –conf=/etc/masterha_app.cnf<br><img src="https://cloud.githubusercontent.com/assets/5628396/6664319/9187ce8e-cc09-11e4-83e3-5b3696475c34.png" alt="check_repl"></p>
-<p>masterha_check_status –conf=/etc/masterha_app.cnf<br><img src="https://cloud.githubusercontent.com/assets/5628396/6664324/9b866166-cc09-11e4-9294-ec90cf3560f5.png" alt="check_status"></p>
-<p>masterha_app is stopped(2:NOT_RUNNING). #没有启动成功<br>masterha_app (pid:23141) is running(0:PING_OK), master:10.16.34.208 。 good nice!!!<br>停止mha<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">masterha_stop --conf=/etc/masterha_app.cnf</div></pre></td></tr></table></figure></p>
-<h4 id="tips-2"><a href="#tips-2" class="headerlink" title="tips"></a>tips</h4><p>1、rpm -ivh perl-DBD-MySQL-4.014-1.el5.rfx.x86_64.rpm<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">libmysqlclient.so.15()(64bit) is needed by perl-DBD-MySQL-4.022-1.el5.rfx.x86_64</div></pre></td></tr></table></figure></p>
-<p>2、MySQL Replication Health is NOT OK!<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">grant all privileges  on _._ to &apos;root&apos;@&apos;10.16.34.201&apos; identified by &apos;12345678&apos;; 这样权限会有问题</div><div class="line">这样ok。</div><div class="line">grant all privileges  on _._ to *\* &apos;root&apos;@&apos;10.16.34.%&apos; *\* identified by &apos;12345678&apos;;</div><div class="line">flush privileges;</div><div class="line">查看权限</div><div class="line">select user,host,password from mysql.user;</div></pre></td></tr></table></figure></p>
-<p>3、Can’t exec “mysqlbinlog”:没有那个文件或目录 at /usr/share/perl5/vendor_perl/MHA/BinlogManager.pm line 106.<br>mysqlbinlog version command failed with rc 1:0, please verify PATH, LD_LIBRARY_PATH, and client options<br>at /usr/bin/apply_diff_relay_logs line 493<br>处理办法：<br>在所有节点上执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">which mysqlbinlog;    --/mysql/bin/mysqlbinlog</div><div class="line">ln -s /mysql/bin/mysqlbinlog /usr/bin/mysqlbinlog</div></pre></td></tr></table></figure></p>
+<h3 id="安装管理节点"><a href="#安装管理节点" class="headerlink" title="安装管理节点"></a>安装管理节点</h3><p>1、安装manager<br><pre class="language-none"><code class="language-none">shell&gt; rpm -ivh perl-DBD-MySQL
+shell&gt; rpm -ivh perl-Config-Tiny
+shell&gt; rpm -ivh perl-Log-Dispatch
+shell&gt; rpm -ivh perl-Parallel-ForkManager
+shell&gt; rpm -ivh mha4mysql-manager-0.56-0.el5.noarch.rpm</code></pre><br>2、修改/etc/masterha_app.cnf<br><pre class="language-none"><code class="language-none">[server default]
+user&#x3D;root
+password&#x3D;12345678
+ssh_user&#x3D;root
+manager_workdir&#x3D;&#x2F;var&#x2F;log&#x2F;masterha&#x2F;application
+manager_log&#x3D;&#x2F;var&#x2F;log&#x2F;masterha&#x2F;application&#x2F;app.log
+remote_workdir&#x3D;&#x2F;var&#x2F;log&#x2F;masterha&#x2F;application
+master_binlog_dir&#x3D;&#x2F;opt&#x2F;mysql-5.5.17&#x2F;data&#x2F; mysqlbinlog的日志目录
+check_repl_delay&#x3D;0
+[server_master]
+hostname&#x3D;10.16.34.208
+candidate_master&#x3D;1
+[server_slave1]
+hostname&#x3D;10.16.34.201
+candidate_master&#x3D;1
+[server_slave2]
+hostname&#x3D;10.16.34.194
+no_master&#x3D;1
+3、设置从为只读
+set global read_only&#x3D;1;
+show variables like &#39;read_only&#39;;
+4、设置主机和其他从机位relay_log_purge：
+set global relay_log_purge&#x3D;0;
+show variables like &#39;relay_log_purge&#39;;
+</code></pre></p>
+<h3 id="MHA常用命令"><a href="#MHA常用命令" class="headerlink" title="MHA常用命令"></a>MHA常用命令</h3><p>启动mha<br><pre class="language-none"><code class="language-none">masterha_manager --conf&#x3D;&#x2F;etc&#x2F;masterha_app.cnf
+nohup masterha_manager --conf&#x3D;&#x2F;etc&#x2F;masterha_app.cnf  &gt; &#x2F;var&#x2F;log&#x2F;masterha&#x2F;master.log 2&amp;1</code></pre><br>查看mha状态<br>masterha_check_ssh –conf=/etc/masterha_app.cnf<br><img src="https://cloud.githubusercontent.com/assets/5628396/6664313/830f3b30-cc09-11e4-9c78-44a14d49ecda.png" srcset="/img/loading.gif" alt="check_ssh"></p>
+<p>masterha_check_repl –conf=/etc/masterha_app.cnf<br><img src="https://cloud.githubusercontent.com/assets/5628396/6664319/9187ce8e-cc09-11e4-83e3-5b3696475c34.png" srcset="/img/loading.gif" alt="check_repl"></p>
+<p>masterha_check_status –conf=/etc/masterha_app.cnf<br><img src="https://cloud.githubusercontent.com/assets/5628396/6664324/9b866166-cc09-11e4-9294-ec90cf3560f5.png" srcset="/img/loading.gif" alt="check_status"></p>
+<p>masterha_app is stopped(2:NOT_RUNNING). #没有启动成功<br>masterha_app (pid:23141) is running(0:PING_OK), master:10.16.34.208 。 good nice!!!<br>停止mha<br><pre class="language-none"><code class="language-none">masterha_stop --conf&#x3D;&#x2F;etc&#x2F;masterha_app.cnf</code></pre></p>
+<h4 id="tips-2"><a href="#tips-2" class="headerlink" title="tips"></a>tips</h4><p>1、rpm -ivh perl-DBD-MySQL-4.014-1.el5.rfx.x86_64.rpm<br><pre class="language-none"><code class="language-none">libmysqlclient.so.15()(64bit) is needed by perl-DBD-MySQL-4.022-1.el5.rfx.x86_64</code></pre><br>2、MySQL Replication Health is NOT OK!<br><pre class="language-none"><code class="language-none">grant all privileges  on _._ to &#39;root&#39;@&#39;10.16.34.201&#39; identified by &#39;12345678&#39;; 这样权限会有问题
+这样ok。
+grant all privileges  on _._ to *\* &#39;root&#39;@&#39;10.16.34.%&#39; *\* identified by &#39;12345678&#39;;
+flush privileges;
+查看权限
+select user,host,password from mysql.user;</code></pre><br>3、Can’t exec “mysqlbinlog”:没有那个文件或目录 at /usr/share/perl5/vendor_perl/MHA/BinlogManager.pm line 106.<br>mysqlbinlog version command failed with rc 1:0, please verify PATH, LD_LIBRARY_PATH, and client options<br>at /usr/bin/apply_diff_relay_logs line 493<br>处理办法：<br>在所有节点上执行<br><pre class="language-none"><code class="language-none">which mysqlbinlog;    --&#x2F;mysql&#x2F;bin&#x2F;mysqlbinlog
+ln -s &#x2F;mysql&#x2F;bin&#x2F;mysqlbinlog &#x2F;usr&#x2F;bin&#x2F;mysqlbinlog</code></pre></p>
 
-      
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/MySQL/">MySQL</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2015/05/15/2015-05-15-python-help/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">python小技巧</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2014/08/27/2014-08-27-mysql-common-ops/">
+                        <span class="hidden-mobile">MySQL常用操作</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
     </div>
-    <footer>
-      
-        
-  
-  <div class="categories">
-    <a href="/categories/MySQL/">MySQL</a>
-  </div>
-
-        
-  
-  <div class="tags">
-    <a href="/tags/MySQL/">MySQL</a>
-  </div>
-
-        
-  <div class="addthis addthis_toolbox addthis_default_style">
     
-      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-    
-    
-      <a class="addthis_button_tweet"></a>
-    
-    
-      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-    
-    
-      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
-    
-    <a class="addthis_counter addthis_pill_style"></a>
-  </div>
-  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
-
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-<section id="comment">
-  <h1 class="title">留言</h1>
-
-  
-  <div id="disqus_thread">
-    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-  </div>
-  
-</section>
-
-
-
-
-<!--
-<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
-<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
 </div>
 
-<script src="/js/backtop.js"></script>
--->
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="搜索">
-    <input type="hidden" name="q" value="site:www.wiredtiger.org">
-  </form>
-</div>
-
-  
-<div class="widget tag">
-  <h3 class="title">分类</h3>
-  <ul class="entry">
-  
-    <li><a href="/categories/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/categories/House/">House</a><small>1</small></li>
-  
-    <li><a href="/categories/K8S/">K8S</a><small>1</small></li>
-  
-    <li><a href="/categories/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/categories/Linux/">Linux</a><small>18</small></li>
-  
-    <li><a href="/categories/MySQL/">MySQL</a><small>13</small></li>
-  
-    <li><a href="/categories/Python/">Python</a><small>2</small></li>
-  
-    <li><a href="/categories/Redis/">Redis</a><small>3</small></li>
-  
-    <li><a href="/categories/elastic/">elastic</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tag">
-  <h3 class="title">标签</h3>
-  <ul class="entry">
-  
-    <li><a href="/tags/Docker/">Docker</a><small>1</small></li>
-  
-    <li><a href="/tags/Kafka/">Kafka</a><small>1</small></li>
-  
-    <li><a href="/tags/Linux/">Linux</a><small>4</small></li>
-  
-    <li><a href="/tags/MySQL/">MySQL</a><small>9</small></li>
-  
-    <li><a href="/tags/MySQL笔记/">MySQL笔记</a><small>2</small></li>
-  
-    <li><a href="/tags/Nexus/">Nexus</a><small>1</small></li>
-  
-    <li><a href="/tags/Percona-Toolkit/">Percona Toolkit</a><small>1</small></li>
-  
-    <li><a href="/tags/PostgreSQL/">PostgreSQL</a><small>1</small></li>
-  
-    <li><a href="/tags/Python/">Python</a><small>1</small></li>
-  
-    <li><a href="/tags/Redis/">Redis</a><small>1</small></li>
-  
-    <li><a href="/tags/Shell/">Shell</a><small>1</small></li>
-  
-    <li><a href="/tags/Smokeping/">Smokeping</a><small>1</small></li>
-  
-    <li><a href="/tags/cat/">cat</a><small>1</small></li>
-  
-    <li><a href="/tags/elk/">elk</a><small>1</small></li>
-  
-    <li><a href="/tags/ffmpeg/">ffmpeg</a><small>1</small></li>
-  
-    <li><a href="/tags/git/">git</a><small>1</small></li>
-  
-    <li><a href="/tags/grafana-influxdb/">grafana influxdb</a><small>1</small></li>
-  
-    <li><a href="/tags/https/">https</a><small>1</small></li>
-  
-    <li><a href="/tags/kubernetes/">kubernetes</a><small>1</small></li>
-  
-    <li><a href="/tags/nginx/">nginx</a><small>1</small></li>
-  
-    <li><a href="/tags/pyenv/">pyenv</a><small>1</small></li>
-  
-    <li><a href="/tags/redis/">redis</a><small>2</small></li>
-  
-    <li><a href="/tags/rmt/">rmt</a><small>1</small></li>
-  
-    <li><a href="/tags/shell/">shell</a><small>1</small></li>
-  
-    <li><a href="/tags/srs/">srs</a><small>1</small></li>
-  
-    <li><a href="/tags/supervisor/">supervisor</a><small>1</small></li>
-  
-    <li><a href="/tags/yum/">yum</a><small>1</small></li>
-  
-    <li><a href="/tags/zabbix/">zabbix</a><small>1</small></li>
-  
-    <li><a href="/tags/买房/">买房</a><small>1</small></li>
-  
-  </ul>
-</div>
-
-
-  
-<div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
-  <div class="entry">
-    <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Kafka/" style="font-size: 10px;">Kafka</a> <a href="/tags/Linux/" style="font-size: 16.67px;">Linux</a> <a href="/tags/MySQL/" style="font-size: 20px;">MySQL</a> <a href="/tags/MySQL笔记/" style="font-size: 13.33px;">MySQL笔记</a> <a href="/tags/Nexus/" style="font-size: 10px;">Nexus</a> <a href="/tags/Percona-Toolkit/" style="font-size: 10px;">Percona Toolkit</a> <a href="/tags/PostgreSQL/" style="font-size: 10px;">PostgreSQL</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/Redis/" style="font-size: 10px;">Redis</a> <a href="/tags/Shell/" style="font-size: 10px;">Shell</a> <a href="/tags/Smokeping/" style="font-size: 10px;">Smokeping</a> <a href="/tags/cat/" style="font-size: 10px;">cat</a> <a href="/tags/elk/" style="font-size: 10px;">elk</a> <a href="/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/grafana-influxdb/" style="font-size: 10px;">grafana influxdb</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/pyenv/" style="font-size: 10px;">pyenv</a> <a href="/tags/redis/" style="font-size: 13.33px;">redis</a> <a href="/tags/rmt/" style="font-size: 10px;">rmt</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/srs/" style="font-size: 10px;">srs</a> <a href="/tags/supervisor/" style="font-size: 10px;">supervisor</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/zabbix/" style="font-size: 10px;">zabbix</a> <a href="/tags/买房/" style="font-size: 10px;">买房</a>
+      </div>
+    
   </div>
 </div>
 
+<!-- Custom -->
+
+
+    
+  </main>
 
   
-  <div class="widget tag">
-    <h3 class="title">友情链接</h3>
-      <ul class="entry">
-        
-          <li class='link'><a href='https://m.wiredtiger.org/'>落影流年</a></li>
-        
-          <li class='link'><a href='http://jerkybible.com/'>行走的轮子</a></li>
-        
-          <li class='link'><a href='http://lqcode.com/'>字里行间</a></li>
-        
-      </ul>
-  </div>
-
-
-</aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"> <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-</script>
-<div class="aligncenter">
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
   
-  Copyright &copy; 2019  Lyln
-   | 
-  <span id="busuanzi_container_site_pv">
-    本站总访问量<span id="busuanzi_value_site_pv"></span>次
-  </span>
-  &nbsp <a href="/atom.xml">RSS</a>
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="clearfix"></div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://inshub.cn/" target="_blank" rel="nofollow noopener">
+        <span>lyln</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
 </footer>
-  <!--
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
--->
-<script src="//lib.sinaapp.com/js/jquery/2.0.3/jquery-2.0.3.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
 
 
-<script type="text/javascript">
-var disqus_shortname = 'lyln';
-
-(function(){
-  var dsq = document.createElement('script');
-  dsq.type = 'text/javascript';
-  dsq.async = true;
-  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-}());
-</script>
+  
+    <script  src="/js/lazyload.js" ></script>
+  
 
 
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
+  
+    
+  
 
 
-<div id="totop" style="position:fixed;bottom:10px;right:10px;cursor: pointer;">
-<a title="返回顶部"><img src="/img/back_to_top.png"/></a>
-</div>
 
-<script src="/js/backtop.js"></script>
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "MySQL MHA高可用方案&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
-
-<!-- click bloom -->
-<script type="application/x-javascript" src="/js/mo.min.js"></script>
-<script type="text/javascript" src="/js/loading.mo.js"></script> 
