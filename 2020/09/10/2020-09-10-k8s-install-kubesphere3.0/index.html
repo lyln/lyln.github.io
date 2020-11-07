@@ -275,7 +275,7 @@ kubectl rollout restart deploy -n kubesphere-system ks-installer
 重新安装把status里servicemesh的status删掉，然后重启下ks-installer
 kubectl edit cc -n kubesphere-system ks-installer
 </code></pre>
-<p>查看所有pod正常运行后<br><img src="https://wx4.sinaimg.cn/large/005yWAylly1gkfbaoia8dj319o0jv75b.jpg" srcset="/img/loading.gif" alt="kubesphere登陆界面"><br>默认用户/密码<br><pre class="language-none"><code class="language-none">admin&#x2F;P@88w0rd</code></pre><br><img src="https://wx1.sinaimg.cn/large/005yWAylly1gkfakr3ca0j31ez0ksgqe.jpg" srcset="/img/loading.gif" alt="kubesphere3.0"></p>
+<p>查看所有pod正常运行后<br><img src="https://wx2.sinaimg.cn/large/005yWAylly1gkfbaoia8dj319o0jv75b.jpg" srcset="/img/loading.gif" alt="kubesphere登陆界面"><br>默认用户/密码<br><pre class="language-none"><code class="language-none">admin&#x2F;P@88w0rd</code></pre><br><img src="https://wx1.sinaimg.cn/large/005yWAylly1gkfakr3ca0j31ez0ksgqe.jpg" srcset="/img/loading.gif" alt="kubesphere3.0"></p>
 <h3 id="强制删除"><a href="#强制删除" class="headerlink" title="强制删除"></a>强制删除</h3><pre class="language-none"><code class="language-none">
 强制删除namespaces
 kubectl  get ns kubesphere-system  -o json &gt; tmp.json
