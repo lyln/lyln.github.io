@@ -2,7 +2,7 @@
 layout: post
 title:  "redis性能分析工具redis-faina"
 categories: Redis
-tags: redis
+tags: redis key分布
 date: 2019/07/07
 ---
 
@@ -90,4 +90,5 @@ Slowest Calls  --- 慢请求列表
 ```
 
 ### notes:
+大概能看出key的分布
 由于redis MONITOR输出的只有请求开始的时间，所以在一个非常繁忙的redis实例中，根据该请求的开始时间以及下一个请求的开始时间，可以大概估算出一个请求的执行时间。由此可以看出，redis-faina统计的时间并不是十分精确的，尤其在分析一个非常闲的redis实例时，分析的结果可能差的很多。

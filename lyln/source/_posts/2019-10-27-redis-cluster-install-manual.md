@@ -2,6 +2,7 @@
 layout: post
 title: "Redis Cluster搭建、扩容、缩容"
 categories: Redis
+index_img: https://wx4.sinaimg.cn/large/005yWAylly1gkfhabg0f3j30d808074f.jpg
 tags: Redis
 date: 2019/10/27
 ---
@@ -102,6 +103,9 @@ CLUSTER getkeysinslot <slot> <count>：源节点循环执行，获取count个属
 逐个迁移：migrate 10.16.76.116 8000 key:test:x1 0 5000 replace
 批量迁移：migrate 10.16.76.116 8000 "" 0 5000 keys key:test:x1 key:test:x2 key:test:x3
 CLUSTER setslot <slot> node <node_id> :通知槽分配给目标节点，node_id (targetNodeId)
+
+cluster setslot <slot> stable
+取消 slot 的导入（import）或者迁移（migrate）。
 ```
 
 

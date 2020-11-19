@@ -3,6 +3,7 @@ layout: post
 title: Prometheus Grafana学习笔记
 categories: Linux
 tags: 监控
+index_img: https://prometheus.io/assets/architecture.png
 date: 2020-03-13 
 ---
 
@@ -137,7 +138,7 @@ server {
 ```
 
 
-### grafana设置免密登录
+### Grafana设置免密登录
 
 ```
 [auth.anonymous]
@@ -145,6 +146,17 @@ enabled = true
 org_name = Main Org.
 org_role = Viewer
 ```
+
+### Grafana设置
+label_values(node_uname_info, job)
+
+instance=~"$node",mode="system"
+
+
+### Grafana添加告警
+
+
+
 
 开启anonymous后，ui Server Admin设置orgs 设置Main Org. 与org_name一致。
 
@@ -159,6 +171,10 @@ BLOCK ULID                  MIN TIME       MAX TIME       NUM SAMPLES  NUM CHUNK
 01E4JAJCEZZRTTQ56CM1C1VKW1  1585447200000  1585454400000  373837607    3112298     783085
 01E4JHE3EKB5252S5060RS88GF  1585454400000  1585461600000  373910606    3114077     783026
 ```
+
+
+
+
 
 ### 参考地址：
 https://prometheus.io/docs/guides/node-exporter/
