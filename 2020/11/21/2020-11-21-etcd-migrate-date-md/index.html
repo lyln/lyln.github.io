@@ -227,7 +227,8 @@
               <h3 id="环境概况"><a href="#环境概况" class="headerlink" title="环境概况"></a>环境概况</h3><pre class="language-none"><code class="language-none">etcdctl version 2.3.7</code></pre>
 <p>最近迁移没人维护的老项目，涉及etcd2 服务的迁移，项目代码没人维护，所以只能平迁到etcd2版本。本来很简单的问题，结果快被整崩溃了。<br>遂记录下迁移过程。</p>
 <p>问题：<br><pre class="language-none"><code class="language-none">etcd[7663]: request cluster ID mismatch (got 75dea77f7702 want bfa24343767ba2e5)
-</code></pre><br>迁移顺序不对就如上错误。<br><img src="https://wx1.sinaimg.cn/large/005yWAylly1gkukxtlkwbj30mn0c9jvz.jpg" srcset="/img/loading.gif" alt="etc2"></p>
+</code></pre><br>迁移顺序不对就如上错误。</p>
+<p><img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/etcd_error.jpg" srcset="/img/loading.gif" alt="etcd_error"></p>
 <h3 id="部署etcd"><a href="#部署etcd" class="headerlink" title="部署etcd"></a>部署etcd</h3><p>部署使用原来k8s 安装etcd服务的ansible脚本，直接部署成功。<br>下面操作需要注意顺序～～～<br>停止集群所有节点etcd服务，清空data-dir目录数据待用。</p>
 <h3 id="备份旧版本数据"><a href="#备份旧版本数据" class="headerlink" title="备份旧版本数据"></a>备份旧版本数据</h3><pre class="language-none"><code class="language-none">.&#x2F;etcdctl backup --data-dir &#x2F;data&#x2F;apps&#x2F;data&#x2F;etcd -backup-dir &#x2F;tmp&#x2F;etcd_backup</code></pre>
 <p>备份成功的数据同步到新部署集群的etcd1节点data-dir数据目录</p>
@@ -291,8 +292,8 @@ INITIAL_CLUSTER_STATE&#x3D;&#39;-initial-cluster-state existing&#39;</code></pre
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/09/10/2020-09-10-k8s-install-kubesphere3.0/">
-                        <span class="hidden-mobile">KubeSphere3.0踩坑指南</span>
+                      <a href="/2020/10/21/2020-10-21-docker-install-develop/">
+                        <span class="hidden-mobile">Docker快速构建测试环境</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

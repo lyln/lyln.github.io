@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Lyln">
   <meta name="keywords" content="">
-  <title>KubeSphere3.0踩坑指南 - 落影流年</title>
+  <title>Docker快速构建测试环境 - 落影流年</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -169,8 +169,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-09-10 00:00" pubdate>
-        2020年9月10日 凌晨
+      <time datetime="2020-10-21 00:00" pubdate>
+        2020年10月21日 凌晨
       </time>
     </span>
   
@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      795 字
+      211 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      3
        分钟
     </span>
   
@@ -221,100 +221,35 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">KubeSphere3.0踩坑指南</h1>
+            <h1 style="display: none">Docker快速构建测试环境</h1>
             
             <div class="markdown-body" id="post-body">
-              <h3 id="环境概况"><a href="#环境概况" class="headerlink" title="环境概况"></a>环境概况</h3><pre class="language-none"><code class="language-none">ansible脚本部署k8s集群
-k8s版本v1.17.11
-helm版本v3.2.1
-默认的 storageclass
+              <p><strong>快速构建各种开发测试环境汇总</strong></p>
+<h4 id="MySQL5-7开发环境"><a href="#MySQL5-7开发环境" class="headerlink" title="MySQL5.7开发环境"></a>MySQL5.7开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run --name<span class="token operator">=</span>my-db -p3306:3306 -d mysql/mysql-server:5.7
+获取临时密码
+docker logs mysql1 <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">|</span> <span class="token function">grep</span> GENERATED
+GENERATED ROOT PASSWORD: Axegh3kAJyDLaRuBemecis<span class="token operator">&amp;</span>EShOs
+docker <span class="token builtin class-name">exec</span> -it my-db mysql -uroot -p
+<span class="token operator">></span> ALTER <span class="token environment constant">USER</span> <span class="token string">'root'</span>@<span class="token string">'localhost'</span> IDENTIFIED BY <span class="token string">'password'</span><span class="token punctuation">;</span>
+<span class="token operator">></span> create user admin@<span class="token string">'%'</span> identified by <span class="token string">'admin123'</span><span class="token punctuation">;</span>
+<span class="token operator">></span> grant all privileges on *.* to admin@'%’<span class="token punctuation">;</span>
+查看创建用户
+<span class="token operator">></span> <span class="token keyword">select</span> user,host,authentication_string from mysql.user<span class="token punctuation">;</span></code></pre>
+<p>参考地址：</p>
+<p><a target="_blank" rel="noopener" href="https://hub.docker.com/r/mysql/mysql-server/">https://hub.docker.com/r/mysql/mysql-server/</a></p>
+<h4 id="Redis开发环境"><a href="#Redis开发环境" class="headerlink" title="Redis开发环境"></a>Redis开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run --name my-redis -p6379:6379 -d redis
 </code></pre>
-<h3 id="部署准备"><a href="#部署准备" class="headerlink" title="部署准备"></a>部署准备</h3><p>helm3安装<br><pre class="language-none"><code class="language-none">下载[helm3](https:&#x2F;&#x2F;get.helm.sh&#x2F;helm-v3.4.0-linux-amd64.tar.gz)
-tar -zxvf helm-v3.4.0-linux-amd64.tar.gz
-mv linux-amd64&#x2F;helm &#x2F;usr&#x2F;local&#x2F;bin&#x2F;helm
-
-查看helm源
-helm repo list
-helm repo add stable http:&#x2F;&#x2F;mirror.azure.cn&#x2F;kubernetes&#x2F;charts
-helm repo add incubator http:&#x2F;&#x2F;mirror.azure.cn&#x2F;kubernetes&#x2F;charts-incubator
-
-
-helm inspect values harbor&#x2F;harbor &gt; values.yaml
-
-helm install harbor harbor&#x2F;harbor -f values.yaml
-
-helm uninstall harbor</code></pre><br><a id="more"></a></p>
-<p>nfs文件共享<br><pre class="language-none"><code class="language-none">yum install nfs-utils
-cat &#x2F;etc&#x2F;exports
-&#x2F;data&#x2F;apps&#x2F;data&#x2F; *(rw,sync,no_root_squash)
-
-#配置生效
-exportfs -r
-#查看生效
-exportfs
-
-showmount  -e
-service nfs start
-</code></pre></p>
-<h3 id="部署nfs默认存储"><a href="#部署nfs默认存储" class="headerlink" title="部署nfs默认存储"></a>部署nfs默认存储</h3><pre class="language-none"><code class="language-none">helm install my-nfs-provisioner --set nfs.server&#x3D;192.168.10.116 --set nfs.path&#x3D;&#x2F;data&#x2F;apps&#x2F;data stable&#x2F;nfs-client-provisioner -n kube-system
-
-改变默认 StorageClass
-kubectl patch storageclass nfs-client -p &#39;&#123;&quot;metadata&quot;: &#123;&quot;annotations&quot;:&#123;&quot;storageclass.kubernetes.io&#x2F;is-default-class&quot;:&quot;true&quot;&#125;&#125;&#125;&#39;</code></pre>
-<h3 id="kubesphere3-0安装"><a href="#kubesphere3-0安装" class="headerlink" title="kubesphere3.0安装"></a>kubesphere3.0安装</h3><pre class="language-none"><code class="language-none">kubesphere-installer.yaml 安装3.0
-cluster-configuration.yaml 3.0组件配置文件
-kubesphere-delete.sh 删除卸载3.0
-
-&#x2F;data&#x2F;apps&#x2F;opt&#x2F;kubesphere
-
-kubectl apply -f kubesphere-installer.yaml
-kubectl apply -f cluster-configuration.yaml
-
-重启安装ks-installer
-kubectl rollout restart deploy -n kubesphere-system ks-installer
-重新安装servicemesh
-重新安装把status里servicemesh的status删掉，然后重启下ks-installer
-kubectl edit cc -n kubesphere-system ks-installer
+<p>参考地址：</p>
+<p><a target="_blank" rel="noopener" href="https://hub.docker.com/_/redis">https://hub.docker.com/_/redis</a></p>
+<h4 id="Nacos开发环境"><a href="#Nacos开发环境" class="headerlink" title="Nacos开发环境"></a>Nacos开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run -e <span class="token assign-left variable">MODE</span><span class="token operator">=</span>standalone -e <span class="token assign-left variable">PREFER_HOST_MODE</span><span class="token operator">=</span>hostname --name my-nacos -p <span class="token number">8848</span>:8848 -d nacos/nacos-server:1.2.1
 </code></pre>
-<p>查看所有pod正常运行后<br><img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/kubesphere-login.png" srcset="/img/loading.gif" alt="kubesphere-login"><br>默认用户/密码</p>
-<pre class="language-none"><code class="language-none">admin&#x2F;P@88w0rd</code></pre>
-<p><img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/kubesphere3.0.png" srcset="/img/loading.gif" alt="kubesphere3.0"></p>
-<h3 id="强制删除"><a href="#强制删除" class="headerlink" title="强制删除"></a>强制删除</h3><pre class="language-none"><code class="language-none">
-强制删除namespaces
-kubectl  get ns kubesphere-system  -o json &gt; tmp.json
-kubectl proxy 
-curl -k -H &quot;Content-Type:application&#x2F;json&quot; -X PUT --data-binary @tmp.json http:&#x2F;&#x2F;127.0.0.1:8001&#x2F;api&#x2F;v1&#x2F;namespaces&#x2F;kubesphere-monitoring-system&#x2F;finalize
+<p>参考地址：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/nacos-group/nacos-docker">https://github.com/nacos-group/nacos-docker</a></p>
+<h4 id="Nginx开发环境"><a href="#Nginx开发环境" class="headerlink" title="Nginx开发环境"></a>Nginx开发环境</h4><pre class="language-none"><code class="language-none">docker run --name my-nginx -d -p 9090:80 nginx
 
-kubectl get ns kubernetes-dashboard -o json | jq &#39;.spec.finalizers&#x3D;[]&#39; | curl -X PUT http:&#x2F;&#x2F;localhost:8001&#x2F;api&#x2F;v1&#x2F;namespaces&#x2F;kube-node-lease&#x2F;finalize -H &quot;Content-Type: application&#x2F;json&quot; --data @-
-
-kubectl get namespace &quot;kube-node-lease&quot; -o json   | tr -d &quot;\n&quot; | sed &quot;s&#x2F;\&quot;finalizers\&quot;: \[[^]]\+\]&#x2F;\&quot;finalizers\&quot;: []&#x2F;&quot;   | kubectl replace --raw &#x2F;api&#x2F;v1&#x2F;namespaces&#x2F;kube-node-lease&#x2F;finalize -f -
-
-
-
-pv&#x2F;pvc强制删除
-
-kubectl patch pvc opspvc  -p &#39;&#123;&quot;metadata&quot;:&#123;&quot;finalizers&quot;:null&#125;&#125;&#39; -n kube-ops
-kubectl patch pvc -n  kubesphere-monitoring-system prometheus-k8s-db-prometheus-k8s-0  -p &#39;&#123;&quot;metadata&quot;:&#123;&quot;finalizers&quot;:null&#125;&#125;&#39;
-
-
-强制删除crds
-kubectl get apiservices
-kubectl get fluentbits.logging.kubesphere.io -n kubesphere-logging-system fluent-bit -o yaml &gt; b.yaml
-修改finalizers: null
-kubectl apply -f b.yaml 即可强制删除。</code></pre>
-<h3 id="helm安装gitlab"><a href="#helm安装gitlab" class="headerlink" title="helm安装gitlab"></a>helm安装gitlab</h3><pre class="language-none"><code class="language-none">helm pull gitlab
-helm install gitlab gitlab-ce&#x2F; -f values.yaml
-kubectl apply -f my-gitlab-com.yaml
-
-卸载gitlab
-helm delete gitlab</code></pre>
-<h3 id="安装harbor"><a href="#安装harbor" class="headerlink" title="安装harbor"></a>安装harbor</h3><p>harbor安装使用docker-compose方式</p>
-<p>docker添加私仓地址<br><pre class="language-none"><code class="language-none">DOCKER_OPTS&#x3D;&quot;--log-level&#x3D;warn --storage-driver&#x3D;overlay2 --userland-proxy&#x3D;false --log-opt max-size&#x3D;1g --log-opt max-file&#x3D;5 --insecure-registry&#x3D;my.harbor.io&quot;</code></pre></p>
-<h3 id="source-to-images"><a href="#source-to-images" class="headerlink" title="source to images"></a>source to images</h3><p>测试从gitlab代码库构建镜像</p>
-<p>目的镜像地址<br><pre class="language-none"><code class="language-none">my.harbor.io&#x2F;s2i&#x2F;s2i-test</code></pre></p>
-<p>参考地址：<a target="_blank" rel="noopener" href="https://v2-1.docs.kubesphere.io/docs/zh-CN/quick-start/source-to-image/">https://v2-1.docs.kubesphere.io/docs/zh-CN/quick-start/source-to-image/</a></p>
-<h3 id="构建流水线"><a href="#构建流水线" class="headerlink" title="构建流水线"></a>构建流水线</h3><p>kubesphere测试使用流水线构建流程<br>参考地址: <a target="_blank" rel="noopener" href="https://v2-1.docs.kubesphere.io/docs/zh-CN/quick-start/devops-online/">https://v2-1.docs.kubesphere.io/docs/zh-CN/quick-start/devops-online/</a></p>
-<p><img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/devops-online.jpg" srcset="/img/loading.gif" alt="devops-online"></p>
-<h3 id="目前问题"><a href="#目前问题" class="headerlink" title="目前问题"></a>目前问题</h3><p>服务治理，流量数据展示有问题，还没有解决。<br>istio版本是1.4.8，其他同学说是可以，可以一起探讨下。</p>
+nginx映射配置
+&#x2F;etc&#x2F;nginx&#x2F;conf.d
+docker run --name my-nginx -v &#x2F;root&#x2F;confd_nginx:&#x2F;etc&#x2F;nginx&#x2F;conf.d -d -p 9090:80 nginx</code></pre>
 
             </div>
             <hr>
@@ -324,7 +259,7 @@ helm delete gitlab</code></pre>
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/K8S/">K8S</a>
+                      <a class="hover-with-bg" href="/categories/Docker/">Docker</a>
                     
                   </div>
                 
@@ -332,7 +267,7 @@ helm delete gitlab</code></pre>
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/kubesphere/">kubesphere</a>
+                      <a class="hover-with-bg" href="/tags/docker-mysql-redis/">docker mysql redis</a>
                     
                   </div>
                 
@@ -345,9 +280,9 @@ helm delete gitlab</code></pre>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/21/2020-10-21-docker-install-develop/">
+                      <a href="/2020/11/21/2020-11-21-etcd-migrate-date-md/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Docker快速构建测试环境</span>
+                        <span class="hidden-mobile">etcd部署及数据迁移</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -355,8 +290,8 @@ helm delete gitlab</code></pre>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/05/10/2020-05-10-tianjinluohu-guide/">
-                        <span class="hidden-mobile">天津海河英才落户指南及注意事项</span>
+                      <a href="/2020/09/10/2020-09-10-k8s-install-kubesphere3.0/">
+                        <span class="hidden-mobile">KubeSphere3.0踩坑指南</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -501,7 +436,7 @@ helm delete gitlab</code></pre>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "KubeSphere3.0踩坑指南&nbsp;",
+        "Docker快速构建测试环境&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
