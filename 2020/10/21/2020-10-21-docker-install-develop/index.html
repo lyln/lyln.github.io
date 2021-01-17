@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      211 字
+      492 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      7
        分钟
     </span>
   
@@ -250,6 +250,29 @@ docker <span class="token builtin class-name">exec</span> -it my-db mysql -uroot
 nginx映射配置
 &#x2F;etc&#x2F;nginx&#x2F;conf.d
 docker run --name my-nginx -v &#x2F;root&#x2F;confd_nginx:&#x2F;etc&#x2F;nginx&#x2F;conf.d -d -p 9090:80 nginx</code></pre>
+<p>参考地址：</p>
+<p><a target="_blank" rel="noopener" href="https://hub.docker.com/_/nginx">https://hub.docker.com/_/nginx</a></p>
+<h4 id="Grafana开发环境"><a href="#Grafana开发环境" class="headerlink" title="Grafana开发环境"></a>Grafana开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run -d --name<span class="token operator">=</span>my-grafana -p <span class="token number">7000</span>:3000 grafana/grafana:7.3.4
+</code></pre>
+<p>参考地址：</p>
+<p><a target="_blank" rel="noopener" href="https://hub.docker.com/r/grafana/grafana">https://hub.docker.com/r/grafana/grafana</a></p>
+<h3 id="Prometheus开发环境"><a href="#Prometheus开发环境" class="headerlink" title="Prometheus开发环境"></a>Prometheus开发环境</h3><pre class="language-none"><code class="language-none">bind-mount the directory containing prometheus.yml onto &#x2F;etc&#x2F;prometheus by running:
+
+docker run -d --name&#x3D;my-prometheus \
+    -p 9090:9090 \
+    -v &#x2F;data&#x2F;apps&#x2F;opt&#x2F;prometheus:&#x2F;etc&#x2F;prometheus \
+    prom&#x2F;prometheus</code></pre>
+<p>参考地址：</p>
+<p><a target="_blank" rel="noopener" href="https://prometheus.io/docs/prometheus/latest/installation/">https://prometheus.io/docs/prometheus/latest/installation/</a></p>
+<h3 id="MinIO-对象存储服务"><a href="#MinIO-对象存储服务" class="headerlink" title="MinIO 对象存储服务"></a>MinIO 对象存储服务</h3><p>MinIO 是一个基于Apache License v2.0开源协议的对象存储服务。它兼容亚马逊S3云存储服务接口，非常适合于存储大容量非结构化的数据，例如图片、视频、日志文件、备份数据和容器/虚拟机镜像等，而一个对象文件可以是任意大小，从几kb到最大5T不等。</p>
+<p>MinIO是一个非常轻量的服务,可以很简单的和其他应用的结合，类似 NodeJS, Redis 或者 MySQL。</p>
+<pre class="language-none"><code class="language-none">docker run --name&#x3D;my-minio -d -p 9000:9000 \
+  -e &quot;MINIO_ACCESS_KEY&#x3D;admin&quot; \
+  -e &quot;MINIO_SECRET_KEY&#x3D;admin123&quot; \
+  -v &#x2F;data&#x2F;apps&#x2F;data&#x2F;:&#x2F;data \
+  minio&#x2F;minio server &#x2F;data </code></pre>
+<p>参考地址：</p>
+<p><a target="_blank" rel="noopener" href="https://docs.min.io/cn/minio-quickstart-guide.html">https://docs.min.io/cn/minio-quickstart-guide.html</a></p>
 
             </div>
             <hr>

@@ -176,6 +176,111 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2016/09/18/2016-09-18-percona-toolkit/">Percona Toolkit使用小结</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/09/18/2016-09-18-percona-toolkit/">
+          
+          
+            
+          
+          Percona Toolkit安装1、下载包2、安装perl Makefile.PL
+make
+make test
+make install
+pt-online-schema-change 在线修改表结构修改表结构前，切记备份！！!pt-osc原理：1、创建一个和要执行 alter 操作的表一样的新的空表结构(是alter之前的结构)2、在新表执行alter table 语句（速度应该很快）3、在
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-09-18 00:00" pubdate>
+              2016-09-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Percona-Toolkit/">Percona Toolkit</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/09/01/2016-09-01-smokeping-nginx-install/">Smokeping nginx 安装小记</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/09/01/2016-09-01-smokeping-nginx-install/">
+          
+          
+            
+          
+          nginx支持cgiaptitude install fcgiwrap
+nginx配置smokeping.conf
+
+server &#123;
+    listen      80;
+    server_name 192.168.1.158;
+    #charset koi8-r;
+    access_log  &#x2F;data&#x2F;log&#x2F;nginx&#x2F;smo
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-09-01 00:00" pubdate>
+              2016-09-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Smokeping/">Smokeping</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2016/08/15/2016-08-15-zabbix-manual-install/">Zabbix 3.0 安装小记</a>
       </h1>
 
@@ -570,118 +675,11 @@ alias cp&#x3D;&#39;cp -i&#39;
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2015/11/10/2015-11-10-my-cnf-note/">my.cnf配置文件注释</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2015/11/10/2015-11-10-my-cnf-note/">
-          
-          
-            
-          
-          MySQL 5.6 &amp; 5.7最优配置文件模板http://www.innomysql.net/article/21730.html
-my.cnf配置文件注释[client]
-user=root
-password=root
-default-character-set=utf8mb4
-
-[mysqld]
-########basic settings########
-server-id = 1
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2015-11-10 00:00" pubdate>
-              2015-11-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/MySQL/">MySQL</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/MySQL/">MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2015/07/07/2015-07-07-iptables-notes/">iptables notes</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2015/07/07/2015-07-07-iptables-notes/">
-          
-          
-            
-          
-          链INPUT：位于filter表，匹配目的ip是本机的数据包
-FORWARD： 位于filter表，匹配穿越本机的数据包
-PREROUTING： 位于 nat 表，用于修改目的地址（DNAT）
-POSTROUTING：位于 nat 表，用于修改源地址（SNAT）
-OUTPUT：位于filter表，匹配源ip是本机的数据包
-清空iptables -F 清空所有规则链(谨慎用，尤其是默认策略是DROP
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2015-07-07 00:00" pubdate>
-              2015-07-07
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Linux/">Linux</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/3/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   

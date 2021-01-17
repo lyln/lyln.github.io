@@ -176,6 +176,113 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2015/11/10/2015-11-10-my-cnf-note/">my.cnf配置文件注释</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2015/11/10/2015-11-10-my-cnf-note/">
+          
+          
+            
+          
+          MySQL 5.6 &amp; 5.7最优配置文件模板http://www.innomysql.net/article/21730.html
+my.cnf配置文件注释[client]
+user=root
+password=root
+default-character-set=utf8mb4
+
+[mysqld]
+########basic settings########
+server-id = 1
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2015-11-10 00:00" pubdate>
+              2015-11-10
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2015/07/07/2015-07-07-iptables-notes/">iptables notes</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2015/07/07/2015-07-07-iptables-notes/">
+          
+          
+            
+          
+          链INPUT：位于filter表，匹配目的ip是本机的数据包
+FORWARD： 位于filter表，匹配穿越本机的数据包
+PREROUTING： 位于 nat 表，用于修改目的地址（DNAT）
+POSTROUTING：位于 nat 表，用于修改源地址（SNAT）
+OUTPUT：位于filter表，匹配源ip是本机的数据包
+清空iptables -F 清空所有规则链(谨慎用，尤其是默认策略是DROP
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2015-07-07 00:00" pubdate>
+              2015-07-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Linux/">Linux</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2015/06/12/2015-06-12-mysql-partition/">mysql表分区基础</a>
       </h1>
 
@@ -592,110 +699,11 @@ SET c.&#96;anchor_user_id&#96;&#x3D;r.&#96;user_id&#96;WHERE c.&#96;room_id&#96;
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2014/08/15/2014-08-15-linux-common-info/">Linux常用查看命令</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2014/08/15/2014-08-15-linux-common-info/">
-          
-          
-            
-          
-          查看外网ipcurl ifconfig.me
-curl ifconfig.sh
-curl ifconfig.co
-查看编译参数1、nginx编译参数&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;sbin&#x2F;nginx -V2、apache编译参数cat &#x2F;usr&#x2F;local&#x2F;apache2&#x2F;build&#x2F;confi
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2014-08-15 00:00" pubdate>
-              2014-08-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Linux/">Linux</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2014/08/14/2014-08-14-git-notes/">Git常用命令</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2014/08/14/2014-08-14-git-notes/">
-          
-          
-            
-          
-          账户公钥与项目公钥区别账户设置的 SSH 公钥是用来认证用户身份的，而项目部署公钥是用来授权项目的只读权限的。账户 SSH 公钥是跟用户账户关联的公钥，一旦设置，就拥有账户下所有项目仓库的读写权限。项目部署 SSH 公钥是跟项目关联的公钥，设置后有该项目的仓库的只读权限。
-账户公钥相当于设置管理员权限一样，你可以clone、pull、[push]项目公钥，为了安全起见只允许，clone和pull
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2014-08-14 00:00" pubdate>
-              2014-08-14
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/git/">git</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/4/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+      <a class="extend prev" rel="prev" href="/page/4/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   
