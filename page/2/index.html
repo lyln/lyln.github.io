@@ -175,6 +175,59 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/03/13/2020-03-14-grafana-prometheus-notes/" target="_self">
+          <img src="https://prometheus.io/assets/architecture.png" srcset="/img/loading.gif" alt="Prometheus Grafana学习笔记">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/03/13/2020-03-14-grafana-prometheus-notes/">Prometheus Grafana学习笔记</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/03/13/2020-03-14-grafana-prometheus-notes/">
+          
+          
+            
+          
+          prometheus 大内存问题随着规模变大，prometheus需要的cpu和内存都会升高，内存一般先达到瓶颈，这个时候要么加内存，要么集群分片减少单机指标。原因：1、prometheus 的内存消耗主要是因为每隔2小时做一个 block 数据落盘，落盘之前所有数据都在内存里面，因此和采集量有关。2、加载历史数据时，是从磁盘到内存的，查询范围越大，内存越大。这里面有一定的优化空间3、一些不合理的
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-03-13 00:00" pubdate>
+              2020-03-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%9B%91%E6%8E%A7/">监控</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2019/10/27/2019-10-27-redis-cluster-install-manual/" target="_self">
           <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/redis.jpg" srcset="/img/loading.gif" alt="Redis Cluster搭建、扩容、缩容">
         </a>
@@ -520,6 +573,68 @@ src&#x2F;redis-migrate-tool -h
   <div class="row mx-auto index-card">
     
     
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/17/2019-03-17-k8s-master-migrate/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/2019-11-12-kubernetes.jpg" srcset="/img/loading.gif" alt="k8s master节点迁移">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2019/03/17/2019-03-17-k8s-master-migrate/">k8s master节点迁移</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/03/17/2019-03-17-k8s-master-migrate/">
+          
+          
+            
+          
+          环境概况master节点涉及组建kube-apiserver
+kube-scheduler
+kube-controller-manager
+flanneld
+node节点涉及组建kubelet
+kube-proxy
+flanneld
+etcd集群etcd集群迁移
+master节点迁移部署完新的master节点后，修改旧master节点配置
+改旧的apiserver 10.10.64.144 组件配
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-03-17 00:00" pubdate>
+              2019-03-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Docker/">Docker</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">k8s</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         <a href="/2019/01/15/2019-01-15-redis-cluster-install/">Redis Cluster集群搭建</a>
@@ -621,112 +736,6 @@ kubectl get node -o json |grep  &quot;address&quot; |grep -v &#39;addresses&#39;
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/kubernetes/">kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2018/10/18/2018-10-18-nexus-oss-install/">Nexus OSS私服的安装和迁移</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2018/10/18/2018-10-18-nexus-oss-install/">
-          
-          
-            
-          
-          Nexus私服Nexus常用功能就是：指定私服的中央地址、将自己的Maven项目指定到私服地址、从私服下载中央库的项目索引、从私服仓库下载依赖组件、将第三方项目jar上传到私服供其他项目组使用。
-一般用到的仓库种类是hosted、proxy。 
-
-Hosted代表宿主仓库，用来发布一些第三方不允许的组件，比如Oracle驱动、比如商业软件jar包。
-Proxy代表代理远程的仓库，最典型的就是Mav
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2018-10-18 00:00" pubdate>
-              2018-10-18
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Nexus/">Nexus</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2018/07/09/2018-07-09-yum-repo-make/">YUM源制作</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2018/07/09/2018-07-09-yum-repo-make/">
-          
-          
-            
-          
-          安装createrepoyum install createrepo
-
-创建本地仓库
-createrepo &#x2F;data&#x2F;repo&#x2F;RPMS
-添加rpm包，更新本地仓库
-createrepo --update &#x2F;data&#x2F;repo&#x2F;RPMS
-
-此命令只能下载主机未安装的包
-yum install 包名 --downloadonly --do
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2018-07-09 00:00" pubdate>
-              2018-07-09
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/yum/">yum</a>
             
           </div>
         

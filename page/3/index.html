@@ -176,6 +176,112 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2018/10/18/2018-10-18-nexus-oss-install/">Nexus OSS私服的安装和迁移</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/10/18/2018-10-18-nexus-oss-install/">
+          
+          
+            
+          
+          Nexus私服Nexus常用功能就是：指定私服的中央地址、将自己的Maven项目指定到私服地址、从私服下载中央库的项目索引、从私服仓库下载依赖组件、将第三方项目jar上传到私服供其他项目组使用。
+一般用到的仓库种类是hosted、proxy。 
+
+Hosted代表宿主仓库，用来发布一些第三方不允许的组件，比如Oracle驱动、比如商业软件jar包。
+Proxy代表代理远程的仓库，最典型的就是Mav
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-10-18 00:00" pubdate>
+              2018-10-18
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Nexus/">Nexus</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2018/07/09/2018-07-09-yum-repo-make/">YUM源制作</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/07/09/2018-07-09-yum-repo-make/">
+          
+          
+            
+          
+          安装createrepoyum install createrepo
+
+创建本地仓库
+createrepo &#x2F;data&#x2F;repo&#x2F;RPMS
+添加rpm包，更新本地仓库
+createrepo --update &#x2F;data&#x2F;repo&#x2F;RPMS
+
+此命令只能下载主机未安装的包
+yum install 包名 --downloadonly --do
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-07-09 00:00" pubdate>
+              2018-07-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/yum/">yum</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2017/08/03/2017-08-03-mysql-notes-update-privileges/">MySQL笔记之版本升级和权限管理</a>
       </h1>
 
@@ -566,106 +672,6 @@ apt-get install gnutls-bin libgnutls-dev
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/ffmpeg/">ffmpeg</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2016/10/17/2016-10-17-nginx-upstream/">nginx 负载均衡配置</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2016/10/17/2016-10-17-nginx-upstream/">
-          
-          
-            
-          
-          环境介绍nginx version: nginx&#x2F;1.10.1
-负载机器：192.168.1.168 80
-upstream机器：192.168.1.169:81
-192.168.1.170:81nginx安装wget http:&#x2F;&#x2F;nginx.org&#x2F;keys&#x2F;nginx_signing.key
-apt-key add nginx_signing
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2016-10-17 00:00" pubdate>
-              2016-10-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/nginx/">nginx</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/">grafana influxdb构建自定义监控</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/">
-          
-          
-            
-          
-          grafana 安装$ wget https:&#x2F;&#x2F;grafanarel.s3.amazonaws.com&#x2F;builds&#x2F;grafana_3.0.4-1464167696_amd64.deb
-$ sudo apt-get install -y adduser libfontconfig
-$ sudo dpkg -i grafana_3.0.4-14641676
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2016-10-14 00:00" pubdate>
-              2016-10-14
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/grafana-influxdb/">grafana influxdb</a>
             
           </div>
         

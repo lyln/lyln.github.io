@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Lyln">
   <meta name="keywords" content="">
-  <title>Redis 迁移工具 - 落影流年</title>
+  <title>k8s master节点迁移 - 落影流年</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -169,8 +169,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2019-03-21 00:00" pubdate>
-        2019年3月21日 凌晨
+      <time datetime="2019-03-17 00:00" pubdate>
+        2019年3月17日 凌晨
       </time>
     </span>
   
@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      588 字
+      512 字
     </span>
   
 
@@ -221,81 +221,69 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">Redis 迁移工具</h1>
+            <h1 style="display: none">k8s master节点迁移</h1>
             
             <div class="markdown-body" id="post-body">
-              <h3 id="rmt安装"><a href="#rmt安装" class="headerlink" title="rmt安装"></a>rmt安装</h3><p>Redis-Migrate-Tool集群迁移工具，基于redis复制，快速，稳定。</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/vipshop/redis-migrate-tool">github地址</a></p>
-<pre class="language-none"><code class="language-none">cd redis-migrate-tool
-autoreconf -fvi
-.&#x2F;configure
-make
-src&#x2F;redis-migrate-tool -h</code></pre>
-<a id="more"></a>
-<h3 id="迁移"><a href="#迁移" class="headerlink" title="迁移"></a>迁移</h3><p>单实例迁移到单实例<br><pre class="language-none"><code class="language-none">执行迁移
-src&#x2F;redis-migrate-tool -c single2single.conf -o single2single.log -d
-
-single2single.conf
-
-[source]
-type: single
-servers:
- - 192.168.1.100:6379
-redis_auth: 123456
-
-[target]
-type: single
-servers:
- - 192.168.1.111:6379
-redis_auth: abcdef
-
-[common]
-listen: 0.0.0.0:8888
-threads: 4
-step: 2
-mbuf_size: 1024
-source_safe: true</code></pre></p>
-<p>单实例迁移到集群<br><pre class="language-none"><code class="language-none">执行迁移
-src&#x2F;redis-migrate-tool -c single2cluster.conf -o single2cluster.log -d
-
-single2cluster.conf
-
-[source]
-type: single
-servers:
- - 192.168.1.100:6379
-redis_auth: 123456
-
-[target]
-type: redis cluster
-servers:
- - 192.168.1.111:6379
-redis_auth: abcdef
-
-[common]
-listen: 0.0.0.0:9999
-threads: 4
-step: 2
-mbuf_size: 1024
-source_safe: true</code></pre></p>
-<h3 id="RedisShake"><a href="#RedisShake" class="headerlink" title="RedisShake"></a>RedisShake</h3><p>redis-shake是阿里云Redis&amp;MongoDB团队开源的用于redis数据同步的工具。<a target="_blank" rel="noopener" href="https://github.com/alibaba/RedisShake/releases">RedisShake地址</a></p>
-<p>下载解压即可食用</p>
-<p>集群版cluster到集群版cluster配置举例<br><pre class="language-none"><code class="language-none">source.type: cluster
-source.address: 10.1.1.1:20441;10.1.1.1:20443;10.1.1.1:20445
-source.password_raw: 12345
-target.type: cluster
-target.address: 10.1.1.1:20551;10.1.1.1:20553;10.1.1.1:20555
-target.password_raw: 12345</code></pre></p>
-<p>对于source.address或者target.address，需要配置源端的所有集群中db节点列表以及目的端集群所有db节点列表，用户也可以启用自动发现机制，地址以’@’开头，redis-shake将会根据cluster nodes命令自动去探测有几个节点。对于source.address，用户可以在’@’前面配置master（默认）或者slave表示分表从master或者slave进行拉取；对于target.address，只能是master或者不配置：<br><pre class="language-none"><code class="language-none">source.address: master@10.1.1.1:20441 # 将会自动探测到10.1.1.1:20441集群下的所有节点，并从所有master进行拉取。
-target.address: @10.1.1.1:20551 # 将会自动探测到10.1.1.1:20551集群下的所有节点，并写入所有master。</code></pre><br>可以手动写所有节点，也可以@写一个自动探测。</p>
-<h3 id="启动停止"><a href="#启动停止" class="headerlink" title="启动停止"></a>启动停止</h3><pre class="language-none"><code class="language-none">&#x2F;data&#x2F;apps&#x2F;opt&#x2F;redis-shake
-&#x2F;start.sh redis-shake.conf rsync
-&#x2F;stop.sh redis-shake.pid
+              <h3 id="环境概况"><a href="#环境概况" class="headerlink" title="环境概况"></a>环境概况</h3><h4 id="master节点涉及组建"><a href="#master节点涉及组建" class="headerlink" title="master节点涉及组建"></a>master节点涉及组建</h4><pre class="language-none"><code class="language-none">kube-apiserver
+kube-scheduler
+kube-controller-manager
+flanneld</code></pre>
+<h4 id="node节点涉及组建"><a href="#node节点涉及组建" class="headerlink" title="node节点涉及组建"></a>node节点涉及组建</h4><pre class="language-none"><code class="language-none">kubelet
+kube-proxy
+flanneld</code></pre>
+<h4 id="etcd集群"><a href="#etcd集群" class="headerlink" title="etcd集群"></a>etcd集群</h4><p><a target="_blank" rel="noopener" href="http://www.inshub.cn/2020/11/21/2020-11-21-etcd-migrate-date-md/">etcd集群迁移</a></p>
+<h4 id="master节点迁移"><a href="#master节点迁移" class="headerlink" title="master节点迁移"></a>master节点迁移</h4><p><strong>部署完新的master节点后，修改旧master节点配置</strong></p>
+<pre class="language-none"><code class="language-none">改旧的apiserver 10.10.64.144 组件配置，加上选主等配置
+首先disable !!! 
+systemctl disable kube-apiserver
+systemctl disable kube-scheduler
+systemctl disable kube-controller
+修改为
+&#x2F;etc&#x2F;sysconfig&#x2F;kube-apiserver
+KUBE_APISERVER_OPTS&#x3D;&#39;--apiserver-count&#x3D;2&#39;
+修改为
+&#x2F;etc&#x2F;sysconfig&#x2F;kube-scheduler
+KUBE_SCHEDULER_OPTS&#x3D;&#39;--leader-elect&#x3D;true&#39;
+修改为
+&#x2F;etc&#x2F;sysconfig&#x2F;kube-controller
+KUBE_CONTROLLER_OPTS&#x3D;&#39;--cloud-provider&#x3D; --leader-elect&#x3D;true&#39;
+修改kube-apiserver的etcd地址
+ETCD_SERVERS&#x3D;&#39;--etcd-servers&#x3D;新的etcd地址&#39;
+systemctl restart kube-apiserver
+systemctl restart kube-scheduler
+systemctl restart kube-controller</code></pre>
+<p><strong>修改新的apiserver组件配置，加上选主等配置</strong></p>
+<pre class="language-none"><code class="language-none">修改为
+&#x2F;etc&#x2F;sysconfig&#x2F;kube-apiserver
+KUBE_APISERVER_OPTS&#x3D;&#39;--apiserver-count&#x3D;2&#39;
+修改为
+&#x2F;etc&#x2F;sysconfig&#x2F;kube-scheduler
+KUBE_SCHEDULER_OPTS&#x3D;&#39;--leader-elect&#x3D;true&#39;
+修改为
+&#x2F;etc&#x2F;sysconfig&#x2F;kube-controller
+KUBE_CONTROLLER_OPTS&#x3D;&#39;--cloud-provider&#x3D; --leader-elect&#x3D;true&#39;
+修改kube-apiserver的etcd地址
+ETCD_SERVERS&#x3D;&#39;--etcd-servers&#x3D;新的etcd地址&#39;
+systemctl restart kube-apiserver
+systemctl restart kube-scheduler
+systemctl restart kube-controller</code></pre>
+<p><strong>修改所有节点flannel的etcd地址</strong></p>
+<pre class="language-none"><code class="language-none">
+禁用flanneld
+ansible -i inventory&#x2F;appserver&#x2F;online_node.yml online_node -m shell -a &quot;systemctl disable flanneld&quot;
+修改flanneld地址
+ansible -i inventory&#x2F;appserver&#x2F;online_node.yml online_node -m shell -a &quot;sed -i &#39;s&#x2F;old_ip&#x2F;new_ip&#x2F;g&#39; &#x2F;etc&#x2F;sysconfig&#x2F;flanneld&quot;
+ansible -i inventory&#x2F;appserver&#x2F;online_node.yml online_node -m shell -a &quot;sed -i &#39;s&#x2F;old_ip&#x2F;new_ip&#x2F;g&#39; &#x2F;etc&#x2F;sysconfig&#x2F;flanneld&quot;
+重启flanneld
+ansible -i inventory&#x2F;appserver&#x2F;online_node.yml online_node -m shell -a &quot;systemctl restart flanneld&quot;
+开机启动flanneld
+ansible -i inventory&#x2F;appserver&#x2F;online_node.yml online_node -m shell -a &quot;systemctl enable flanneld&quot;
+如果回滚，调换下ip位置。按同样方式执行。
 </code></pre>
-<h3 id="redis-shake-迁移监控"><a href="#redis-shake-迁移监控" class="headerlink" title="redis-shake 迁移监控"></a>redis-shake 迁移监控</h3><p>用户可以通过我们提供的restful拉取metric来对redis-shake进行实时监控：curl 127.0.0.1:9320/metric</p>
-<p>校验使用redis-migrate-tool 随机校验或者使用show_redis_map.sh脚本看下大概key总量。</p>
-<h3 id="迁移校验"><a href="#迁移校验" class="headerlink" title="迁移校验"></a>迁移校验</h3><p>src/redis-migrate-tool -c single2single.conf -o log -C redis_check<br>src/redis-migrate-tool -c single2single.conf -o log -C “redis_check 200000”</p>
-<h3 id="notes"><a href="#notes" class="headerlink" title="notes"></a>notes</h3><p><a target="_blank" rel="noopener" href="https://github.com/vipshop/redis-migrate-tool">https://github.com/vipshop/redis-migrate-tool</a><br><a target="_blank" rel="noopener" href="https://github.com/alibaba/RedisShake">https://github.com/alibaba/RedisShake</a></p>
+<p><strong>同理修改kubelet,kube-proxy的配置文件</strong></p>
+<p>观察一段时间，测试功能，一切没问题的话，停止旧的apiserver。</p>
+<p><strong>去掉新apiserver 选主配置</strong></p>
+<p>切换观察如果没问题后，关机迁移旧的 master节点后，去掉新的apiserver选主等配置重启。</p>
 
             </div>
             <hr>
@@ -305,7 +293,7 @@ target.address: @10.1.1.1:20551 # 将会自动探测到10.1.1.1:20551集群下�
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/Redis/">Redis</a>
+                      <a class="hover-with-bg" href="/categories/Docker/">Docker</a>
                     
                   </div>
                 
@@ -313,7 +301,7 @@ target.address: @10.1.1.1:20551 # 将会自动探测到10.1.1.1:20551集群下�
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/rmt-RedisShake/">rmt RedisShake</a>
+                      <a class="hover-with-bg" href="/tags/k8s/">k8s</a>
                     
                   </div>
                 
@@ -326,9 +314,9 @@ target.address: @10.1.1.1:20551 # 将会自动探测到10.1.1.1:20551集群下�
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2019/04/22/2019-04-22-elasticsearch-migration-notes/">
+                      <a href="/2019/03/21/2019-03-21-redis-migrate-tool/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">elastic 迁移</span>
+                        <span class="hidden-mobile">Redis 迁移工具</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -336,8 +324,8 @@ target.address: @10.1.1.1:20551 # 将会自动探测到10.1.1.1:20551集群下�
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2019/03/17/2019-03-17-k8s-master-migrate/">
-                        <span class="hidden-mobile">k8s master节点迁移</span>
+                      <a href="/2019/01/15/2019-01-15-redis-cluster-install/">
+                        <span class="hidden-mobile">Redis Cluster集群搭建</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -482,7 +470,7 @@ target.address: @10.1.1.1:20551 # 将会自动探测到10.1.1.1:20551集群下�
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Redis 迁移工具&nbsp;",
+        "k8s master节点迁移&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

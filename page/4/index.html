@@ -176,6 +176,106 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2016/10/17/2016-10-17-nginx-upstream/">nginx 负载均衡配置</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/10/17/2016-10-17-nginx-upstream/">
+          
+          
+            
+          
+          环境介绍nginx version: nginx&#x2F;1.10.1
+负载机器：192.168.1.168 80
+upstream机器：192.168.1.169:81
+192.168.1.170:81nginx安装wget http:&#x2F;&#x2F;nginx.org&#x2F;keys&#x2F;nginx_signing.key
+apt-key add nginx_signing
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-10-17 00:00" pubdate>
+              2016-10-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/nginx/">nginx</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/">grafana influxdb构建自定义监控</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/10/14/2016-10-14-grafana-influxdb-monitor/">
+          
+          
+            
+          
+          grafana 安装$ wget https:&#x2F;&#x2F;grafanarel.s3.amazonaws.com&#x2F;builds&#x2F;grafana_3.0.4-1464167696_amd64.deb
+$ sudo apt-get install -y adduser libfontconfig
+$ sudo dpkg -i grafana_3.0.4-14641676
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-10-14 00:00" pubdate>
+              2016-10-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/grafana-influxdb/">grafana influxdb</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2016/09/18/2016-09-18-percona-toolkit/">Percona Toolkit使用小结</a>
       </h1>
 
@@ -572,102 +672,6 @@ alias cp&#x3D;&#39;cp -i&#39;
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/Shell/">Shell</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2015/11/21/2015-11-21-mysql-stu03/">MySQL5.7模拟role，5.6添加审计功能,SSL连接，多实例</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2015/11/21/2015-11-21-mysql-stu03/">
-          
-          
-            
-          
-          mysql5.7可以模拟role1、创建tom，junior_dba用户2、将tom加入grant proxy on 'junior_dba'@'localhost' to 'tom'@'localhost';3、授予junior_dba权限后，tom将拥有和junior_dba相同的权限。grant select on *.* to 'junior_dba'@'localhost';4、登陆测试
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2015-11-21 00:00" pubdate>
-              2015-11-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/MySQL/">MySQL</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/MySQL/">MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2015/11/16/2015-11-16-mysql-stu02/">MySQL安装升级</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2015/11/16/2015-11-16-mysql-stu02/">
-          
-          
-            
-          
-          mysql dba应该关注的网站http://www.mysql.com/mysql包的生命周期 Milestone Release(MR)>Release Candidate(RC) 
->Generally Avaialble(GA)>Archived Version
-为什么推荐选择MySQL官方版本Oracle MySQL，Percona, MariaDB,Drizzle 推荐级别由前到后。O
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2015-11-16 00:00" pubdate>
-              2015-11-16
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/MySQL/">MySQL</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/MySQL/">MySQL</a>
             
           </div>
         

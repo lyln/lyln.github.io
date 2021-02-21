@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Lyln">
   <meta name="keywords" content="">
-  <title>Go环境搭建及Go基础 - 落影流年</title>
+  <title>Go环境搭建及VSCode配置 - 落影流年</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -169,8 +169,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-01-17 00:00" pubdate>
-        2021年1月17日 凌晨
+      <time datetime="2021-01-16 00:00" pubdate>
+        2021年1月16日 凌晨
       </time>
     </span>
   
@@ -221,7 +221,7 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">Go环境搭建及Go基础</h1>
+            <h1 style="display: none">Go环境搭建及VSCode配置</h1>
             
             <div class="markdown-body" id="post-body">
               <h4 id="Go开发环境搭建"><a href="#Go开发环境搭建" class="headerlink" title="Go开发环境搭建"></a>Go开发环境搭建</h4><pre class="language-none"><code class="language-none">mac升级go版本
@@ -293,19 +293,6 @@ govendor fetch github.com&#x2F;gin-gonic&#x2F;gin</code></pre>
 &quot;window.zoomLevel&quot;: 0,
 &quot;debug.console.fontSize&quot;: 16,
 &quot;debug.console.lineHeight&quot;: 30,</code></pre>
-<h4 id="Go基础"><a href="#Go基础" class="headerlink" title="Go基础"></a>Go基础</h4><pre class="language-none"><code class="language-none">go指针
-a :&#x3D; 5
-fmt.Println(a)
-
-var pa *int
-pa &#x3D; &amp;a
-
-fmt.Println(pa)
-fmt.Println(*pa)
-
-go常量
-const message string &#x3D; &quot;go入门&quot;
-</code></pre>
 <h4 id="Go常用命令"><a href="#Go常用命令" class="headerlink" title="Go常用命令"></a>Go常用命令</h4><pre class="language-none"><code class="language-none">go build 编译所有的包和依赖
 go clean 清理执行其它命令时产生的一些文件和目录
 go install 编译并安装指定的代码包及它们的依赖包
@@ -314,6 +301,15 @@ go run 编译并运行命令源码文件
 go mod init 初始化一个新模块
 go mod vendor 把所有依赖拷贝到vendor文件夹中
 go mod tidy 添加缺失的模块，移除无用的模块</code></pre>
+<h3 id="Go类型转换"><a href="#Go类型转换" class="headerlink" title="Go类型转换"></a>Go类型转换</h3><pre class="language-none"><code class="language-none">The most common numeric conversions are Atoi (string to int) and Itoa (int to string).
+i, err :&#x3D; strconv.Atoi(&quot;-42&quot;)
+s :&#x3D; strconv.Itoa(-42)
+
+
+
+
+https:&#x2F;&#x2F;golang.org&#x2F;pkg&#x2F;strconv&#x2F;
+</code></pre>
 <h3 id="Go语言解析json数据"><a href="#Go语言解析json数据" class="headerlink" title="Go语言解析json数据"></a>Go语言解析json数据</h3><pre class="language-none"><code class="language-none">package main
  
 import (
@@ -358,7 +354,6 @@ CSS 中 id、class属性的区别
 id  #获取
 class .获取
 class可以反复使用而id在一个页面中仅能被使用一次。
-
 </code></pre>
 
             </div>
@@ -377,7 +372,7 @@ class可以反复使用而id在一个页面中仅能被使用一次。
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/Loki/">Loki</a>
+                      <a class="hover-with-bg" href="/tags/Go/">Go</a>
                     
                   </div>
                 
@@ -389,6 +384,12 @@ class可以反复使用而id在一个页面中仅能被使用一次。
                 <div class="post-prevnext row">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2021/01/17/2021-01-17-go-base-use/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Go简明语法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
@@ -540,7 +541,7 @@ class可以反复使用而id在一个页面中仅能被使用一次。
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Go环境搭建及Go基础&nbsp;",
+        "Go环境搭建及VSCode配置&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
