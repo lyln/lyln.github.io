@@ -176,6 +176,161 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2016/08/06/2016-08-06-discuz-install/">Discuz! X3.2 安装问题小记</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/08/06/2016-08-06-discuz-install/">
+          
+          
+            
+          
+          Discuz 安装本来很简单，但是由于不熟悉和本身代码的问题，花了快一天才解决。现在将问题罗列如下：
+Can’t connect to local MySQL server through socketmysqli_connect() 不支持 advice_mysqli_connect
+Discuz 安装完成后，后台打开Ucenter出现404
+头像上传不能成功
+Can’t connect to 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-08-06 00:00" pubdate>
+              2016-08-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Linux/">Linux</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/07/01/2016-07-01-anemometer-slow-log/">Anemometer 展示示MySQL慢查询日志</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/07/01/2016-07-01-anemometer-slow-log/">
+          
+          
+            
+          
+          安装部署nginx,mysql,php环境可参考博客其他文章Anemometer部署过程参考官网Quickstart
+问题小结配置多个数据源，只是指定不同db即可。
+
+$conf['datasources']['192.168.1.87'] = array(
+        'host'  => '192.168.1.87',
+        'port'  => 3306,
+        'd
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-07-01 00:00" pubdate>
+              2016-07-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/05/22/2016-05-22-shell-common-ops-01/">Shell常用命令</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/05/22/2016-05-22-shell-common-ops-01/">
+          
+          
+            
+          
+          1、防止rm,mv惨案，环境变量添加/etc/profile
+alias rm&#x3D;&#39;rm -i&#39;
+alias mv&#x3D;&#39;mv -i&#39;
+alias vi&#x3D;&#39;vim&#39;
+alias cp&#x3D;&#39;cp -i&#39;
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-05-22 00:00" pubdate>
+              2016-05-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Shell/">Shell</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2015/11/21/2015-11-21-mysql-stu03/">MySQL5.7模拟role，5.6添加审计功能,SSL连接，多实例</a>
       </h1>
 
@@ -529,150 +684,6 @@ mysqldump -uroot -p -q --all-d
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/MySQL/">MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2015/06/04/2015-06-04-postgresql-stu-01/">PostgreSQL笔记--初识PostgreSQL</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2015/06/04/2015-06-04-postgresql-stu-01/">
-          
-          
-            
-          
-          PostgreSQL安装./configure --prefix   安装路径
---with-pgport=NUMBER  设置默认端口（5432）
---with-segsize=SEGSIZE 段大小（单位gb）
---with-blocksize=BLOCKSIZW 块大小（单位kb）
---with-wal-segsize=SEGSIZE wal日志(单位mb)
---with-wal-block
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2015-06-04 00:00" pubdate>
-              2015-06-04
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/PostgreSQL/">PostgreSQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2015/05/29/2015-05-29-docker-stu-notes/">Docker笔记</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2015/05/29/2015-05-29-docker-stu-notes/">
-          
-          
-            
-          
-          安装在Ubuntu 14.04.2 LTS安装dockersudo apt-get update
-sudo apt-get install docker.io
-依赖安装aufs-tools cgroup-lite git git-man liberror-perl查看docker版本和系统信息docker version
-docker info
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2015-05-29 00:00" pubdate>
-              2015-05-29
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Docker/">Docker</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Docker/">Docker</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2015/05/15/2015-05-15-python-help/">python小技巧</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2015/05/15/2015-05-15-python-help/">
-          
-          
-            
-          
-          dir查看对象的属性>>> dir(re)
-['DEBUG', 'DOTALL', 'I', ...'compile'....]
-help查看模块方法的使用>>>help('compile')
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2015-05-15 00:00" pubdate>
-              2015-05-15
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Python/">Python</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Python/">Python</a>
             
           </div>
         

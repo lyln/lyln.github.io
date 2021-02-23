@@ -176,6 +176,155 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2016/11/29/2016-11-29-how-to-add-repo-nexus/">如何向Nexus上添加第三方Repository</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/11/29/2016-11-29-how-to-add-repo-nexus/">
+          
+          
+            
+          
+          登陆nexus
+点击Repositories-&gt;Proxy Repository，如下图：
+在打开的页面中填入以下三项，然后点保存：
+Repository ID：仓库的唯一标识;Repository Name：仓库的名称，在nexus中用这个来显示某个仓库;Remote Storage Location：仓库的远程地址;
+能看到在nexus中已经有了：注：Browse Remote这个tab
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-11-29 00:00" pubdate>
+              2016-11-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Linux/">Linux</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/11/07/2016-11-07-from-log-recover-data/">从日志恢复数据</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/11/07/2016-11-07-from-log-recover-data/">
+          
+          
+            
+          
+          循环遍历日志stat.txt
+2016-11-09 00:00:23 &quot;deviceId&quot;:&quot;F9D4F729-7EE7-467F-BF3F-7D9D008EAB&quot; &quot;userId&quot;:&quot;20048603&quot;
+2016-11-09 00:00:29 &quot;deviceId&quot;:&quot;c96996784f
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-11-07 00:00" pubdate>
+              2016-11-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/shell/">shell</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2016/10/25/2016-10-25-ffmpeg-build/">ffmpeg 编译安装</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2016/10/25/2016-10-25-ffmpeg-build/">
+          
+          
+            
+          
+          系统环境Ubuntu 14.04.3 LTS最近测试ffmpeg转推，使用老版本ffmpeg流转推一段时间会断掉，测试发现在新版本ffmpeg效果明显好很多。但是由于依赖众多(主要问题)，编译花费了好长时间。记录下编译过程。
+ffmpeg 编译安装依赖安装apt-get install yasm pkg-config
+apt-get install gnutls-bin libgnutls-dev
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2016-10-25 00:00" pubdate>
+              2016-10-25
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ffmpeg/">ffmpeg</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2016/10/17/2016-10-17-nginx-upstream/">nginx 负载均衡配置</a>
       </h1>
 
@@ -517,161 +666,6 @@ tickTime：Zookeeper 服务器之间或客户端与服务器之间维持心跳�
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/Kafka/">Kafka</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2016/08/06/2016-08-06-discuz-install/">Discuz! X3.2 安装问题小记</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2016/08/06/2016-08-06-discuz-install/">
-          
-          
-            
-          
-          Discuz 安装本来很简单，但是由于不熟悉和本身代码的问题，花了快一天才解决。现在将问题罗列如下：
-Can’t connect to local MySQL server through socketmysqli_connect() 不支持 advice_mysqli_connect
-Discuz 安装完成后，后台打开Ucenter出现404
-头像上传不能成功
-Can’t connect to 
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2016-08-06 00:00" pubdate>
-              2016-08-06
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Linux/">Linux</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2016/07/01/2016-07-01-anemometer-slow-log/">Anemometer 展示示MySQL慢查询日志</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2016/07/01/2016-07-01-anemometer-slow-log/">
-          
-          
-            
-          
-          安装部署nginx,mysql,php环境可参考博客其他文章Anemometer部署过程参考官网Quickstart
-问题小结配置多个数据源，只是指定不同db即可。
-
-$conf['datasources']['192.168.1.87'] = array(
-        'host'  => '192.168.1.87',
-        'port'  => 3306,
-        'd
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2016-07-01 00:00" pubdate>
-              2016-07-01
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/MySQL/">MySQL</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/MySQL/">MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2016/05/22/2016-05-22-shell-common-ops-01/">Shell常用命令</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2016/05/22/2016-05-22-shell-common-ops-01/">
-          
-          
-            
-          
-          1、防止rm,mv惨案，环境变量添加/etc/profile
-alias rm&#x3D;&#39;rm -i&#39;
-alias mv&#x3D;&#39;mv -i&#39;
-alias vi&#x3D;&#39;vim&#39;
-alias cp&#x3D;&#39;cp -i&#39;
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2016-05-22 00:00" pubdate>
-              2016-05-22
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Shell/">Shell</a>
             
           </div>
         

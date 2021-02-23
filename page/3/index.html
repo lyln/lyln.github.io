@@ -174,6 +174,179 @@
   <div class="row mx-auto index-card">
     
     
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2019/03/17/2019-03-17-k8s-master-migrate/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/2019-11-12-kubernetes.jpg" srcset="/img/loading.gif" alt="k8s master节点迁移">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2019/03/17/2019-03-17-k8s-master-migrate/">k8s master节点迁移</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/03/17/2019-03-17-k8s-master-migrate/">
+          
+          
+            
+          
+          环境概况master节点涉及组建kube-apiserver
+kube-scheduler
+kube-controller-manager
+flanneld
+node节点涉及组建kubelet
+kube-proxy
+flanneld
+etcd集群etcd集群迁移
+master节点迁移部署完新的master节点后，修改旧master节点配置
+改旧的apiserver 10.10.64.144 组件配
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-03-17 00:00" pubdate>
+              2019-03-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Docker/">Docker</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s/">k8s</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2019/01/15/2019-01-15-redis-cluster-install/">Redis Cluster集群搭建</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/01/15/2019-01-15-redis-cluster-install/">
+          
+          
+            
+          
+          redis cluster集群构建10.16.76.144 600010.16.76.144 600110.16.76.144 6002
+集群密码：abcdefg
+配置主节点10.16.76.144 6000
+cluster meet 10.16.76.144 6001
+cluster meet 10.16.76.144 6002
+
+cluster nodes
+cluster info
+
+分配槽位
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-01-15 00:00" pubdate>
+              2019-01-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Redis/">Redis</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Redis/">Redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2018/12/08/2018-08-15-k8s-common-use/">K8S常用命令</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2018/12/08/2018-08-15-k8s-common-use/">
+          
+          
+            
+          
+          获取集群状态
+kubectl get componentstatus 
+kubectl get cs
+
+获取node节点
+kubectl get nodes
+
+获取node节点ip
+kubectl get node -o json |grep  &quot;address&quot; |grep -v &#39;addresses&#39; |awk  &#39;&#123; print $2&#
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2018-12-08 00:00" pubdate>
+              2018-12-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/K8S/">K8S</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubernetes/">kubernetes</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         <a href="/2018/10/18/2018-10-18-nexus-oss-install/">Nexus OSS私服的安装和迁移</a>
@@ -523,155 +696,6 @@ nginx生成免费证书
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/https/">https</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2016/11/29/2016-11-29-how-to-add-repo-nexus/">如何向Nexus上添加第三方Repository</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2016/11/29/2016-11-29-how-to-add-repo-nexus/">
-          
-          
-            
-          
-          登陆nexus
-点击Repositories-&gt;Proxy Repository，如下图：
-在打开的页面中填入以下三项，然后点保存：
-Repository ID：仓库的唯一标识;Repository Name：仓库的名称，在nexus中用这个来显示某个仓库;Remote Storage Location：仓库的远程地址;
-能看到在nexus中已经有了：注：Browse Remote这个tab
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2016-11-29 00:00" pubdate>
-              2016-11-29
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Linux/">Linux</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2016/11/07/2016-11-07-from-log-recover-data/">从日志恢复数据</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2016/11/07/2016-11-07-from-log-recover-data/">
-          
-          
-            
-          
-          循环遍历日志stat.txt
-2016-11-09 00:00:23 &quot;deviceId&quot;:&quot;F9D4F729-7EE7-467F-BF3F-7D9D008EAB&quot; &quot;userId&quot;:&quot;20048603&quot;
-2016-11-09 00:00:29 &quot;deviceId&quot;:&quot;c96996784f
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2016-11-07 00:00" pubdate>
-              2016-11-07
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/MySQL/">MySQL</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/shell/">shell</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2016/10/25/2016-10-25-ffmpeg-build/">ffmpeg 编译安装</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2016/10/25/2016-10-25-ffmpeg-build/">
-          
-          
-            
-          
-          系统环境Ubuntu 14.04.3 LTS最近测试ffmpeg转推，使用老版本ffmpeg流转推一段时间会断掉，测试发现在新版本ffmpeg效果明显好很多。但是由于依赖众多(主要问题)，编译花费了好长时间。记录下编译过程。
-ffmpeg 编译安装依赖安装apt-get install yasm pkg-config
-apt-get install gnutls-bin libgnutls-dev
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2016-10-25 00:00" pubdate>
-              2016-10-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/ffmpeg/">ffmpeg</a>
             
           </div>
         
