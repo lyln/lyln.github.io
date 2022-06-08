@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      613 字
+      693 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8
+      9
        分钟
     </span>
   
@@ -225,6 +225,8 @@
             
             <div class="markdown-body" id="post-body">
               <h3 id="Nexus私服"><a href="#Nexus私服" class="headerlink" title="Nexus私服"></a>Nexus私服</h3><p>Nexus常用功能就是：指定私服的中央地址、将自己的Maven项目指定到私服地址、从私服下载中央库的项目索引、从私服仓库下载依赖组件、将第三方项目jar上传到私服供其他项目组使用。</p>
+<pre class="language-none"><code class="language-none">3.x的默认存储变了，原以为下载到本地私服里面的jar包是以.jar格式存储的，就和本地仓储一样，但是用everything搜了半天，没有搜到，查了之后才发现，是以.bytes格式存储的。
+存储位置在： 安装目录\sonatype-work\nexus3\blobs</code></pre>
 <p>一般用到的仓库种类是hosted、proxy。 </p>
 <ol>
 <li>Hosted代表宿主仓库，用来发布一些第三方不允许的组件，比如Oracle驱动、比如商业软件jar包。</li>

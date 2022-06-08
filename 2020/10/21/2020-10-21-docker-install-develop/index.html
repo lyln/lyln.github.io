@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      515 字
+      494 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8
+      7
        分钟
     </span>
   
@@ -225,23 +225,24 @@
             
             <div class="markdown-body" id="post-body">
               <p><strong>快速构建各种开发测试环境汇总</strong></p>
-<h4 id="MySQL5-7开发环境"><a href="#MySQL5-7开发环境" class="headerlink" title="MySQL5.7开发环境"></a>MySQL5.7开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run --name&#x3D;my-db -p3306:3306 -d mysql&#x2F;mysql-server:5.7
+<h4 id="MySQL5-7开发环境"><a href="#MySQL5-7开发环境" class="headerlink" title="MySQL5.7开发环境"></a>MySQL5.7开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run --name<span class="token operator">=</span>my-db -p3306:3306 -d mysql/mysql-server:5.7
 获取临时密码
-docker logs mysql1 2&gt;&amp;1 | grep GENERATED
-GENERATED ROOT PASSWORD: Axegh3kAJyDLaRuBemecis&amp;EShOs
-docker exec -it my-db mysql -uroot -p
-&gt; ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;password&#39;;
-&gt; create user admin@&#39;%&#39; identified by &#39;admin123&#39;;
-&gt; grant all privileges on *.* to admin@&#39;%’;
+docker logs mysql1 <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">|</span> <span class="token function">grep</span> GENERATED
+GENERATED ROOT PASSWORD: Axegh3kAJyDLaRuBemecis<span class="token operator">&amp;</span>EShOs
+docker <span class="token builtin class-name">exec</span> -it my-db mysql -uroot -p
+<span class="token operator">></span> ALTER <span class="token environment constant">USER</span> <span class="token string">'root'</span>@<span class="token string">'localhost'</span> IDENTIFIED BY <span class="token string">'password'</span><span class="token punctuation">;</span>
+<span class="token operator">></span> create user admin@<span class="token string">'%'</span> identified by <span class="token string">'admin123'</span><span class="token punctuation">;</span>
+<span class="token operator">></span> grant all privileges on *.* to admin@'%’<span class="token punctuation">;</span>
 查看创建用户
-&gt; select user,host,authentication_string from mysql.user;</code></pre>
+<span class="token operator">></span> <span class="token keyword">select</span> user,host,authentication_string from mysql.user<span class="token punctuation">;</span></code></pre>
 <p>参考地址：</p>
 <p><a target="_blank" rel="noopener" href="https://hub.docker.com/r/mysql/mysql-server/">https://hub.docker.com/r/mysql/mysql-server/</a></p>
 <h4 id="Redis开发环境"><a href="#Redis开发环境" class="headerlink" title="Redis开发环境"></a>Redis开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run --name my-redis -p6379:6379 -d redis
-</code></pre>
+
+--requirepass <span class="token string">'xxx'</span> </code></pre>
 <p>参考地址：</p>
 <p><a target="_blank" rel="noopener" href="https://hub.docker.com/_/redis">https://hub.docker.com/_/redis</a></p>
-<h4 id="Nacos开发环境"><a href="#Nacos开发环境" class="headerlink" title="Nacos开发环境"></a>Nacos开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run -e MODE&#x3D;standalone -e PREFER_HOST_MODE&#x3D;hostname --name my-nacos -p 8848:8848 -d nacos&#x2F;nacos-server:1.2.1
+<h4 id="Nacos开发环境"><a href="#Nacos开发环境" class="headerlink" title="Nacos开发环境"></a>Nacos开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run -e <span class="token assign-left variable">MODE</span><span class="token operator">=</span>standalone -e <span class="token assign-left variable">PREFER_HOST_MODE</span><span class="token operator">=</span>hostname --name my-nacos -p <span class="token number">8848</span>:8848 -d nacos/nacos-server:1.2.1
 </code></pre>
 <p>参考地址：</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/nacos-group/nacos-docker">https://github.com/nacos-group/nacos-docker</a></p>
@@ -252,7 +253,7 @@ nginx映射配置
 docker run --name my-nginx -v &#x2F;root&#x2F;confd_nginx:&#x2F;etc&#x2F;nginx&#x2F;conf.d -d -p 9090:80 nginx</code></pre>
 <p>参考地址：</p>
 <p><a target="_blank" rel="noopener" href="https://hub.docker.com/_/nginx">https://hub.docker.com/_/nginx</a></p>
-<h4 id="Grafana开发环境"><a href="#Grafana开发环境" class="headerlink" title="Grafana开发环境"></a>Grafana开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run -d --name&#x3D;my-grafana -p 7000:3000 grafana&#x2F;grafana:7.3.4
+<h4 id="Grafana开发环境"><a href="#Grafana开发环境" class="headerlink" title="Grafana开发环境"></a>Grafana开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run -d --name<span class="token operator">=</span>my-grafana -p <span class="token number">7000</span>:3000 grafana/grafana:7.3.4
 </code></pre>
 <p>参考地址：</p>
 <p><a target="_blank" rel="noopener" href="https://hub.docker.com/r/grafana/grafana">https://hub.docker.com/r/grafana/grafana</a></p>

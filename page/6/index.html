@@ -176,6 +176,220 @@
     
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
+        <a href="/2015/07/07/2015-07-07-iptables-notes/">iptables notes</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2015/07/07/2015-07-07-iptables-notes/">
+          
+          
+            
+          
+          链INPUT：位于filter表，匹配目的ip是本机的数据包
+FORWARD： 位于filter表，匹配穿越本机的数据包
+PREROUTING： 位于 nat 表，用于修改目的地址（DNAT）
+POSTROUTING：位于 nat 表，用于修改源地址（SNAT）
+OUTPUT：位于filter表，匹配源ip是本机的数据包
+清空iptables -F 清空所有规则链(谨慎用，尤其是默认策略是DROP
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2015-07-07 00:00" pubdate>
+              2015-07-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Linux/">Linux</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2015/06/12/2015-06-12-mysql-partition/">mysql表分区基础</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2015/06/12/2015-06-12-mysql-partition/">
+          
+          
+            
+          
+          表结构文件.frm  表结构文件
+.par  partition申明一个分区表
+.ibd  数据索引文件   innodb引擎表
+
+.MYD  数据文件       myisam表数据文件
+.MYI  索引文件       myisam表索引文件
+
+Myisam 存储引擎，它默认使用独立表空间
+InnoDB 存储引擎，默认使用共享表空间,默认存到ibdata1
+
+查看表空间设置 
+SHOW VAR
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2015-06-12 00:00" pubdate>
+              2015-06-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2015/06/09/2015-06-09-mysql-stu01/">mysql学习笔记之一</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2015/06/09/2015-06-09-mysql-stu01/">
+          
+          
+            
+          
+          下载mysql安装包http://downloads.mysql.com/archives/community/
+RPM Bundle
+MySQL-client-5.6.16-1.el6.x86_64.rpm  客户端      
+MySQL-server-5.6.16-1.el6.x86_64.rpm  服务端
+MySQL-devel-5.6.16-1.el6.x86_64.rpm 库和头文件
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2015-06-09 00:00" pubdate>
+              2015-06-09
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2015/06/05/2015-06-05-update-mysql/">Centos 升级mysql5.1到5.6</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2015/06/05/2015-06-05-update-mysql/">
+          
+          
+            
+          
+          系统：CentOS release 6.5 升级前mysql版本：5.1.73-log 升级后mysql版本：5.6.25 
+升级原因MySQL 5.1.x不支持四个字节的utf-8编码，只有5.5.x以后才支持
+准备mkdir /data/update_mysql
+备份my.cnf、/etc/init.d/mysqld
+备份整个数据库
+mysqldump -uroot -p -q --all-d
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2015-06-05 00:00" pubdate>
+              2015-06-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/MySQL/">MySQL</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MySQL/">MySQL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
         <a href="/2015/06/04/2015-06-04-postgresql-stu-01/">PostgreSQL笔记--初识PostgreSQL</a>
       </h1>
 
@@ -480,60 +694,11 @@ curl ifconfig.co
     </article>
   </div>
 
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2014/08/14/2014-08-14-git-notes/">Git常用命令</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2014/08/14/2014-08-14-git-notes/">
-          
-          
-            
-          
-          账户公钥与项目公钥区别账户设置的 SSH 公钥是用来认证用户身份的，而项目部署公钥是用来授权项目的只读权限的。账户 SSH 公钥是跟用户账户关联的公钥，一旦设置，就拥有账户下所有项目仓库的读写权限。项目部署 SSH 公钥是跟项目关联的公钥，设置后有该项目的仓库的只读权限。
-账户公钥相当于设置管理员权限一样，你可以clone、pull、[push]项目公钥，为了安全起见只允许，clone和pull
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2014-08-14 00:00" pubdate>
-              2014-08-14
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/git/">git</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
 
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/5/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
+      <a class="extend prev" rel="prev" href="/page/5/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
   
