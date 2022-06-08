@@ -88,7 +88,7 @@ theme: fluid
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: http://github.com/lyln/lyln.github.io.git
+  repository: git@lyln:lyln/lyln.github.io.git
   branch: master
 
 feed:

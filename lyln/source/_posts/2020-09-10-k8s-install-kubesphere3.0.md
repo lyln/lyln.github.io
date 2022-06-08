@@ -1,8 +1,8 @@
 ---
 layout: post
 title: KubeSphere3.0踩坑指南
-categories: k8s
-index_img: https://wx1.sinaimg.cn/large/005yWAylly1gkfakr3ca0j31ez0ksgqe.jpg
+categories: K8S
+index_img: https://inshub.oss-cn-beijing.aliyuncs.com/blog/kubesphere3.0.png
 tags: kubesphere
 date: 2020-09-10
 ---
@@ -80,12 +80,13 @@ kubectl edit cc -n kubesphere-system ks-installer
 
 ```
 查看所有pod正常运行后
-![kubesphere登陆界面](https://wx2.sinaimg.cn/large/005yWAylly1gkfbaoia8dj319o0jv75b.jpg)
+![kubesphere-login](https://inshub.oss-cn-beijing.aliyuncs.com/blog/kubesphere-login.png)
 默认用户/密码
+
 ```
 admin/P@88w0rd
 ```
-![kubesphere3.0](https://wx1.sinaimg.cn/large/005yWAylly1gkfakr3ca0j31ez0ksgqe.jpg)
+![kubesphere3.0](https://inshub.oss-cn-beijing.aliyuncs.com/blog/kubesphere3.0.png)
 
 ### 强制删除
 ```
@@ -147,7 +148,7 @@ my.harbor.io/s2i/s2i-test
 kubesphere测试使用流水线构建流程
 参考地址: <https://v2-1.docs.kubesphere.io/docs/zh-CN/quick-start/devops-online/>
 
-![kubesphere构建流水线](https://wx1.sinaimg.cn/large/005yWAylly1gkfmhaqyt1j315l0lbtdd.jpg)
+![devops-online](https://inshub.oss-cn-beijing.aliyuncs.com/blog/devops-online.jpg)
 
 ### 目前问题
 服务治理，流量数据展示有问题，还没有解决。

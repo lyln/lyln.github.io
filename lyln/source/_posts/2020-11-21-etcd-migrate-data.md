@@ -2,12 +2,13 @@
 layout: post
 title: etcd部署及数据迁移
 categories: Linux
-index_img: https://devopscube.com/wp-content/uploads/2018/11/etcd.jpg
+index_img: https://inshub.oss-cn-beijing.aliyuncs.com/blog/etcd.jpg
 tags: etcd
 date: 2020-11-21
 ---
 
 ### 环境概况
+
 ```
 etcdctl version 2.3.7
 ```
@@ -15,12 +16,14 @@ etcdctl version 2.3.7
 遂记录下迁移过程。
 
 问题：
+
 ```
  etcd[7663]: request cluster ID mismatch (got 75dea77f7702 want bfa24343767ba2e5)
 
 ```
 迁移顺序不对就如上错误。
-![etc2](https://wx1.sinaimg.cn/large/005yWAylly1gkukxtlkwbj30mn0c9jvz.jpg)
+
+![etcd_error](https://inshub.oss-cn-beijing.aliyuncs.com/blog/etcd_error.jpg)
 
 ### 部署etcd
 部署使用原来k8s 安装etcd服务的ansible脚本，直接部署成功。

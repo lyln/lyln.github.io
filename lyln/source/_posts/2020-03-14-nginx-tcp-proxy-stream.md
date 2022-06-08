@@ -2,7 +2,7 @@
 layout: post
 title: nginx实现四层代理
 categories: Linux
-index_img: https://wx2.sinaimg.cn/large/005yWAylly1gkfh5x58bsj311y0lcwfe.jpg
+index_img: https://inshub.oss-cn-beijing.aliyuncs.com/blog/nginx.png
 tags: Nginx
 date: 2020-03-14
 ---

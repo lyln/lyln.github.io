@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "elastic 迁移"
-categories: elastic
+categories: ELK
 tags: elk
 date: 2019/04/22
 ---

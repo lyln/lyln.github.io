@@ -2,7 +2,7 @@
 layout: post
 title: "Redis Cluster搭建、扩容、缩容"
 categories: Redis
-index_img: https://wx4.sinaimg.cn/large/005yWAylly1gkfhabg0f3j30d808074f.jpg
+index_img: https://inshub.oss-cn-beijing.aliyuncs.com/blog/redis.jpg
 tags: Redis
 date: 2019/10/27
 ---
