@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Lyln">
   <meta name="keywords" content="">
-  <title>k8s配置多集群访问和kubectl自动补全 - 落影流年</title>
+  <title>Centos7下编译安装ffmpeg扩展gl-transitions - 落影流年</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -169,8 +169,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-05-21 00:00" pubdate>
-        2022年5月21日 凌晨
+      <time datetime="2022-09-06 00:00" pubdate>
+        2022年9月6日 凌晨
       </time>
     </span>
   
@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      344 字
+      898 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      15
        分钟
     </span>
   
@@ -221,73 +221,102 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">k8s配置多集群访问和kubectl自动补全</h1>
+            <h1 style="display: none">Centos7下编译安装ffmpeg扩展gl-transitions</h1>
             
             <div class="markdown-body" id="post-body">
-              <h4 id="定义集群、用户和上下文"><a href="#定义集群、用户和上下文" class="headerlink" title="定义集群、用户和上下文"></a>定义集群、用户和上下文</h4><pre class="language-none"><code class="language-none">config-demo
+              <p>ffmpeg在4.3版本后加入xfade的转场，GRE大神使用WebGL编写的一些转场，效果十分酷炫，以及Travis Fischer大神gl-transitions,<br>本文记录帮开发编译扩展gl-transitions</p>
+<p><img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/ffmpeg.png" srcset="/img/loading.gif" alt="ffmpeg"></p>
+<h4 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h4><p>源码下载目录<br><code>/data/apps/ffmpeg_sources</code></p>
+<p>系统版本<br><pre class="language-none"><code class="language-none">Red Hat7.9 or Centos7</code></pre></p>
+<pre class="language-none"><code class="language-none">替换yum源
+mv &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo.bak
+curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-7.repo
+yum makecache
 
-apiVersion: v1
-clusters:
-- cluster:
-    certificate-authority: fake-ca-file
-    server: https:&#x2F;&#x2F;1.2.3.4
-  name: development
-- cluster:
-    insecure-skip-tls-verify: true
-    server: https:&#x2F;&#x2F;5.6.7.8
-  name: scratch
-contexts:
-- context:
-    cluster: development
-    namespace: frontend
-    user: developer
-  name: dev-frontend
-- context:
-    cluster: development
-    namespace: storage
-    user: developer
-  name: dev-storage
-- context:
-    cluster: scratch
-    namespace: default
-    user: experimenter
-  name: exp-scratch
-current-context: &quot;&quot;
-kind: Config
-preferences: &#123;&#125;
-users:
-- name: developer
-  user:
-    client-certificate: fake-cert-file
-    client-key: fake-key-file
-- name: experimenter
-  user:
-    password: some-password
-    username: exp
+安装编译工具及依赖
+yum -y install autoconf automake bzip2 bzip2-devel cmake freetype-devel gcc gcc-c++ git libtool make pkgconfig zlib-devel libxml2-devel mesa* freeglut*
 </code></pre>
-<p>多集群配置，将云上或者集群对应的配置复制到config-demo对应的<br>clusters<br>contexts<br>users<br>下，即可。如果多个集群冲突contexts下修改对应的名字就行。</p>
-<a id="more"></a>
-<h4 id="常用切换集群命令"><a href="#常用切换集群命令" class="headerlink" title="常用切换集群命令"></a>常用切换集群命令</h4><pre class="language-none"><code class="language-none">alias kubectl&#x3D;&#39;&#x2F;usr&#x2F;local&#x2F;sbin&#x2F;kubectl --kubeconfig &#x2F;etc&#x2F;sysconfig&#x2F;kubeconfig&#39;
+<h4 id="cmake安装"><a href="#cmake安装" class="headerlink" title="cmake安装"></a>cmake安装</h4><p>当前安装cmake版本基本是2.8左右的，后续依赖的glfw需要升级cmake。</p>
+<pre class="language-none"><code class="language-none">cmake --version
 
-kubectl config get-contexts
-kubectl config use-context append-test
-kubectl config current-context
+#移除旧的cmake版本
+yum remove cmake -y
+wget https:&#x2F;&#x2F;cmake.org&#x2F;files&#x2F;v3.14&#x2F;cmake-3.14.5.tar.gz
+tar zxvf cmake-3.14.5.tar.gz
+cd cmake-3.14.5
+.&#x2F;configure
+make &amp;&amp; make install
 </code></pre>
-<p>获取当前K8S上下文<br><code>kubectl config current-context</code></p>
-<p>获取取全局上下文<br><code>kubectl config get-contexts</code></p>
-<p>切换当前上下文<br><code>kubectl config use-context kubernetes-dev</code></p>
-<h4 id="kubectl自动补全"><a href="#kubectl自动补全" class="headerlink" title="kubectl自动补全"></a>kubectl自动补全</h4><pre class="language-none"><code class="language-none">yum install -y bash-completion
-source &#x2F;usr&#x2F;share&#x2F;bash-completion&#x2F;bash_completion
-source &lt;(kubectl completion bash)
-echo &quot;source &lt;(kubectl completion bash)&quot; &gt;&gt; ~&#x2F;.bashrc
-</code></pre>
-<h4 id="kubecolor显示输出"><a href="#kubecolor显示输出" class="headerlink" title="kubecolor显示输出"></a>kubecolor显示输出</h4><pre class="language-none"><code class="language-none">https:&#x2F;&#x2F;github.com&#x2F;hidetatz&#x2F;kubecolor 下载二进制后cp到&#x2F;usr&#x2F;local&#x2F;sbin&#x2F;
-
-alias kubectl&#x3D;&quot;kubecolor&quot; kube自动补全会提示kubecolor，修改为kbc
-alias kubectl&#x3D;&#39;kbc&#39;
-</code></pre>
-<h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4><p><a target="_blank" rel="noopener" href="https://kubernetes.io/zh/docs/tasks/access-application-cluster/configure-access-multiple-clusters/">https://kubernetes.io/zh/docs/tasks/access-application-cluster/configure-access-multiple-clusters/</a></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/hidetatz/kubecolor">https://github.com/hidetatz/kubecolor</a></p>
+<h4 id="安装glfw3"><a href="#安装glfw3" class="headerlink" title="安装glfw3"></a>安装glfw3</h4><pre class="language-none"><code class="language-none">cd &#x2F;usr&#x2F;local&#x2F;ffmpeg_sources
+wget https:&#x2F;&#x2F;github.com&#x2F;glfw&#x2F;glfw&#x2F;archive&#x2F;refs&#x2F;tags&#x2F;3.3.4.tar.gz
+tar -xzvf glfw-3.3.4.tar.gz
+cd glfw-3.3.4
+yum -y install libXrandr*
+yum -y install libXcursor*
+yum -y install libXi*
+cmake .
+make &amp;&amp; make install</code></pre>
+<h4 id="安装OpenGL相关库-glew"><a href="#安装OpenGL相关库-glew" class="headerlink" title="安装OpenGL相关库(glew)"></a>安装OpenGL相关库(glew)</h4><pre class="language-none"><code class="language-none">yum -y install glew glew-devel</code></pre>
+<h4 id="编译安装ffmpeg"><a href="#编译安装ffmpeg" class="headerlink" title="编译安装ffmpeg"></a>编译安装ffmpeg</h4><p>全版本地址:<a target="_blank" rel="noopener" href="https://ffmpeg.org/releases/">https://ffmpeg.org/releases/</a><br>选择4.4版本(<a target="_blank" rel="noopener" href="https://ffmpeg.org/releases/ffmpeg-4.4.tar.gz">https://ffmpeg.org/releases/ffmpeg-4.4.tar.gz</a>)</p>
+<h5 id="安装编译依赖"><a href="#安装编译依赖" class="headerlink" title="安装编译依赖"></a>安装编译依赖</h5><p><strong>安装nasm</strong></p>
+<pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources
+curl -O -L https:&#x2F;&#x2F;www.nasm.us&#x2F;pub&#x2F;nasm&#x2F;releasebuilds&#x2F;2.15.05&#x2F;nasm-2.15.05.tar.bz2
+tar xjvf nasm-2.15.05.tar.bz2
+cd nasm-2.15.05
+.&#x2F;autogen.sh
+.&#x2F;configure
+make
+make install</code></pre>
+<p><strong>安装yasm</strong></p>
+<pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources
+curl -O -L https:&#x2F;&#x2F;www.tortall.net&#x2F;projects&#x2F;yasm&#x2F;releases&#x2F;yasm-1.3.0.tar.gz
+tar xzvf yasm-1.3.0.tar.gz
+cd yasm-1.3.0
+.&#x2F;configure
+make
+make install</code></pre>
+<p><strong>安装libx264</strong></p>
+<pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources
+git clone --branch stable --depth 1 https:&#x2F;&#x2F;code.videolan.org&#x2F;videolan&#x2F;x264.git
+cd x264
+.&#x2F;configure --enable-static
+make
+make install</code></pre>
+<p><strong>下载ffmpeg</strong></p>
+<pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources
+wget https:&#x2F;&#x2F;ffmpeg.org&#x2F;releases&#x2F;ffmpeg-4.4.tar.gz
+tar -xzvf ffmpeg-4.4.tar.gz</code></pre>
+<p><strong>下载ffmpeg-gl-transition</strong></p>
+<pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources
+git clone https:&#x2F;&#x2F;github.com&#x2F;transitive-bullshit&#x2F;ffmpeg-gl-transition.git
+# 注意clone后进入ffmpeg4.4目录下
+cd ffmpeg-4.4
+# 拷贝vf_gltransition.c到libavfilter
+cp &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources&#x2F;ffmpeg-gl-transition&#x2F;vf_gltransition.c libavfilter&#x2F;</code></pre>
+<p>上面的复制就是在ffmpeg/libavfilter里加入要编译vf_gltransition.c这个文件<br>然后进入libavfilter文件夹<br><pre class="language-none"><code class="language-none"># 在libavfilter&#x2F;Makefile里加入
+OBJS-$(CONFIG_GLTRANSITION_FILTER)           +&#x3D; vf_gltransition.o
+# 在libavfilter&#x2F;allfilters.c加入
+extern AVFilter ff_vf_gltransition;</code></pre><br>还需要修改vf_gltransition.c,去掉宏定义。直接将<code># define GL_TRANSITION_USING_EGL</code>删除就可。<br>ps：<code>#</code>这里不是注释，直接删除哈～</p>
+<p>编译ffmpeg<br><pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources&#x2F;ffmpeg-4.4
+# 指定pkgconfig 避免找不到
+export PKG_CONFIG_PATH&#x3D;&#x2F;usr&#x2F;local&#x2F;lib&#x2F;pkgconfig:$PKG_CONFIG_PATH
+# 执行configure
+.&#x2F;configure --enable-nonfree --enable-cross-compile --enable-gpl --enable-libx264 --enable-opengl --enable-filter&#x3D;gltransition --extra-libs&#x3D;&#39;-lGLEW -lglfw3 -ldl -lX11&#39;
+# 执行make
+make
+# 建立软连接
+ln -sf &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources&#x2F;ffmpeg &#x2F;usr&#x2F;bin&#x2F;ffmpeg &amp;&amp; ln -sf &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources&#x2F;ffprobe &#x2F;usr&#x2F;bin&#x2F;ffprobe
+</code></pre></p>
+<h4 id="校验是否安装成功"><a href="#校验是否安装成功" class="headerlink" title="校验是否安装成功"></a>校验是否安装成功</h4><p><code>ffmpeg -v 0 -filters |grep transitions</code></p>
+<h4 id="测试效果"><a href="#测试效果" class="headerlink" title="测试效果"></a>测试效果</h4><p><strong>安装并启动Xvfb</strong></p>
+<pre class="language-none"><code class="language-none">yum -y install Xvfb 
+nohup Xvfb :1 -screen 0 1280x1024x16 &gt;&#x2F;dev&#x2F;null 2&gt;&amp;1 &amp;
+# 设置环境变量
+export DISPLAY&#x3D;:1</code></pre>
+<pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources&#x2F;gl-transitions&#x2F;transitions
+# 转场文件在https:&#x2F;&#x2F;github.com&#x2F;gl-transitions&#x2F;gl-transitions，crosswarp.glsl为转场文件
+ffmpeg -i input.mp4 -filter_complex &quot;gltransition&#x3D;duration&#x3D;4:offset&#x3D;1.5:source&#x3D;crosswarp.glsl&quot; -y out.mp4</code></pre>
+<h4 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40948587/article/details/121073081">https://blog.csdn.net/weixin_40948587/article/details/121073081</a><br><a target="_blank" rel="noopener" href="https://github.com/transitive-bullshit/ffmpeg-gl-transition">https://github.com/transitive-bullshit/ffmpeg-gl-transition</a></p>
 
             </div>
             <hr>
@@ -297,7 +326,7 @@ alias kubectl&#x3D;&#39;kbc&#39;
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/K8S/">K8S</a>
+                      <a class="hover-with-bg" href="/categories/Linux/">Linux</a>
                     
                   </div>
                 
@@ -305,7 +334,7 @@ alias kubectl&#x3D;&#39;kbc&#39;
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/kubectl/">kubectl</a>
+                      <a class="hover-with-bg" href="/tags/ffmpeg-gl-transitions/">ffmpeg gl-transitions</a>
                     
                   </div>
                 
@@ -318,18 +347,12 @@ alias kubectl&#x3D;&#39;kbc&#39;
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/05/21/2021-08-10-fastapi-vue/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Fastapi+Vue前后端分离</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/05/21/2022-05-21-kubevirt-user-guide/">
-                        <span class="hidden-mobile">kubevirt初体验</span>
+                      <a href="/2022/09/01/2022-09-01-zabbix-update-3.2-5.0/">
+                        <span class="hidden-mobile">zabbix跨版本升级避坑指南(3.2-5.0)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -474,7 +497,7 @@ alias kubectl&#x3D;&#39;kbc&#39;
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "k8s配置多集群访问和kubectl自动补全&nbsp;",
+        "Centos7下编译安装ffmpeg扩展gl-transitions&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

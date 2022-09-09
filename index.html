@@ -175,6 +175,119 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/09/06/2022-09-06-ffmpeg-gl-transitions/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/ffmpeg.png" srcset="/img/loading.gif" alt="Centos7下编译安装ffmpeg扩展gl-transitions">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2022/09/06/2022-09-06-ffmpeg-gl-transitions/">Centos7下编译安装ffmpeg扩展gl-transitions</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/09/06/2022-09-06-ffmpeg-gl-transitions/">
+          
+          
+            
+          
+          ffmpeg在4.3版本后加入xfade的转场，GRE大神使用WebGL编写的一些转场，效果十分酷炫，以及Travis Fischer大神gl-transitions,本文记录帮开发编译扩展gl-transitions
+
+环境准备源码下载目录/data/apps/ffmpeg_sources
+系统版本Red Hat7.9 or Centos7
+替换yum源
+mv &#x2F;etc&#x2F;yu
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-06 00:00" pubdate>
+              2022-09-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ffmpeg-gl-transitions/">ffmpeg gl-transitions</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/09/01/2022-09-01-zabbix-update-3.2-5.0/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/Grafana-Zabbix.png" srcset="/img/loading.gif" alt="zabbix跨版本升级避坑指南(3.2-5.0)">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2022/09/01/2022-09-01-zabbix-update-3.2-5.0/">zabbix跨版本升级避坑指南(3.2-5.0)</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/09/01/2022-09-01-zabbix-update-3.2-5.0/">
+          
+          
+            
+          
+          由于最近zabbix服务需要迁移，在运行的zabbix版本为Zabbix 3.2.4,所以趁这次迁移也把Zabbix版本。本计划直接升级为zabbix6.0(zabbix6.0支持原生高可用集群），但是由于这边db版本问题（zabbix6.0需要mysql8）。暂且升级为zabbix5版本。
+
+升级流程升级流程大致如下：1.搭建ha环境2.搭建新的zabbix5 server环境3.备份旧zabb
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-01 00:00" pubdate>
+              2022-09-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/zabbix/">zabbix</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2022/05/21/2021-08-10-fastapi-vue/" target="_self">
           <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/freepd-vue.png" srcset="/img/loading.gif" alt="Fastapi+Vue前后端分离">
         </a>
@@ -221,62 +334,6 @@ nvm off                     &#x2F;&#x2F; 禁用node
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/Fastapi-vue/">Fastapi vue</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2022/05/21/2022-05-21-kubevirt-user-guide/" target="_self">
-          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/kubevirt.png" srcset="/img/loading.gif" alt="kubevirt初体验">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2022/05/21/2022-05-21-kubevirt-user-guide/">kubevirt初体验</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/05/21/2022-05-21-kubevirt-user-guide/">
-          
-          
-            
-          
-          在云计算发展过程中，有两类虚拟化平台技术:• OpenStack(laaS):关注虚拟机的计算、网络和存储资源管理• Kubernetes(PaaS):关注容器的自动化部署、编排调度和发布管理
-
-安装Kubevirt组件如果虚拟化不可用，则需要手动开启软件仿真
-kubectl create configmap kubevirt-config -n kubevirt --from-literal d
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-05-21 00:00" pubdate>
-              2022-05-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/K8S/">K8S</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/kubevirt/">kubevirt</a>
             
           </div>
         
@@ -339,6 +396,62 @@ clusters:
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/kubectl/">kubectl</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/05/21/2022-05-21-kubevirt-user-guide/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/kubevirt.png" srcset="/img/loading.gif" alt="kubevirt初体验">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2022/05/21/2022-05-21-kubevirt-user-guide/">kubevirt初体验</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/05/21/2022-05-21-kubevirt-user-guide/">
+          
+          
+            
+          
+          在云计算发展过程中，有两类虚拟化平台技术:• OpenStack(laaS):关注虚拟机的计算、网络和存储资源管理• Kubernetes(PaaS):关注容器的自动化部署、编排调度和发布管理
+
+安装Kubevirt组件如果虚拟化不可用，则需要手动开启软件仿真
+kubectl create configmap kubevirt-config -n kubevirt --from-literal d
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-05-21 00:00" pubdate>
+              2022-05-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/K8S/">K8S</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/kubevirt/">kubevirt</a>
             
           </div>
         
@@ -640,118 +753,6 @@ GORO
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/Go/">Go</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/12/20/2020-12-20-loki-install-manual/" target="_self">
-          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/loki.jpg" srcset="/img/loading.gif" alt="轻量日志系统Loki初试">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/12/20/2020-12-20-loki-install-manual/">轻量日志系统Loki初试</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/12/20/2020-12-20-loki-install-manual/">
-          
-          
-            
-          
-          Loki架构
-Loki部署$ curl -O -L &quot;wget https:&#x2F;&#x2F;github.91chifun.workers.dev&#x2F;&#x2F;https:&#x2F;&#x2F;github.com&#x2F;grafana&#x2F;loki&#x2F;releases&#x2F;download&#x2F;v2.0.0&#x2F;loki-linu
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-12-20 00:00" pubdate>
-              2020-12-20
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Loki/">Loki</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/11/21/2020-11-21-etcd-migrate-data/" target="_self">
-          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/etcd.jpg" srcset="/img/loading.gif" alt="etcd部署及数据迁移">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/11/21/2020-11-21-etcd-migrate-data/">etcd部署及数据迁移</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/21/2020-11-21-etcd-migrate-data/">
-          
-          
-            
-          
-          环境概况etcdctl version 2.3.7
-最近迁移没人维护的老项目，涉及etcd2 服务的迁移，项目代码没人维护，所以只能平迁到etcd2版本。本来很简单的问题，结果快被整崩溃了。遂记录下迁移过程。
-问题：
-etcd[7663]: request cluster ID mismatch (got 75dea77f7702 want bfa24343767ba2e5)
-
-迁移顺序不对就如上
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-21 00:00" pubdate>
-              2020-11-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/etcd/">etcd</a>
             
           </div>
         
