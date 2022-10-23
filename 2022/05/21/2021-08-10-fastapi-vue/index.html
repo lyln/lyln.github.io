@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.4k 字
+      1.5k 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      23
+      24
        分钟
     </span>
   
@@ -394,7 +394,12 @@ import axios from &#39;axios&#39;
 </code></pre>
 <p>将请求返回的data数据赋值给data。</p>
 <p><img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/freepd-vue.png" srcset="/img/loading.gif" alt="freepd-vue"></p>
-<h3 id="Fastapi-Vue前后端分离-Serverless云上部署"><a href="#Fastapi-Vue前后端分离-Serverless云上部署" class="headerlink" title="Fastapi+Vue前后端分离-Serverless云上部署"></a>Fastapi+Vue前后端分离-Serverless云上部署</h3><h4 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h4><p>fastapi docs接口访问解决方法</p>
+<h3 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h3><p><a target="_blank" rel="noopener" href="https://github.com/lyln/freepd">https://github.com/lyln/freepd</a></p>
+<p>可参见backend下Dockerfile自行构建镜像。</p>
+<pre class="language-none"><code class="language-none">cd backend
+docker build -t freepd:v1 .
+docker run -d --name freepd -p 9000:9000 freepd:v1</code></pre>
+<h4 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h4><p>fastapi docs接口访问解决方法</p>
 <pre class="language-none"><code class="language-none"> &#x2F;usr&#x2F;local&#x2F;lib&#x2F;python3.8&#x2F;site-packages&#x2F;fastapi&#x2F;openapi&#x2F;docs.py
  venv&#x2F;lib&#x2F;python3.8&#x2F;site-packages&#x2F;fastapi&#x2F;openapi&#x2F;docs.py
  

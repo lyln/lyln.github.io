@@ -175,6 +175,59 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/03/13/2020-03-14-grafana-prometheus-notes/" target="_self">
+          <img src="https://prometheus.io/assets/architecture.png" srcset="/img/loading.gif" alt="Prometheus Grafana学习笔记">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/03/13/2020-03-14-grafana-prometheus-notes/">Prometheus Grafana学习笔记</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/03/13/2020-03-14-grafana-prometheus-notes/">
+          
+          
+            
+          
+          prometheus 大内存问题随着规模变大，prometheus需要的cpu和内存都会升高，内存一般先达到瓶颈，这个时候要么加内存，要么集群分片减少单机指标。原因：1、prometheus 的内存消耗主要是因为每隔2小时做一个 block 数据落盘，落盘之前所有数据都在内存里面，因此和采集量有关。2、加载历史数据时，是从磁盘到内存的，查询范围越大，内存越大。这里面有一定的优化空间3、一些不合理的
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-03-13 00:00" pubdate>
+              2020-03-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%9B%91%E6%8E%A7/">监控</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2019/10/27/2019-10-27-redis-cluster-install-manual/" target="_self">
           <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/redis.jpg" srcset="/img/loading.gif" alt="Redis Cluster搭建、扩容、缩容">
         </a>
@@ -683,55 +736,6 @@ kubectl get node -o json |grep  &quot;address&quot; |grep -v &#39;addresses&#39;
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/kubernetes/">kubernetes</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2018/10/18/2018-10-18-nexus-oss-install/">Nexus OSS私服的安装和迁移</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2018/10/18/2018-10-18-nexus-oss-install/">
-          
-          
-            
-          
-          Nexus私服Nexus常用功能就是：指定私服的中央地址、将自己的Maven项目指定到私服地址、从私服下载中央库的项目索引、从私服仓库下载依赖组件、将第三方项目jar上传到私服供其他项目组使用。
-3.x的默认存储变了，原以为下载到本地私服里面的jar包是以.jar格式存储的，就和本地仓储一样，但是用everything搜了半天，没有搜到，查了之后才发现，是以.bytes格式存储的。
-存储位置在： 
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2018-10-18 00:00" pubdate>
-              2018-10-18
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Nexus/">Nexus</a>
             
           </div>
         

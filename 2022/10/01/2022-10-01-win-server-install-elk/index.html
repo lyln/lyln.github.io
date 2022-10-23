@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Lyln">
   <meta name="keywords" content="">
-  <title>Centos7下编译安装ffmpeg扩展gl-transitions - 落影流年</title>
+  <title>Windows Server2008 elk监控服务器日志和防火墙日志 - 落影流年</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -169,8 +169,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-09-06 00:00" pubdate>
-        2022年9月6日 凌晨
+      <time datetime="2022-10-01 00:00" pubdate>
+        2022年10月1日 凌晨
       </time>
     </span>
   
@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      898 字
+      771 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15
+      10
        分钟
     </span>
   
@@ -221,102 +221,120 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">Centos7下编译安装ffmpeg扩展gl-transitions</h1>
+            <h1 style="display: none">Windows Server2008 elk监控服务器日志和防火墙日志</h1>
             
             <div class="markdown-body" id="post-body">
-              <p>ffmpeg在4.3版本后加入xfade的转场，GRE大神使用WebGL编写的一些转场，效果十分酷炫，以及Travis Fischer大神gl-transitions,<br>本文记录帮开发编译扩展gl-transitions</p>
-<p><img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/ffmpeg.png" srcset="/img/loading.gif" alt="ffmpeg"></p>
-<h4 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h4><p>源码下载目录<br><code>/data/apps/ffmpeg_sources</code></p>
-<p>系统版本<br><pre class="language-none"><code class="language-none">Red Hat7.9 or Centos7</code></pre></p>
-<pre class="language-none"><code class="language-none">替换yum源
-mv &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo.bak
-curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-7.repo
-yum makecache
+              <p><img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/win_server_elk.png" srcset="/img/loading.gif" alt="win_server_elk"></p>
+<p>Win2008搭建elk收集防火墙日志和服务器日志，用于安全审核。本文记录下搭建过程中的注意事项和遇到的一些问题。</p>
+<p><strong>组件如下：</strong></p>
+<ul>
+<li>Syslog: 记录设备的系统日志信息</li>
+<li>Logstash: 数据过滤组件，用于收集和日志过滤等</li>
+<li>Winlogbeat: 收集windows系统日志</li>
+<li>Metricbeat: 收集Elasticsearch指标,kibana监控es展示需要此插件</li>
+<li>Elasticsearch: 全文索引引擎+存储</li>
+<li>Kibana: 可视化平台，可展示、检索、管理Elasticsearch中的数据。</li>
+<li>Nginx: 反向代理，增加安全认证。</li>
+<li>NSSM:NSSM是一个服务封装程序，将exe封装为服务。</li>
+</ul>
+<p><strong>注意事项：</strong></p>
+<ul>
+<li><p>安装版本 6.8.22</p>
+<p>版本说明：本计划安装7.17.6版本的elk，但是kibana依赖nodejs版本。win2008 server不支持node版本，被迫放弃。 kibana7系列支持用户认证，所以7以下的版本只能通过nginx加简单的安全认证。</p>
+</li>
+<li><p>win下部署所有服务都是用NSSM将exe封装为服务。通过win服务管理启动关闭等。</p>
+</li>
+<li><p>win有防火墙规则，需要给 syslog服务开放端口。</p>
+</li>
+</ul>
+<p><strong>Elasticsearch安装</strong></p>
+<pre class="language-none"><code class="language-none">解压，修改配置文件
+cluster.name: es-cluster
+node.name: elk-1
+node.master: true
+node.data: true
+network.host: 0.0.0.0
+http.port: 9200
+path.data: D:&#x2F;data&#x2F;elk&#x2F;elastic&#x2F;data
+path.logs: D:&#x2F;data&#x2F;elk&#x2F;elastic&#x2F;logs
+http.cors.enabled: true
+http.cors.allow-origin: &quot;*&quot;
 
-安装编译工具及依赖
-yum -y install autoconf automake bzip2 bzip2-devel cmake freetype-devel gcc gcc-c++ git libtool make pkgconfig zlib-devel libxml2-devel mesa* freeglut*
-</code></pre>
-<h4 id="cmake安装"><a href="#cmake安装" class="headerlink" title="cmake安装"></a>cmake安装</h4><p>当前安装cmake版本基本是2.8左右的，后续依赖的glfw需要升级cmake。</p>
-<pre class="language-none"><code class="language-none">cmake --version
+elasticsearch可不用nssm
+elasticsearch-service.bat install
+elasticsearch-service.bat后面还可以执行这些命令
+install: 安装Elasticsearch服务
+remove: 删除已安装的Elasticsearch服务（如果启动则停止服务）
+start: 启动Elasticsearch服务（如果已安装）
+stop: 停止服务（如果启动）
+manager:启动GUI来管理已安装的服务
 
-#移除旧的cmake版本
-yum remove cmake -y
-wget https:&#x2F;&#x2F;cmake.org&#x2F;files&#x2F;v3.14&#x2F;cmake-3.14.5.tar.gz
-tar zxvf cmake-3.14.5.tar.gz
-cd cmake-3.14.5
-.&#x2F;configure
-make &amp;&amp; make install
+curl http:&#x2F;&#x2F;localhost:9200</code></pre>
+<p><strong>Kibana安装</strong></p>
+<pre class="language-none"><code class="language-none">解压，修改配置文件
+server.port: 5601
+server.host: &quot;0.0.0.0&quot;
+server.name: &quot;kibana-cluster&quot;
+elasticsearch.hosts: [&quot;http:&#x2F;&#x2F;localhost:9200&quot;]
+elasticsearch.requestTimeout: 99999
+#支持中文
+i18n.locale: &quot;zh-CN&quot;
 </code></pre>
-<h4 id="安装glfw3"><a href="#安装glfw3" class="headerlink" title="安装glfw3"></a>安装glfw3</h4><pre class="language-none"><code class="language-none">cd &#x2F;usr&#x2F;local&#x2F;ffmpeg_sources
-wget https:&#x2F;&#x2F;github.com&#x2F;glfw&#x2F;glfw&#x2F;archive&#x2F;refs&#x2F;tags&#x2F;3.3.4.tar.gz
-tar -xzvf glfw-3.3.4.tar.gz
-cd glfw-3.3.4
-yum -y install libXrandr*
-yum -y install libXcursor*
-yum -y install libXi*
-cmake .
-make &amp;&amp; make install</code></pre>
-<h4 id="安装OpenGL相关库-glew"><a href="#安装OpenGL相关库-glew" class="headerlink" title="安装OpenGL相关库(glew)"></a>安装OpenGL相关库(glew)</h4><pre class="language-none"><code class="language-none">yum -y install glew glew-devel</code></pre>
-<h4 id="编译安装ffmpeg"><a href="#编译安装ffmpeg" class="headerlink" title="编译安装ffmpeg"></a>编译安装ffmpeg</h4><p>全版本地址:<a target="_blank" rel="noopener" href="https://ffmpeg.org/releases/">https://ffmpeg.org/releases/</a><br>选择4.4版本(<a target="_blank" rel="noopener" href="https://ffmpeg.org/releases/ffmpeg-4.4.tar.gz">https://ffmpeg.org/releases/ffmpeg-4.4.tar.gz</a>)</p>
-<h5 id="安装编译依赖"><a href="#安装编译依赖" class="headerlink" title="安装编译依赖"></a>安装编译依赖</h5><p><strong>安装nasm</strong></p>
-<pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources
-curl -O -L https:&#x2F;&#x2F;www.nasm.us&#x2F;pub&#x2F;nasm&#x2F;releasebuilds&#x2F;2.15.05&#x2F;nasm-2.15.05.tar.bz2
-tar xjvf nasm-2.15.05.tar.bz2
-cd nasm-2.15.05
-.&#x2F;autogen.sh
-.&#x2F;configure
-make
-make install</code></pre>
-<p><strong>安装yasm</strong></p>
-<pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources
-curl -O -L https:&#x2F;&#x2F;www.tortall.net&#x2F;projects&#x2F;yasm&#x2F;releases&#x2F;yasm-1.3.0.tar.gz
-tar xzvf yasm-1.3.0.tar.gz
-cd yasm-1.3.0
-.&#x2F;configure
-make
-make install</code></pre>
-<p><strong>安装libx264</strong></p>
-<pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources
-git clone --branch stable --depth 1 https:&#x2F;&#x2F;code.videolan.org&#x2F;videolan&#x2F;x264.git
-cd x264
-.&#x2F;configure --enable-static
-make
-make install</code></pre>
-<p><strong>下载ffmpeg</strong></p>
-<pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources
-wget https:&#x2F;&#x2F;ffmpeg.org&#x2F;releases&#x2F;ffmpeg-4.4.tar.gz
-tar -xzvf ffmpeg-4.4.tar.gz</code></pre>
-<p><strong>下载ffmpeg-gl-transition</strong></p>
-<pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources
-git clone https:&#x2F;&#x2F;github.com&#x2F;transitive-bullshit&#x2F;ffmpeg-gl-transition.git
-# 注意clone后进入ffmpeg4.4目录下
-cd ffmpeg-4.4
-# 拷贝vf_gltransition.c到libavfilter
-cp &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources&#x2F;ffmpeg-gl-transition&#x2F;vf_gltransition.c libavfilter&#x2F;</code></pre>
-<p>上面的复制就是在ffmpeg/libavfilter里加入要编译vf_gltransition.c这个文件<br>然后进入libavfilter文件夹<br><pre class="language-none"><code class="language-none"># 在libavfilter&#x2F;Makefile里加入
-OBJS-$(CONFIG_GLTRANSITION_FILTER)           +&#x3D; vf_gltransition.o
-# 在libavfilter&#x2F;allfilters.c加入
-extern AVFilter ff_vf_gltransition;</code></pre><br>还需要修改vf_gltransition.c,去掉宏定义。直接将<code># define GL_TRANSITION_USING_EGL</code>删除就可。<br>ps：<code>#</code>这里不是注释，直接删除哈～</p>
-<p>编译ffmpeg<br><pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources&#x2F;ffmpeg-4.4
-# 指定pkgconfig 避免找不到
-export PKG_CONFIG_PATH&#x3D;&#x2F;usr&#x2F;local&#x2F;lib&#x2F;pkgconfig:$PKG_CONFIG_PATH
-# 执行configure
-.&#x2F;configure --enable-nonfree --enable-cross-compile --enable-gpl --enable-libx264 --enable-opengl --enable-filter&#x3D;gltransition --extra-libs&#x3D;&#39;-lGLEW -lglfw3 -ldl -lX11&#39;
-# 执行make
-make
-# 建立软连接
-ln -sf &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources&#x2F;ffmpeg &#x2F;usr&#x2F;bin&#x2F;ffmpeg &amp;&amp; ln -sf &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources&#x2F;ffprobe &#x2F;usr&#x2F;bin&#x2F;ffprobe
-</code></pre></p>
-<h4 id="校验是否安装成功"><a href="#校验是否安装成功" class="headerlink" title="校验是否安装成功"></a>校验是否安装成功</h4><p><code>ffmpeg -v 0 -filters |grep transitions</code></p>
-<h4 id="测试效果"><a href="#测试效果" class="headerlink" title="测试效果"></a>测试效果</h4><p><strong>安装并启动Xvfb</strong></p>
-<pre class="language-none"><code class="language-none">yum -y install Xvfb 
-nohup Xvfb :1 -screen 0 1280x1024x16 &gt;&#x2F;dev&#x2F;null 2&gt;&amp;1 &amp;
-# 设置环境变量
-export DISPLAY&#x3D;:1</code></pre>
-<pre class="language-none"><code class="language-none">cd &#x2F;data&#x2F;apps&#x2F;ffmpeg_sources&#x2F;gl-transitions&#x2F;transitions
-# 转场文件在https:&#x2F;&#x2F;github.com&#x2F;gl-transitions&#x2F;gl-transitions，crosswarp.glsl为转场文件
-ffmpeg -i input.mp4 -filter_complex &quot;gltransition&#x3D;duration&#x3D;4:offset&#x3D;1.5:source&#x3D;crosswarp.glsl&quot; -y out.mp4</code></pre>
-<h4 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_40948587/article/details/121073081">https://blog.csdn.net/weixin_40948587/article/details/121073081</a><br><a target="_blank" rel="noopener" href="https://github.com/transitive-bullshit/ffmpeg-gl-transition">https://github.com/transitive-bullshit/ffmpeg-gl-transition</a></p>
+<p><strong>NSSM使用</strong></p>
+<pre class="language-none"><code class="language-none">https:&#x2F;&#x2F;nssm.cc&#x2F;download
+
+安装服务：nssm install 服务名
+删除服务：nssm remove 服务名
+删除服务确定：nssm remove 服务名 confirm 
+修改服务（显示界面修改）：nssm edit 服务名
+启动服务：nssm start 服务名
+停止服务：nssm stop 服务名
+重启服务：nssm restart 服务名
+
+nssm.exe 放到程序目录
+
+nssm install kibana 将kibana通过service.msi服务管理。
+
+如果指定配置文件位置，nssm指定启动参数，不然会启动失败
+Arguments：参数
+-f D:\elk\logstash\config\syslog-security.conf</code></pre>
+<p><strong>Winlogbeat</strong> 安装</p>
+<pre class="language-none"><code class="language-none">winlogbeat.exe setup
+.\winlogbeat.exe test config -c .\winlogbeat.yml
+
+winlogbeat.yml
+修改es和kibana地址
+
+nssm安装为服务即可
+
+要查看全部类型，在PowerShell中运行Get-EventLog *，更多信息请参考event_logs.name.
+</code></pre>
+<p><strong>Metricbeat</strong> 安装</p>
+<pre class="language-none"><code class="language-none">默认加载配置加载modules.d&#x2F;system.yml
+metricbeat.yml
+setup.kibana:
+  host: &quot;localhost:5601&quot;
+output.elasticsearch:
+  hosts: [&quot;localhost:9200&quot;]
+ 
+nssm安装为服务即可</code></pre>
+<p><strong>Logstash安装</strong></p>
+<pre class="language-none"><code class="language-none">收集防火墙日志syslog日志到es
+logstash.yml
+input &#123;    
+   syslog&#123;
+   		type &#x3D;&gt; &quot;syslog-security&quot;
+    	port &#x3D;&gt; 514
+   &#125;
+&#125;
+output &#123;    
+   elasticsearch &#123;        
+			hosts &#x3D;&gt; [&quot;localhost:9200&quot;]        
+      index &#x3D;&gt; &quot;syslog-security-%&#123;+YYYY.MM&#125;&quot;    
+   &#125;
+        
+	#stdout &#123;codec &#x3D;&gt; rubydebug&#125;
+&#125;</code></pre>
 
             </div>
             <hr>
@@ -334,7 +352,7 @@ ffmpeg -i input.mp4 -filter_complex &quot;gltransition&#x3D;duration&#x3D;4:offs
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/ffmpeg-gl-transitions/">ffmpeg gl-transitions</a>
+                      <a class="hover-with-bg" href="/tags/win-server-elk-syslog-elastic-logstash-kibana/">win-server elk syslog elastic logstash kibana</a>
                     
                   </div>
                 
@@ -347,18 +365,12 @@ ffmpeg -i input.mp4 -filter_complex &quot;gltransition&#x3D;duration&#x3D;4:offs
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/10/01/2022-10-01-win-server-install-elk/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Windows Server2008 elk监控服务器日志和防火墙日志</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/09/01/2022-09-01-zabbix-update-3.2-5.0/">
-                        <span class="hidden-mobile">zabbix跨版本升级避坑指南(3.2-5.0)</span>
+                      <a href="/2022/09/06/2022-09-06-ffmpeg-gl-transitions/">
+                        <span class="hidden-mobile">Centos7下编译安装ffmpeg扩展gl-transitions</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -503,7 +515,7 @@ ffmpeg -i input.mp4 -filter_complex &quot;gltransition&#x3D;duration&#x3D;4:offs
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Centos7下编译安装ffmpeg扩展gl-transitions&nbsp;",
+        "Windows Server2008 elk监控服务器日志和防火墙日志&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

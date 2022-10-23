@@ -175,6 +175,67 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2021/01/16/2021-01-16-go-env-base/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/go-env.png" srcset="/img/loading.gif" alt="Go环境搭建及VSCode配置">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2021/01/16/2021-01-16-go-env-base/">Go环境搭建及VSCode配置</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/01/16/2021-01-16-go-env-base/">
+          
+          
+            
+          
+          Go开发环境搭建mac升级go版本
+https:&#x2F;&#x2F;golang.org&#x2F;dl&#x2F;
+或者这个地址https:&#x2F;&#x2F;studygolang.com&#x2F;dl
+下载对应的版本
+设置环境变量即可
+export GOROOT&#x3D;~&#x2F;go
+export PATH&#x3D;$PATH:$GOROOT&#x2F;bin
+
+GORO
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-01-16 00:00" pubdate>
+              2021-01-16
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Go/">Go</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2020/12/20/2020-12-20-loki-install-manual/" target="_self">
           <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/loki.jpg" srcset="/img/loading.gif" alt="轻量日志系统Loki初试">
         </a>
@@ -304,11 +365,12 @@ etcd[7663]: request cluster ID mismatch (got 75dea77f7702 want bfa24343767ba2e5)
             
           
           快速构建各种开发测试环境汇总
-MySQL5.7开发环境docker run --name=my-db -p3306:3306 -d mysql/mysql-server:5.7
+MySQL5.7开发环境docker run --name&#x3D;my-db -p3306:3306 -d mysql&#x2F;mysql-server:5.7
 获取临时密码
-docker logs mysql1 2>&amp;1 | grep GENERATED
-GENERATED ROOT PASSWORD: Axegh3kAJyDLaRuBemecis&amp;EShOs
-d
+持久化数据库
+-v &#x2F;opt&#x2F;mysql&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql 
+配置文件挂载
+-v &#x2F;opt&#x
         </a>
       </p>
 
@@ -674,59 +736,6 @@ Nginx编译后参数如下-prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx --with-ht
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/Nginx/">Nginx</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/03/13/2020-03-14-grafana-prometheus-notes/" target="_self">
-          <img src="https://prometheus.io/assets/architecture.png" srcset="/img/loading.gif" alt="Prometheus Grafana学习笔记">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/03/13/2020-03-14-grafana-prometheus-notes/">Prometheus Grafana学习笔记</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/03/13/2020-03-14-grafana-prometheus-notes/">
-          
-          
-            
-          
-          prometheus 大内存问题随着规模变大，prometheus需要的cpu和内存都会升高，内存一般先达到瓶颈，这个时候要么加内存，要么集群分片减少单机指标。原因：1、prometheus 的内存消耗主要是因为每隔2小时做一个 block 数据落盘，落盘之前所有数据都在内存里面，因此和采集量有关。2、加载历史数据时，是从磁盘到内存的，查询范围越大，内存越大。这里面有一定的优化空间3、一些不合理的
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-03-13 00:00" pubdate>
-              2020-03-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%9B%91%E6%8E%A7/">监控</a>
             
           </div>
         
