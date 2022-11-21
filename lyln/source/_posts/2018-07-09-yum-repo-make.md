@@ -54,7 +54,7 @@ server {
  cat /etc/yum.repos.d/appserver.repo
 [appserver]
 name=Extra Packages for appserver - $basearch
-baseurl=http://10.16.76.135:8080
+baseurl=http://192.168.1.211:8080
 gpgcheck=0
 enabled=1
 ```

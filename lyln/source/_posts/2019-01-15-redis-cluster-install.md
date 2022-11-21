@@ -7,17 +7,17 @@ date: 2019/01/15
 ---
 
 ### redis cluster集群构建
-10.16.76.144 6000
-10.16.76.144 6001
-10.16.76.144 6002
+192.168.1.144 6000
+192.168.1.144 6001
+192.168.1.144 6002
 
 集群密码：abcdefg
 
 ### 配置主节点
 ```
-10.16.76.144 6000
-cluster meet 10.16.76.144 6001
-cluster meet 10.16.76.144 6002
+192.168.1.144 6000
+cluster meet 192.168.1.144 6001
+cluster meet 192.168.1.144 6002
 
 cluster nodes
 cluster info
@@ -39,14 +39,14 @@ REDIS_PASS=''
 n=0
 for ((i=n;i<=5461;i++))
 do
-   $REDIS-CLI -h 10.16.76.144 -p 6000 -a $REDIS_PASS CLUSTER ADDSLOTS $i
+   $REDIS-CLI -h 192.168.1.144 -p 6000 -a $REDIS_PASS CLUSTER ADDSLOTS $i
 done
 
 #node2
 n=5462
 for ((i=n;i<=10922;i++))
 do
-   $REDIS-CLI -h 10.16.76.144 -p 6001 -a $REDIS_PASS CLUSTER ADDSLOTS $i
+   $REDIS-CLI -h 192.168.1.144 -p 6001 -a $REDIS_PASS CLUSTER ADDSLOTS $i
 done
 
 #node3
@@ -54,7 +54,7 @@ done
 n=10923
 for ((i=n;i<=16383;i++))
 do
-   $REDIS-CLI -h 10.16.76.144 -p 6002 -a $REDIS_PASS CLUSTER ADDSLOTS $i
+   $REDIS-CLI -h 192.168.1.144 -p 6002 -a $REDIS_PASS CLUSTER ADDSLOTS $i
 done
 
 ```
@@ -65,7 +65,7 @@ config rewrite 写入配置
 
 for i in {6000..6002}; do echo $i;done
 
-for i in {6000..6002};  do echo $i; redis-cli -c -h 10.16.76.144 -p $i config set requirepass abcdefg ;done
+for i in {6000..6002};  do echo $i; redis-cli -c -h 192.168.1.144 -p $i config set requirepass abcdefg ;done
 ```
 
 ### redis cluster常用命令

@@ -5,7 +5,6 @@ categories: Linux
 index_img: https://inshub.oss-cn-beijing.aliyuncs.com/blog/fabos-login.jpg
 tags: 接入层网关 
 date: 2021-02-09
-
 ---
 
 之前调研confd+nacos无侵入的管理nginx配置管理方案，可以通过nacos本身的ui管理配置实现nginx配置的自动更新。但是本身ui可能管理配置起来相对麻烦。遂考虑整合到运维管理平台。

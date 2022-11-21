@@ -242,6 +242,22 @@ import axios from 'axios'
 
 ![freepd-vue](https://inshub.oss-cn-beijing.aliyuncs.com/blog/freepd-vue.png)
 
+
+
+### 项目地址
+
+https://github.com/lyln/freepd
+
+可参见backend下Dockerfile自行构建镜像。
+
+```
+cd backend
+docker build -t freepd:v1 .
+docker run -d --name freepd -p 9000:9000 freepd:v1
+```
+
+
+
 #### 问题汇总
 
 fastapi docs接口访问解决方法

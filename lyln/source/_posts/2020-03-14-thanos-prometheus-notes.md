@@ -1,13 +1,21 @@
 ---
 layout: post
-title: Prometheus Grafana学习笔记
+title: prometheus集群模式thanos部署
 categories: Linux
-tags: 监控
+tags: 监控 thanos prometheus
 index_img: https://prometheus.io/assets/architecture.png
 date: 2020-03-13 
 ---
 
-### prometheus 大内存问题
+#### 检查prometheus.yml配置是否有效
+如果配置错误，prometheus将无法重新加载，但如果启动时没有启动，则无法启动。
+因此，在通过持续集成或类似机制检查配置之前检查配置是否合适是明智的。
+```
+./promtool check config prometheus.yml 
+```
+
+#### prometheus 大内存问题
+
 随着规模变大，prometheus需要的cpu和内存都会升高，内存一般先达到瓶颈，这个时候要么加内存，要么集群分片减少单机指标。
 原因：
 1、prometheus 的内存消耗主要是因为每隔2小时做一个 block 数据落盘，落盘之前所有数据都在内存里面，因此和采集量有关。
@@ -15,9 +23,7 @@ date: 2020-03-13
 3、一些不合理的查询条件也会加大内存，如 group、大范围rate
 
 sample 数量超过了 200 万，就不要单实例了，做下分片，
-然后通过victoriametrics，thanos，trickster等方案合并数据
-
-使用了thanos方案
+然后通过victoriametrics，thanos，trickster等方案合并数据,选择使用thanos方案。
 
 <!-- more -->
 磁盘预估方法
@@ -42,7 +48,7 @@ rate(prometheus_tsdb_head_samples_appended_total[1h])
 查看多少台node_exporter
 count(node_exporter_build_info)
 
-908 台机器 - 180 视频商业
+908 台机器 - 180 商业
 
 node_export
 curl -s http://localhost:9100/metrics | grep -v "#"|grep "node_" |wc -l
@@ -51,8 +57,6 @@ curl -s http://localhost:9100/metrics | grep -v "#"|grep "node_" |wc -l
 测量点(即样本数量)
 
 指标统计
-
-
 
 Promethues 压缩样本使用磁盘大小公式为 :
 compact_data_disk_usage = (romethues 压缩样本使用磁盘大小公式为 :
@@ -77,8 +81,9 @@ wal_file_disk_usage = active_data_mem_uage * (8 / 1) = 190G
 ### thanos部署
 thanos version 2.13.0 版本
 
-prometheus部署 
+**prometheus部署**
 /etc/systemd/system/prometheus.service
+
 ```
 [Unit]
 Description=prometheus_media
@@ -86,28 +91,23 @@ After=network.target
 [Service]
 Type=simple
 User=root
-ExecStart=/data/apps/prometheus/prometheus --config.file=/data/apps/prometheus/prometheus.yml --storage.tsdb.path=/data/apps/prometheus/data --storage.tsdb.retention.time=1d --web.enable-admin-api --web.enable-lifecycle
+ExecStart=/data/apps/prometheus/prometheus --config.file=/data/apps/prometheus/prometheus.yml --storage.tsdb.path=/data/apps/prometheus/data --storage.tsdb.retention.time=1d --web.enable-admin-api --web.enable-lifecycle --web.listen-address=:9090
 Restart=on-failure
 [Install]
 WantedBy=multi-user.target
-
-###
-#prometheus.service
-#prometheus_media.service
-#prometheus_shipin
-#prometheus_zixun
 ```
 
-thanos启动
+**thanos启动**
+
 ```
 sidecar启动命令：
 nohup ./thanos sidecar --tsdb.path /data/apps/prometheus/media --prometheus.url http://localhost:9090 --http-address 0.0.0.0:19191 --grpc-address 0.0.0.0:19091 > sd_media.log 2>&1 &
 nohup ./thanos sidecar --tsdb.path /data/apps/prometheus/shipin --prometheus.url http://localhost:9092 --http-address 0.0.0.0:19192 --grpc-address 0.0.0.0:19092 > sd_shipin.log 2>&1 &
 nohup ./thanos sidecar --tsdb.path /data/apps/prometheus/zixun --prometheus.url http://localhost:9095 --http-address 0.0.0.0:19193 --grpc-address 0.0.0.0:19093 > sd_zixun.log 2>&1 &
 query启动命令：
-nohup ./thanos query --http-address 0.0.0.0:29090 --grpc-address 0.0.0.0:29091 --query.replica-label monitor --store 10.16.12.54:19091 --store 10.16.12.54:19092 --store 10.18.94.40:19093 > qu_media.log 2>&1 &
-nohup ./thanos query --http-address 0.0.0.0:29092 --grpc-address 0.0.0.0:29093 --query.replica-label monitor --store 10.16.12.54:19091 --store 10.16.12.54:19092 --store 10.18.94.40:19093 > qu_shipin.log 2>&1 &
-nohup ./thanos query --http-address 0.0.0.0:29094 --grpc-address 0.0.0.0:29095 --query.replica-label monitor --store 10.16.12.54:19091 --store 10.16.12.54:19092 --store 10.18.94.40:19093 > qu_zixun.log 2>&1 &
+nohup ./thanos query --http-address 0.0.0.0:29090 --grpc-address 0.0.0.0:29091 --query.replica-label monitor --store 192.168.1.111:19091 --store 192.168.1.111:19092 --store 192.168.1.112:19093 > qu_media.log 2>&1 &
+nohup ./thanos query --http-address 0.0.0.0:29092 --grpc-address 0.0.0.0:29093 --query.replica-label monitor --store 192.168.1.111:19091 --store 192.168.1.111:19092 --store 192.168.1.112:19093 > qu_shipin.log 2>&1 &
+nohup ./thanos query --http-address 0.0.0.0:29094 --grpc-address 0.0.0.0:29095 --query.replica-label monitor --store 192.168.1.111:19091 --store 192.168.1.111:19092 --store 192.168.1.112:19093 > qu_zixun.log 2>&1 &
 
 ```
 nginx负载均衡查询端
@@ -137,33 +137,6 @@ server {
 }
 ```
 
-
-### Grafana设置免密登录
-
-```
-[auth.anonymous]
-enabled = true
-org_name = Main Org.
-org_role = Viewer
-```
-
-### Grafana设置
-label_values(node_uname_info, job)
-
-instance=~"$node",mode="system"
-
-
-### Grafana添加告警
-
-
-
-
-开启anonymous后，ui Server Admin设置orgs 设置Main Org. 与org_name一致。
-
-PromQL
-{} 过滤时间序列数据
-[] 范围样本区间
-
 ### 常用运维命令
 ```
 ./tsdb ls custom_all
@@ -172,10 +145,5 @@ BLOCK ULID                  MIN TIME       MAX TIME       NUM SAMPLES  NUM CHUNK
 01E4JHE3EKB5252S5060RS88GF  1585454400000  1585461600000  373910606    3114077     783026
 ```
 
-
-
-
-
 ### 参考地址：
-https://prometheus.io/docs/guides/node-exporter/
-http://support.transwarp.cn/t/topic/3226
+https://prometheus.io/docs/prometheus/latest/getting_started/

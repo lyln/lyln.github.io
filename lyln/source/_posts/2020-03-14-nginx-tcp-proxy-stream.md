@@ -24,8 +24,8 @@ stream代码块与http代码块同级别
 stream {  
     upstream ssh_proxy {
         hash $remote_addr consistent;
-        server 10.16.76.116:22;
-        server 10.16.76.119:22;
+        server 192.168.1.116:22;
+        server 192.168.1.119:22;
     }
     server {
         listen 2222;
@@ -42,7 +42,7 @@ stream {
 stream {
     upstream mysql_proxy {
 #hash $remote_addr consistent;
-        server 10.18.70.70:3307;
+        server 192.168.1.70:3307;
     }
 
     server {

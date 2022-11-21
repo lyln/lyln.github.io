@@ -35,7 +35,7 @@ flanneld
 **部署完新的master节点后，修改旧master节点配置**
 
 ```
-改旧的apiserver 10.10.64.144 组件配置，加上选主等配置
+改旧的apiserver 192.168.1.144 组件配置，加上选主等配置
 首先disable !!! 
 systemctl disable kube-apiserver
 systemctl disable kube-scheduler
