@@ -224,11 +224,11 @@
             <h1 style="display: none">Redis Cluster集群搭建</h1>
             
             <div class="markdown-body" id="post-body">
-              <h3 id="redis-cluster集群构建"><a href="#redis-cluster集群构建" class="headerlink" title="redis cluster集群构建"></a>redis cluster集群构建</h3><p>10.16.76.144 6000<br>10.16.76.144 6001<br>10.16.76.144 6002</p>
+              <h3 id="redis-cluster集群构建"><a href="#redis-cluster集群构建" class="headerlink" title="redis cluster集群构建"></a>redis cluster集群构建</h3><p>192.168.1.144 6000<br>192.168.1.144 6001<br>192.168.1.144 6002</p>
 <p>集群密码：abcdefg</p>
-<h3 id="配置主节点"><a href="#配置主节点" class="headerlink" title="配置主节点"></a>配置主节点</h3><pre class="language-none"><code class="language-none">10.16.76.144 6000
-cluster meet 10.16.76.144 6001
-cluster meet 10.16.76.144 6002
+<h3 id="配置主节点"><a href="#配置主节点" class="headerlink" title="配置主节点"></a>配置主节点</h3><pre class="language-none"><code class="language-none">192.168.1.144 6000
+cluster meet 192.168.1.144 6001
+cluster meet 192.168.1.144 6002
 
 cluster nodes
 cluster info
@@ -243,14 +243,14 @@ REDIS_PASS&#x3D;&#39;&#39;
 n&#x3D;0
 for ((i&#x3D;n;i&lt;&#x3D;5461;i++))
 do
-   $REDIS-CLI -h 10.16.76.144 -p 6000 -a $REDIS_PASS CLUSTER ADDSLOTS $i
+   $REDIS-CLI -h 192.168.1.144 -p 6000 -a $REDIS_PASS CLUSTER ADDSLOTS $i
 done
 
 #node2
 n&#x3D;5462
 for ((i&#x3D;n;i&lt;&#x3D;10922;i++))
 do
-   $REDIS-CLI -h 10.16.76.144 -p 6001 -a $REDIS_PASS CLUSTER ADDSLOTS $i
+   $REDIS-CLI -h 192.168.1.144 -p 6001 -a $REDIS_PASS CLUSTER ADDSLOTS $i
 done
 
 #node3
@@ -258,14 +258,14 @@ done
 n&#x3D;10923
 for ((i&#x3D;n;i&lt;&#x3D;16383;i++))
 do
-   $REDIS-CLI -h 10.16.76.144 -p 6002 -a $REDIS_PASS CLUSTER ADDSLOTS $i
+   $REDIS-CLI -h 192.168.1.144 -p 6002 -a $REDIS_PASS CLUSTER ADDSLOTS $i
 done
 </code></pre></p>
 <h3 id="redis集群动态添加密码"><a href="#redis集群动态添加密码" class="headerlink" title="redis集群动态添加密码"></a>redis集群动态添加密码</h3><pre class="language-none"><code class="language-none">config rewrite 写入配置
 
 for i in &#123;6000..6002&#125;; do echo $i;done
 
-for i in &#123;6000..6002&#125;;  do echo $i; redis-cli -c -h 10.16.76.144 -p $i config set requirepass abcdefg ;done</code></pre>
+for i in &#123;6000..6002&#125;;  do echo $i; redis-cli -c -h 192.168.1.144 -p $i config set requirepass abcdefg ;done</code></pre>
 <h3 id="redis-cluster常用命令"><a href="#redis-cluster常用命令" class="headerlink" title="redis cluster常用命令"></a>redis cluster常用命令</h3><pre class="language-none"><code class="language-none">查看key所在slot
 cluster keyslot key_name</code></pre>
             </div>

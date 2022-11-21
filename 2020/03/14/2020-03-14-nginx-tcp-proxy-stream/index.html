@@ -230,8 +230,8 @@
 <h3 id="实现SSH转发"><a href="#实现SSH转发" class="headerlink" title="实现SSH转发"></a>实现SSH转发</h3><p>stream代码块与http代码块同级别<br><pre class="language-none"><code class="language-none">stream &#123;  
     upstream ssh_proxy &#123;
         hash $remote_addr consistent;
-        server 10.16.76.116:22;
-        server 10.16.76.119:22;
+        server 192.168.1.116:22;
+        server 192.168.1.119:22;
     &#125;
     server &#123;
         listen 2222;
@@ -244,7 +244,7 @@
 <h3 id="MYSQL负载均衡"><a href="#MYSQL负载均衡" class="headerlink" title="MYSQL负载均衡"></a>MYSQL负载均衡</h3><pre class="language-none"><code class="language-none">stream &#123;
     upstream mysql_proxy &#123;
 #hash $remote_addr consistent;
-        server 10.18.70.70:3307;
+        server 192.168.1.70:3307;
     &#125;
 
     server &#123;
@@ -300,8 +300,8 @@ mysql -P 3333  -h nginx_ip -u mysql_user -p
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2020/03/13/2020-03-14-grafana-prometheus-notes/">
-                        <span class="hidden-mobile">Prometheus Grafana学习笔记</span>
+                      <a href="/2020/03/13/2020-03-14-thanos-prometheus-notes/">
+                        <span class="hidden-mobile">prometheus集群模式thanos部署</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -175,6 +175,119 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/11/20/2022-11-20-docker-draw-use-gitlab/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/image-20221121144835974.png" srcset="/img/loading.gif" alt="搭建draw.io并配置gitlab作为存储">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2022/11/20/2022-11-20-docker-draw-use-gitlab/">搭建draw.io并配置gitlab作为存储</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/11/20/2022-11-20-docker-draw-use-gitlab/">
+          
+          
+            
+          
+          搭建draw.iodocker run -d --rm --name&#x3D;draw \
+-p 9080:8080 -p 9443:8443 \
+-v &#x2F;data&#x2F;apps&#x2F;draw-io&#x2F;index.html:&#x2F;usr&#x2F;local&#x2F;tomcat&#x2F;webapps&#x2F;draw&#x2F;index.html 
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-11-20 00:00" pubdate>
+              2022-11-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/draw-gitlab/">draw gitlab</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/11/12/2022-11-12-rabbit-run-docker-k8s/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/1552936-20201024103921637-693350551.png" srcset="/img/loading.gif" alt="RabbitMq容器化部署">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2022/11/12/2022-11-12-rabbit-run-docker-k8s/">RabbitMq容器化部署</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/11/12/2022-11-12-rabbit-run-docker-k8s/">
+          
+          
+            
+          
+          
+rabbit服务组成rabbitmq服务4大部分组成：
+
+epmd服务：rabbitmq起来后会自动的启动epmd服务，empd服务是erlang的一个小程序，专门用来做端口管理的。通常端口是4369
+rabbitmq amqp server：这个服务就是我们通常使用rabbitmq服务的时候，连接5672端口的服务，使用来支持amqp服务的。通常端口是5672
+rabbitmq cluster
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-11-12 00:00" pubdate>
+              2022-11-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/rabbit-k8s-docker/">rabbit k8s docker</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2022/10/01/2022-10-01-win-server-install-elk/" target="_self">
           <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/win_server_elk.png" srcset="/img/loading.gif" alt="Windows Server2008 elk监控服务器日志和防火墙日志">
         </a>
@@ -625,134 +738,6 @@ https:/
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/%E6%8E%A5%E5%85%A5%E5%B1%82%E7%BD%91%E5%85%B3/">接入层网关</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2021/02/08/2021-02-08-grafana-create-by-api-go/" target="_self">
-          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/grafana-api.jpg" srcset="/img/loading.gif" alt="通过api创建Grafana图表">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2021/02/08/2021-02-08-grafana-create-by-api-go/">通过api创建Grafana图表</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/02/08/2021-02-08-grafana-create-by-api-go/">
-          
-          
-            
-          
-          获取API Keys
-用户名：ops
-密码：123456
-API KEY：xxxx
-创建dashboard
-参考官网接口 https://grafana.com/docs/grafana/latest/http_api/dashboard/
-POST &#x2F;api&#x2F;dashboards&#x2F;db 
-Accept: application&#x2F;json
-Content-T
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-02-08 00:00" pubdate>
-              2021-02-08
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E7%9B%91%E6%8E%A7/">监控</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2021/01/17/2021-01-17-go-base-use/" target="_self">
-          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/golang.jpg" srcset="/img/loading.gif" alt="Go简明语法">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2021/01/17/2021-01-17-go-base-use/">Go简明语法</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2021/01/17/2021-01-17-go-base-use/">
-          
-          
-            
-          
-          Go基础用法Go指针
-a :&#x3D; 5
-fmt.Println(a)
-
-var pa *int
-pa &#x3D; &amp;a
-
-fmt.Println(pa)
-fmt.Println(*pa)
-
-go常量
-const message string &#x3D; &quot;go入门&quot;
-Go选择控制语句
-for循环
-for i :&#x3D; 1; i &lt;&#x3D; 5;
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2021-01-17 00:00" pubdate>
-              2021-01-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Go/">Go</a>
             
           </div>
         

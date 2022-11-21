@@ -233,7 +233,7 @@ kube-proxy
 flanneld</code></pre>
 <h4 id="etcd集群"><a href="#etcd集群" class="headerlink" title="etcd集群"></a>etcd集群</h4><p><a target="_blank" rel="noopener" href="http://www.inshub.cn/2020/11/21/2020-11-21-etcd-migrate-date-md/">etcd集群迁移</a></p>
 <h4 id="master节点迁移"><a href="#master节点迁移" class="headerlink" title="master节点迁移"></a>master节点迁移</h4><p><strong>部署完新的master节点后，修改旧master节点配置</strong></p>
-<pre class="language-none"><code class="language-none">改旧的apiserver 10.10.64.144 组件配置，加上选主等配置
+<pre class="language-none"><code class="language-none">改旧的apiserver 192.168.1.144 组件配置，加上选主等配置
 首先disable !!! 
 systemctl disable kube-apiserver
 systemctl disable kube-scheduler

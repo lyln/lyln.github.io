@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Lyln">
   <meta name="keywords" content="">
-  <title>Prometheus Grafana学习笔记 - 落影流年</title>
+  <title>RabbitMq容器化部署 - 落影流年</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -169,8 +169,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2020-03-13 00:00" pubdate>
-        2020年3月13日 凌晨
+      <time datetime="2022-11-12 00:00" pubdate>
+        2022年11月12日 凌晨
       </time>
     </span>
   
@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.3k 字
+      1.6k 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      19
+      20
        分钟
     </span>
   
@@ -221,91 +221,125 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">Prometheus Grafana学习笔记</h1>
+            <h1 style="display: none">RabbitMq容器化部署</h1>
             
             <div class="markdown-body" id="post-body">
-              <h3 id="prometheus-大内存问题"><a href="#prometheus-大内存问题" class="headerlink" title="prometheus 大内存问题"></a>prometheus 大内存问题</h3><p>随着规模变大，prometheus需要的cpu和内存都会升高，内存一般先达到瓶颈，这个时候要么加内存，要么集群分片减少单机指标。<br>原因：<br>1、prometheus 的内存消耗主要是因为每隔2小时做一个 block 数据落盘，落盘之前所有数据都在内存里面，因此和采集量有关。<br>2、加载历史数据时，是从磁盘到内存的，查询范围越大，内存越大。这里面有一定的优化空间<br>3、一些不合理的查询条件也会加大内存，如 group、大范围rate</p>
-<p>sample 数量超过了 200 万，就不要单实例了，做下分片，<br>然后通过victoriametrics，thanos，trickster等方案合并数据</p>
-<p>使用了thanos方案</p>
-<a id="more"></a>
-<p>磁盘预估方法</p>
-<p>Bytes per Sample<br>rate(prometheus_tsdb_compaction_chunk_size_bytes_sum[1d])/rate(prometheus_tsdb_compaction_chunk_samples_sum[1d])</p>
-<p>每秒获取的样本数<br>rate(prometheus_tsdb_head_samples_appended_total[1h])</p>
-<p>磁盘容量预估<br>磁盘大小 = 保留时间 <em> 每秒获取样本数 </em> 样本大小</p>
-<p>2h <em> 51935.72524407252 </em> 1.5 Bytes</p>
-<p>2<em>60</em>60<em>1.6</em>51935=570M</p>
-<h3 id="prometheus-内存-磁盘预估"><a href="#prometheus-内存-磁盘预估" class="headerlink" title="prometheus 内存 磁盘预估"></a>prometheus 内存 磁盘预估</h3><p>查看多少台node_exporter<br>count(node_exporter_build_info)</p>
-<p>908 台机器 - 180 视频商业</p>
-<p>node<em>export<br>curl -s <a target="_blank" rel="noopener" href="http://localhost:9100/metrics">http://localhost:9100/metrics</a> | grep -v “#”|grep “node</em>“ |wc -l<br>2448</p>
-<p>测量点(即样本数量)</p>
-<p>指标统计</p>
-<p>Promethues 压缩样本使用磁盘大小公式为 :<br>compact_data_disk_usage = (romethues 压缩样本使用磁盘大小公式为 :<br>compact_data_disk_usage = 2448/prometheus.node.exporter.scrape_interval <em> nodeNum </em> prometheus.storage.retention.time (in seconds) * 单个样本平均大小(1-2 bytes)</p>
-<p>2448/15<em>908</em>(24<em>60</em>60)*2=23.84789G</p>
-<p>WAL 文件大小取决于Prometheus 留存于内存的活跃样本的大小. 而留存于内存的活跃样本的大小又取决于每秒获取样本数和活跃样本留存内存时间.<br>记录活跃样本信息的 WAL 文件都是 raw data, 故大小比经过编码之后的样本大得多.<br>Prometheus 官方文档中说明至少会保存3个 write-ahead log files(每一个最大为128M), 如果实际使用中留存内存的样本数量非常大,<br>那么用来记录样本的 WAL 文件可能需要不止三个</p>
-<p>计算 wal file 之前需要计算留存于内存的活跃样本占用内存大小<br>active_data_mem_uage = (534 / prometheus.node.exporter.scrape_interval + 481 / prometheus.tdh.exporter.scrape_interval) <em> nodeNum </em> prometheus.max-block-duration(in seconds) * 单个样本平均大小(1-2 bytes)</p>
-<p>active_data_mem_uage = 2448/15 <em> 908 </em> (24 <em> 60 </em> 60) <em> 2 = 25606471680 bytes = 23.84789G<br>Prometheus 编码之后的样本平均大小为1~2 bytes, 而未编码的 double类型数据为 8 bytes, 故raw data最大可为编码之后的样本数据的八倍. 可以粗略的认为 WAL file 大小和 样本 raw data近似相等, 故可以得出公式:<br>wal_file_disk_usage = active_data_mem_uage </em> (8 / 1) = 190G</p>
-<p>综上所述, total_disk_usage = compact_data_disk_usage + wal_file_disk_usage, 考虑集群的扩展性，建议预留磁盘空间为 total_disk_usage * 5.</p>
-<h3 id="thanos部署"><a href="#thanos部署" class="headerlink" title="thanos部署"></a>thanos部署</h3><p>thanos version 2.13.0 版本</p>
-<p>prometheus部署<br>/etc/systemd/system/prometheus.service<br><pre class="language-none"><code class="language-none">[Unit]
-Description&#x3D;prometheus_media
+              <p><img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/1552936-20201024103921637-693350551.png" srcset="/img/loading.gif" alt="img"></p>
+<h4 id="rabbit服务组成"><a href="#rabbit服务组成" class="headerlink" title="rabbit服务组成"></a>rabbit服务组成</h4><p>rabbitmq服务4大部分组成：</p>
+<ul>
+<li>epmd服务：rabbitmq起来后会自动的启动epmd服务，empd服务是erlang的一个小程序，专门用来做端口管理的。通常端口是4369</li>
+<li>rabbitmq amqp server：这个服务就是我们通常使用rabbitmq服务的时候，连接5672端口的服务，使用来支持amqp服务的。通常端口是5672</li>
+<li>rabbitmq cluster server：主要是用来做cluster节点之间的心跳发现的，通常端口是25672</li>
+<li>如果开启来rabbitmq manager plugin，会有一个manager api服务，通常端口是15672<br>除以上的服务之外，还有一个是erlang自带的数据库，专门用来做分部署服务发现的:mnesia数据库。</li>
+</ul>
+<p>由于之前环境都是相对比较老的版本，所有本人中容器部署都是用3.6.14版本</p>
+<h4 id="RabbitMQ常用命令"><a href="#RabbitMQ常用命令" class="headerlink" title="RabbitMQ常用命令"></a>RabbitMQ常用命令</h4><pre class="language-none"><code class="language-none">rabbitmqctl status
+rabbitmqctl cluster_status
+
+rabbitmqctl eval &#39;rabbit_mnesia:dir().&#39;
+
+#修改用户密码
+rabbitmqctl change_password &#123;userName&#125; &#123;newPassword&#125;
+
+#所有名称以ha.开始的队列，都会在集群的所有节点上成为镜像队列。
+rabbitmqctl set_policy ha-all &quot;^ha\.&quot; &#39;&#123;&quot;ha-mode&quot;:&quot;all&quot;&#125;&#39;
+
+#同步队列
+rabbitmqctl --vhost&#x3D;&#x2F;test sync_queue test
+
+https:&#x2F;&#x2F;www.cnblogs.com&#x2F;caoweixiong&#x2F;p&#x2F;14371114.html</code></pre>
+<p>rabbitmqctl设置策略参数<br><pre class="language-none"><code class="language-none">rabbitmqctl set_policy [-p Vhost] Name Pattern Definition [Priority]
+
+-p Vhost： 可选参数，针对指定vhost下的queue进行设置
+Name: policy的名称
+Pattern: queue的匹配模式(正则表达式)
+Definition：镜像定义，包括三个部分ha-mode, ha-params, ha-sync-mode 
+ha-mode:指明镜像队列的模式，有效值为 all&#x2F;exactly&#x2F;nodes 
+all：表示在集群中所有的节点上进行镜像 
+exactly：表示在指定个数的节点上进行镜像，节点的个数由ha-params指定 
+nodes：表示在指定的节点上进行镜像，节点名称通过ha-params指定 ha-params：ha-mode模式需要用到的参数 ha-sync-mode：进行队列中消息的同步方式，有效值为automatic和manual
+priority：可选参数，policy的优先级
+</code></pre></p>
+<h4 id="单机容器部署"><a href="#单机容器部署" class="headerlink" title="单机容器部署"></a>单机容器部署</h4><p>单机容器部署仅用于测试环境。<br>docker启动命令行参考</p>
+<pre class="language-none"><code class="language-none">docker run -d \
+--name&#x3D;my-rabbitmq \
+-p 5672:5672 \
+-p 15672:15672  \
+-e RABBITMQ_DEFAULT_USER&#x3D;admin \
+-e RABBITMQ_DEFAULT_PASS&#x3D;pass  \
+-v &#x2F;data&#x2F;rabbitmq&#x2F;rabbitmq_test:&#x2F;var&#x2F;lib&#x2F;rabbitmq \
+rabbitmq:3.6.14-management</code></pre>
+<p>ps:latest版本没有管理界面，管理界面注意选择management版本。</p>
+<p><a target="_blank" rel="noopener" href="https://www.rabbitmq.com/download.html">https://www.rabbitmq.com/download.html</a></p>
+<h4 id="集群镜像模式"><a href="#集群镜像模式" class="headerlink" title="集群镜像模式"></a>集群镜像模式</h4><p>RabbitMQ提供了一个Autocluster插件，可以自动创建RabbitMQ集群。<br>基于RabbitMQ的官方docker镜像，添加这个autocluster插件，构建我们自己的Rabbit镜像，在DomeOS部署使用这个镜像。</p>
+<p>注意事项：</p>
+<ul>
+<li><p><strong>Autocluster插件适用于低于3.7.X版本</strong><br><strong>对3.7.X及以上版本使用abbitmq_peer_discovery_k8s插件</strong></p>
+</li>
+<li><p>部署类型使用StatefulSet</p>
+</li>
+<li><p>AUTOCLUSTER_CLEANUP 设置为false,默认值也为false</p>
+</li>
+</ul>
+<p><strong>RABBITMQ及Autocluster插件参数说明：</strong></p>
+<p><strong>AUTOCLUSTER_CLEANUP</strong> 这个环境变量是用来设置自动清除不健康的节点，<br>需要配合CLEANUP_WARN_ONLY=false，同时也依赖CLEANUP_INTERVAL这个参数，默认是60s，<br>每隔一分钟进行一次检测，当检测到不健康节点的时候，<br>就会把节点从集群中删除，对应的节点上的数据也相应丢失，如果对应的queue没设置成mirror queue是非常危险的。所以一般会AUTOCLUSTER_CLEANUP =false。</p>
+<p>如果AUTOCLUSTER_CLEANUP设置成true，当不健康节点节点从集群中剔除，后面故障节点又重新起来后，<br>由于故障节点中存储的的信息中，包含该节点属于之前的集群，所以节点在起来后会尝试加入之前的集群，但是之前的集群已经吧它剔除， 所以导致故障节点一直起不来，并且报错，具体错误信息参照问题汇总3。 这个时候，需要吧对应的故障节点的数据目录下的mnesia数据目录（mnesia数据目录是erlang自带的mnesia数据库的数据存储目录）。<br>然后重启节点，让节点重新加入集群。</p>
+<p><strong>RABBITMQ_ERLANG_COOKIE生成命令</strong><br>生成.erlang.cookie<br>echo $(openssl rand -base64 32)</p>
+<p><strong>RABBITMQ_NODENAME设置</strong><br>需要指定rabbitmq nodename,可以通过env查看拼接。<br>不指定AUTOCLUSTER使用默认值导致创建集群失败。</p>
+<p>yaml变量设置参考</p>
+<pre class="language-none"><code class="language-none">RABBITMQ_DEFAULT_USER	admin	
+RABBITMQ_DEFAULT_PASS	pass	
+RABBITMQ_ERLANG_COOKIE	xxx
+RABBITMQ_NODE_TYPE	disc	
+RABBITMQ_USE_LONGNAME	true	
+AUTOCLUSTER_TYPE	k8s	
+K8S_SERVICE_NAME	rabbitmq部署服务svc
+K8S_HOST	k8s的svc	kubernetes+命名空间+cluster-domain拼接
+K8S_PORT	443	
+AUTOCLUSTER_LOG_LEVEL	debug
+RABBITMQ_NODENAME	rabbit@$(MY_POD_IP)</code></pre>
+<p>部署过程可参考</p>
+<p><a target="_blank" rel="noopener" href="https://blog.frognew.com/2017/09/kubernetes-rabbitmq-stateful-set.html#">https://blog.frognew.com/2017/09/kubernetes-rabbitmq-stateful-set.html#</a></p>
+<h4 id="rabbitmq备份还原"><a href="#rabbitmq备份还原" class="headerlink" title="rabbitmq备份还原"></a>rabbitmq备份还原</h4><p>由于这边只做元数据备份和还原。参考如下链接</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/heruiguo/p/11045288.html#_label1">https://www.cnblogs.com/heruiguo/p/11045288.html#_label1</a></p>
+<h4 id="rabbitmq监控"><a href="#rabbitmq监控" class="headerlink" title="rabbitmq监控"></a>rabbitmq监控</h4><p>选择单独部署rabbitmq_exporter监控rabbit集群</p>
+<pre class="language-none"><code class="language-none">&#x2F;etc&#x2F;systemd&#x2F;system&#x2F;rabbitmq_exporter.service
+
+[Unit]
+Description&#x3D;rabbitmq_exporter
 After&#x3D;network.target
 [Service]
 Type&#x3D;simple
 User&#x3D;root
-ExecStart&#x3D;&#x2F;data&#x2F;apps&#x2F;prometheus&#x2F;prometheus --config.file&#x3D;&#x2F;data&#x2F;apps&#x2F;prometheus&#x2F;prometheus.yml --storage.tsdb.path&#x3D;&#x2F;data&#x2F;apps&#x2F;prometheus&#x2F;data --storage.tsdb.retention.time&#x3D;1d --web.enable-admin-api --web.enable-lifecycle
+ExecStart&#x3D;&#x2F;data&#x2F;apps&#x2F;rabbitmq_exporter&#x2F;rabbitmq_exporter -config-file &#x2F;data&#x2F;apps&#x2F;rabbitmq_exporter&#x2F;config.json
 Restart&#x3D;on-failure
 [Install]
-WantedBy&#x3D;multi-user.target
-
-###
-#prometheus.service
-#prometheus_media.service
-#prometheus_shipin
-#prometheus_zixun</code></pre></p>
-<p>thanos启动<br><pre class="language-none"><code class="language-none">sidecar启动命令：
-nohup .&#x2F;thanos sidecar --tsdb.path &#x2F;data&#x2F;apps&#x2F;prometheus&#x2F;media --prometheus.url http:&#x2F;&#x2F;localhost:9090 --http-address 0.0.0.0:19191 --grpc-address 0.0.0.0:19091 &gt; sd_media.log 2&gt;&amp;1 &amp;
-nohup .&#x2F;thanos sidecar --tsdb.path &#x2F;data&#x2F;apps&#x2F;prometheus&#x2F;shipin --prometheus.url http:&#x2F;&#x2F;localhost:9092 --http-address 0.0.0.0:19192 --grpc-address 0.0.0.0:19092 &gt; sd_shipin.log 2&gt;&amp;1 &amp;
-nohup .&#x2F;thanos sidecar --tsdb.path &#x2F;data&#x2F;apps&#x2F;prometheus&#x2F;zixun --prometheus.url http:&#x2F;&#x2F;localhost:9095 --http-address 0.0.0.0:19193 --grpc-address 0.0.0.0:19093 &gt; sd_zixun.log 2&gt;&amp;1 &amp;
-query启动命令：
-nohup .&#x2F;thanos query --http-address 0.0.0.0:29090 --grpc-address 0.0.0.0:29091 --query.replica-label monitor --store 10.16.12.54:19091 --store 10.16.12.54:19092 --store 10.18.94.40:19093 &gt; qu_media.log 2&gt;&amp;1 &amp;
-nohup .&#x2F;thanos query --http-address 0.0.0.0:29092 --grpc-address 0.0.0.0:29093 --query.replica-label monitor --store 10.16.12.54:19091 --store 10.16.12.54:19092 --store 10.18.94.40:19093 &gt; qu_shipin.log 2&gt;&amp;1 &amp;
-nohup .&#x2F;thanos query --http-address 0.0.0.0:29094 --grpc-address 0.0.0.0:29095 --query.replica-label monitor --store 10.16.12.54:19091 --store 10.16.12.54:19092 --store 10.18.94.40:19093 &gt; qu_zixun.log 2&gt;&amp;1 &amp;
-</code></pre><br>nginx负载均衡查询端<br><pre class="language-none"><code class="language-none">upstream thanos &#123;
-    server 192.168.1.111:29094 max_fails&#x3D;2 fail_timeout&#x3D;15s;
-    server 192.168.1.112:29090 max_fails&#x3D;2 fail_timeout&#x3D;15s;
-    server 192.168.1.113:29092 max_fails&#x3D;2 fail_timeout&#x3D;15s;
-&#125;
-server &#123;
-    listen       80;
-    server_name  xxx;
-
-    #charset koi8-r;
-
-    access_log  &#x2F;data&#x2F;logs&#x2F;nginx&#x2F;thanos.log;
-
-
-    location &#x2F; &#123;
-        proxy_connect_timeout    30s;
-        proxy_set_header Host $host:$server_port;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        access_log    &#x2F;data&#x2F;logs&#x2F;nginx&#x2F;thanso.log;
-        proxy_pass http:&#x2F;&#x2F;thanos;
-    &#125;
-&#125;</code></pre></p>
-<h3 id="Grafana设置免密登录"><a href="#Grafana设置免密登录" class="headerlink" title="Grafana设置免密登录"></a>Grafana设置免密登录</h3><pre class="language-none"><code class="language-none">[auth.anonymous]
-enabled &#x3D; true
-org_name &#x3D; Main Org.
-org_role &#x3D; Viewer</code></pre>
-<h3 id="Grafana设置"><a href="#Grafana设置" class="headerlink" title="Grafana设置"></a>Grafana设置</h3><p>label_values(node_uname_info, job)</p>
-<p>instance=~”$node”,mode=”system”</p>
-<h3 id="Grafana添加告警"><a href="#Grafana添加告警" class="headerlink" title="Grafana添加告警"></a>Grafana添加告警</h3><p>开启anonymous后，ui Server Admin设置orgs 设置Main Org. 与org_name一致。</p>
-<p>PromQL<br>{} 过滤时间序列数据<br>[] 范围样本区间</p>
-<h3 id="常用运维命令"><a href="#常用运维命令" class="headerlink" title="常用运维命令"></a>常用运维命令</h3><pre class="language-none"><code class="language-none">.&#x2F;tsdb ls custom_all
-BLOCK ULID                  MIN TIME       MAX TIME       NUM SAMPLES  NUM CHUNKS  NUM SERIES
-01E4JAJCEZZRTTQ56CM1C1VKW1  1585447200000  1585454400000  373837607    3112298     783085
-01E4JHE3EKB5252S5060RS88GF  1585454400000  1585461600000  373910606    3114077     783026</code></pre>
-<h3 id="参考地址："><a href="#参考地址：" class="headerlink" title="参考地址："></a>参考地址：</h3><p><a target="_blank" rel="noopener" href="https://prometheus.io/docs/guides/node-exporter/">https://prometheus.io/docs/guides/node-exporter/</a><br><a target="_blank" rel="noopener" href="http://support.transwarp.cn/t/topic/3226">http://support.transwarp.cn/t/topic/3226</a></p>
+WantedBy&#x3D;multi-user.target</code></pre>
+<p>prometheus增加配置</p>
+<pre class="language-none"><code class="language-none">- job_name: &#39;rabbitmq-online&#39;
+  static_configs:
+    - targets: [&quot;192.168.0.110:9419&quot;]</code></pre>
+<p>grafana导入看板2121。</p>
+<p>监控指标参考如下。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yaomingyang/article/details/103978330">https://blog.csdn.net/yaomingyang/article/details/103978330</a></p>
+<p>过滤对应的指标，添加到grafana展示。</p>
+<h4 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h4><ul>
+<li><p><code>&quot;pod_name&quot;: nxdomain (non-existing domain)</code><br>RABBITMQ_NODENAME 配置不对，可以通过容器内执行env 查看容器启动后的rabbitmq名称。</p>
+</li>
+<li><p><code>Error: &#123;inconsistent_cluster,&quot;Node &#39;rabbit@172.29.44.2&#39; thinks it&#39;s clustered with node &#39;rabbit@172.29.120.3&#39;, but &#39;rabbit@172.29.120.3&#39; disagrees&quot;&#125;</code></p>
+<p>查看集群状态，执行forget_cluster_node节点。<br>rabbitmqctl cluster_status<br>rabbitmqctl forget_cluster_node rabbit@${MY_POD_IP};</p>
+<p>如果一个节点在与集群失去联系后被重置，它将表现得像一个空白节点。注意，其他集群成员可能仍然认为它是集群成员，<br>在这种情况下，双方会产生分歧，节点将无法加入。还必须使用针对现有集群成员执行的rabbitmqctl forget_cluster_node从集群中删除此类重置节点。<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhongbeida_xue/article/details/117447892">https://blog.csdn.net/zhongbeida_xue/article/details/117447892</a></p>
+</li>
+<li><p><code>&#123;&quot;init terminating in do_boot&quot;,&#123;error,&#123;inconsistent_cluster,&quot;Node &#39;rabbit@rabbit_slave&#39; thinks it&#39;s clustered with node &#39;rabbit@rabbit_master&#39;, but &#39;rabbit@rabbit_master&#39; disagrees&quot;&#125;&#125;&#125;
+init terminating in do_boot ()</code><br><code>Crash dump is being written to: erl_crash.dump...</code></p>
+<p>删除宿主节点对应挂载点mnesia数据目录下数据。</p>
+<p>问题2，3为<strong>AUTOCLUSTER_CLEANUP设置为ture多次出现。所以建议AUTOCLUSTER_CLEANUP设置为false，即默认即可</strong></p>
+</li>
+</ul>
+<p>参考地址：</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cao-lei/p/13050206.html">https://www.cnblogs.com/cao-lei/p/13050206.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaozhang666/p/13866121.html">https://www.cnblogs.com/xiaozhang666/p/13866121.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/caoweixiong/p/12736573.html">https://www.cnblogs.com/caoweixiong/p/12736573.html</a></p>
 
             </div>
             <hr>
@@ -323,7 +357,7 @@ BLOCK ULID                  MIN TIME       MAX TIME       NUM SAMPLES  NUM CHUNK
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E7%9B%91%E6%8E%A7/">监控</a>
+                      <a class="hover-with-bg" href="/tags/rabbit-k8s-docker/">rabbit k8s docker</a>
                     
                   </div>
                 
@@ -336,9 +370,9 @@ BLOCK ULID                  MIN TIME       MAX TIME       NUM SAMPLES  NUM CHUNK
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2020/03/14/2020-03-14-nginx-tcp-proxy-stream/">
+                      <a href="/2022/11/20/2022-11-20-docker-draw-use-gitlab/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">nginx实现四层代理</span>
+                        <span class="hidden-mobile">搭建draw.io并配置gitlab作为存储</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -346,8 +380,8 @@ BLOCK ULID                  MIN TIME       MAX TIME       NUM SAMPLES  NUM CHUNK
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2019/10/27/2019-10-27-redis-cluster-install-manual/">
-                        <span class="hidden-mobile">Redis Cluster搭建、扩容、缩容</span>
+                      <a href="/2022/10/01/2022-10-01-win-server-install-elk/">
+                        <span class="hidden-mobile">Windows Server2008 elk监控服务器日志和防火墙日志</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -492,7 +526,7 @@ BLOCK ULID                  MIN TIME       MAX TIME       NUM SAMPLES  NUM CHUNK
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "Prometheus Grafana学习笔记&nbsp;",
+        "RabbitMq容器化部署&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
