@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      844 字
+      935 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      15
        分钟
     </span>
   
@@ -225,26 +225,26 @@
             
             <div class="markdown-body" id="post-body">
               <p><strong>快速构建各种开发测试环境汇总</strong></p>
-<h4 id="MySQL5-7开发环境"><a href="#MySQL5-7开发环境" class="headerlink" title="MySQL5.7开发环境"></a>MySQL5.7开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run --name&#x3D;my-db -p3306:3306 -d mysql&#x2F;mysql-server:5.7
+<h4 id="MySQL5-7开发环境"><a href="#MySQL5-7开发环境" class="headerlink" title="MySQL5.7开发环境"></a>MySQL5.7开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run --name<span class="token operator">=</span>my-db -p3306:3306 -d mysql/mysql-server:5.7
 获取临时密码
 持久化数据库
--v &#x2F;opt&#x2F;mysql&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql 
+-v /opt/mysql/data:/var/lib/mysql 
 配置文件挂载
--v &#x2F;opt&#x2F;data&#x2F;my.cnf:&#x2F;etc&#x2F;my.cnf
-docker logs mysql1 2&gt;&amp;1 | grep GENERATED
-GENERATED ROOT PASSWORD: Axegh3kAJyDLaRuBemecis&amp;EShOs
-docker exec -it my-db mysql -uroot -p
-&gt; ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;password&#39;;
-&gt; create user admin@&#39;%&#39; identified by &#39;admin&#39;;
-&gt; grant all privileges on *.* to admin@&#39;%’;
+-v /opt/data/my.cnf:/etc/my.cnf
+docker logs mysql1 <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">|</span> <span class="token function">grep</span> GENERATED
+GENERATED ROOT PASSWORD: Axegh3kAJyDLaRuBemecis<span class="token operator">&amp;</span>EShOs
+docker <span class="token builtin class-name">exec</span> -it my-db mysql -uroot -p
+<span class="token operator">></span> ALTER <span class="token environment constant">USER</span> <span class="token string">'root'</span>@<span class="token string">'localhost'</span> IDENTIFIED BY <span class="token string">'password'</span><span class="token punctuation">;</span>
+<span class="token operator">></span> create user admin@<span class="token string">'%'</span> identified by <span class="token string">'admin'</span><span class="token punctuation">;</span>
+<span class="token operator">></span> grant all privileges on *.* to admin@'%’<span class="token punctuation">;</span>
 查看创建用户
-&gt; select user,host,authentication_string from mysql.user;
+<span class="token operator">></span> <span class="token keyword">select</span> user,host,authentication_string from mysql.user<span class="token punctuation">;</span>
 
 重置密码
-1.修改mysql skip-grant-tables
-2.重启docker restart my-db
-3.登陆修改 
-update mysql.user set authentication_string &#x3D; password(&quot;12121&quot;) where user&#x3D;&quot;root&quot;;
+<span class="token number">1</span>.修改mysql skip-grant-tables
+<span class="token number">2</span>.重启docker restart my-db
+<span class="token number">3</span>.登陆修改 
+update mysql.user <span class="token builtin class-name">set</span> authentication_string <span class="token operator">=</span> password<span class="token punctuation">(</span><span class="token string">"12121"</span><span class="token punctuation">)</span> where <span class="token assign-left variable">user</span><span class="token operator">=</span><span class="token string">"root"</span><span class="token punctuation">;</span>
 </code></pre>
 <p>参考地址：</p>
 <p><a target="_blank" rel="noopener" href="https://hub.docker.com/r/mysql/mysql-server/">https://hub.docker.com/r/mysql/mysql-server/</a></p>
@@ -260,9 +260,35 @@ postgres:14
 
 #登录数据库
 psql -U postgres -W
-select version();</code></pre>
+select version();
+
+
+postgis地理信息空间数据库（镜像里面已经包含了postgresql数据库）
+
+docker run -d \
+--privileged \
+--name postgis --restart&#x3D;always \
+-e POSTGRES_USER&#x3D;&#39;postgres&#39; \
+-e POSTGRES_PASSWORD&#x3D;&#39;passwd&#39; \
+-e POSTGRES_DBNAME&#x3D;gis_db \
+-v &#x2F;data&#x2F;apps&#x2F;postgis&#x2F;data:&#x2F;var&#x2F;lib&#x2F;postgis&#x2F;data \
+-v &#x2F;data&#x2F;apps&#x2F;postgis&#x2F;postgresql&#x2F;data:&#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data \
+-p 5433:5432 \
+postgis&#x2F;postgis:14-3.3  
+
+#查看postgis版本
+psql -U postgres -W
+select version();
+#登录数据库
+
+修改配置pg_hba.conf
+host    replication     all             192.168.1.110                 trust
+
+select postgis_full_version();
+</code></pre>
 <p>参考地址：</p>
 <p><a target="_blank" rel="noopener" href="https://hub.docker.com/_/postgres">https://hub.docker.com/_/postgres</a></p>
+<p><a target="_blank" rel="noopener" href="https://registry.hub.docker.com/r/postgis/postgis/">https://registry.hub.docker.com/r/postgis/postgis/</a></p>
 <h4 id="RabbitMQ开发环境"><a href="#RabbitMQ开发环境" class="headerlink" title="RabbitMQ开发环境"></a>RabbitMQ开发环境</h4><pre class="language-none"><code class="language-none">注意：latest版本没有管理界面，需要管理界面请选择management版本。
 docker run -d \
 --name&#x3D;my-rabbitmq \
@@ -279,10 +305,10 @@ rabbitmq:3.6.14-management
 <p><a target="_blank" rel="noopener" href="https://hub.docker.com/_/rabbitmq">https://hub.docker.com/_/rabbitmq</a></p>
 <h4 id="Redis开发环境"><a href="#Redis开发环境" class="headerlink" title="Redis开发环境"></a>Redis开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run --name my-redis -p6379:6379 -d redis
 
---requirepass &#39;xxx&#39; </code></pre>
+--requirepass <span class="token string">'xxx'</span> </code></pre>
 <p>参考地址：</p>
 <p><a target="_blank" rel="noopener" href="https://hub.docker.com/_/redis">https://hub.docker.com/_/redis</a></p>
-<h4 id="Nacos开发环境"><a href="#Nacos开发环境" class="headerlink" title="Nacos开发环境"></a>Nacos开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run -e MODE&#x3D;standalone -e PREFER_HOST_MODE&#x3D;hostname --name my-nacos -p 8848:8848 -d nacos&#x2F;nacos-server:1.2.1
+<h4 id="Nacos开发环境"><a href="#Nacos开发环境" class="headerlink" title="Nacos开发环境"></a>Nacos开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run -e <span class="token assign-left variable">MODE</span><span class="token operator">=</span>standalone -e <span class="token assign-left variable">PREFER_HOST_MODE</span><span class="token operator">=</span>hostname --name my-nacos -p <span class="token number">8848</span>:8848 -d nacos/nacos-server:1.2.1
 </code></pre>
 <p>参考地址：</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/nacos-group/nacos-docker">https://github.com/nacos-group/nacos-docker</a></p>
@@ -303,7 +329,7 @@ docker run -d --name my-openresty -v &#x2F;root&#x2F;nginx&#x2F;openresty:&#x2F;
 </code></pre>
 <p>参考地址：</p>
 <p><a target="_blank" rel="noopener" href="https://hub.docker.com/r/openresty/openresty">https://hub.docker.com/r/openresty/openresty</a></p>
-<h4 id="Grafana开发环境"><a href="#Grafana开发环境" class="headerlink" title="Grafana开发环境"></a>Grafana开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run -d --name&#x3D;my-grafana -p 7000:3000 grafana&#x2F;grafana:7.3.4
+<h4 id="Grafana开发环境"><a href="#Grafana开发环境" class="headerlink" title="Grafana开发环境"></a>Grafana开发环境</h4><pre class="language-shell" data-language="shell"><code class="language-shell">docker run -d --name<span class="token operator">=</span>my-grafana -p <span class="token number">7000</span>:3000 grafana/grafana:7.3.4
 </code></pre>
 <p>参考地址：</p>
 <p><a target="_blank" rel="noopener" href="https://hub.docker.com/r/grafana/grafana">https://hub.docker.com/r/grafana/grafana</a></p>

@@ -174,6 +174,182 @@
   <div class="row mx-auto index-card">
     
     
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2019/05/15/2019-05-15-dianping-cat-install/">CAT集群部署</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/05/15/2019-05-15-dianping-cat-install/">
+          
+          
+            
+          
+          cat集群机器列表cat1192.168.1.110 8080cat2192.168.1.111 8080cat3192.168.1.112 8080
+部署tomcat新建setenv.sh然后添加环境变量bin&#x2F;setenv.sh
+export CAT_HOME&#x3D;&#x2F;data&#x2F;apps&#x2F;data&#x2F;cat&#x2F;
+export JAVA
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-05-15 00:00" pubdate>
+              2019-05-15
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/cat/">cat</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2019/04/22/2019-04-22-elasticsearch-migration-notes/">elastic 迁移</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/04/22/2019-04-22-elasticsearch-migration-notes/">
+          
+          
+            
+          
+          es迁移测试工具对比
+
+
+测试工具
+是否成功
+环境搭建
+迁移版本是否支持
+工具地址
+
+
+
+
+Elasticsearch Migration
+是
+简单，二进制下载即可用
+见工具地址Versions支持
+https://github.com/medcl/esm-abandoned
+
+
+logstash迁移
+是
+更新和es对应版本
+支持跨版本,logstash5.0
+
+
+
+Elasticsearch-E
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-04-22 00:00" pubdate>
+              2019-04-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/ELK/">ELK</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/elk/">elk</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2019/03/21/2019-03-21-redis-migrate-tool/">Redis 迁移工具</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/03/21/2019-03-21-redis-migrate-tool/">
+          
+          
+            
+          
+          rmt安装Redis-Migrate-Tool集群迁移工具，基于redis复制，快速，稳定。
+github地址
+cd redis-migrate-tool
+autoreconf -fvi
+.&#x2F;configure
+make
+src&#x2F;redis-migrate-tool -h
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-03-21 00:00" pubdate>
+              2019-03-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Redis/">Redis</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/rmt-RedisShake/">rmt RedisShake</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
       <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2019/03/17/2019-03-17-k8s-master-migrate/" target="_self">
           <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/2019-11-12-kubernetes.jpg" srcset="/img/loading.gif" alt="k8s master节点迁移">
@@ -545,153 +721,6 @@ Developer Zone： MySQL开发
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/MySQL%E7%AC%94%E8%AE%B0/">MySQL笔记</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2017/04/22/2017-04-22-pyenv-manager-python-versions/">pyenv 管理 Python 版本 </a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2017/04/22/2017-04-22-pyenv-manager-python-versions/">
-          
-          
-            
-          
-          pyenv 是 Python 版本管理工具。 pyenv 可以改变全局的 Python 版本，安装多个版本的 Python， 设置目录级别的 Python 版本，还能创建和管理 virtual python environments 。所有的设置都是用户级别的操作，不需要 sudo 命令。
-pyenv 主要用来管理 Python 的版本，比如一个项目需要 Python 2.x ，一个项目需要 Py
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2017-04-22 00:00" pubdate>
-              2017-04-22
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Python/">Python</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/pyenv/">pyenv</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2017/02/27/2017-02-27-srs-manual-install/">SRS使用小记</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2017/02/27/2017-02-27-srs-manual-install/">
-          
-          
-            
-          
-          SRS简介互联网上的两种主要的分发方式：HLS和RTMP。SRS支持HLS/RTMP两种成熟而且广泛应用的流媒体分发方式。
-HLS指Apple的HLS(Http Live Streaming)，本身就是Live（直播）的，不过Vod（点播）也能支持。HLS是Apple平台的标准流媒体协议，和RTMP在PC上一样支持得天衣无缝。
-SRS直播将RTMP作为基本协议，以各种方式转码为RTMP后输入到SR
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2017-02-27 00:00" pubdate>
-              2017-02-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/srs/">srs</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2016/12/03/2016-12-03-nginx-tomcat-https/">Nginx/Tomcat添加Https支持</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2016/12/03/2016-12-03-nginx-tomcat-https/">
-          
-          
-            
-          
-          安装certbothttps://certbot.eff.org/wget https:&#x2F;&#x2F;dl.eff.org&#x2F;certbot-auto
-chmod a+x certbot-auto
-nginx生成免费证书
-.&#x2F;certbot-auto certonly --webroot -w &#x2F;web&#x2F;ss-panel&#x2F;public -d
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2016-12-03 00:00" pubdate>
-              2016-12-03
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/https/">https</a>
             
           </div>
         

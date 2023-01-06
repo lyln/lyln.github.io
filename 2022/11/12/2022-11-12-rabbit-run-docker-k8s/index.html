@@ -271,7 +271,7 @@ priority：可选参数，policy的优先级
 rabbitmq:3.6.14-management</code></pre>
 <p>ps:latest版本没有管理界面，管理界面注意选择management版本。</p>
 <p><a target="_blank" rel="noopener" href="https://www.rabbitmq.com/download.html">https://www.rabbitmq.com/download.html</a></p>
-<h4 id="集群镜像模式"><a href="#集群镜像模式" class="headerlink" title="集群镜像模式"></a>集群镜像模式</h4><p>RabbitMQ提供了一个Autocluster插件，可以自动创建RabbitMQ集群。<br>基于RabbitMQ的官方docker镜像，添加这个autocluster插件，构建我们自己的Rabbit镜像，在DomeOS部署使用这个镜像。</p>
+<h4 id="集群镜像模式"><a href="#集群镜像模式" class="headerlink" title="集群镜像模式"></a>集群镜像模式</h4><p>RabbitMQ提供了一个Autocluster插件，可以自动创建RabbitMQ集群。<br>基于RabbitMQ的官方docker镜像，添加这个autocluster插件，构建我们自己的Rabbit镜像，k8s部署使用这个镜像。</p>
 <p>注意事项：</p>
 <ul>
 <li><p><strong>Autocluster插件适用于低于3.7.X版本</strong><br><strong>对3.7.X及以上版本使用abbitmq_peer_discovery_k8s插件</strong></p>
@@ -380,8 +380,8 @@ init terminating in do_boot ()</code><br><code>Crash dump is being written to: e
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/10/01/2022-10-01-win-server-install-elk/">
-                        <span class="hidden-mobile">Windows Server2008 elk监控服务器日志和防火墙日志</span>
+                      <a href="/2022/10/02/2022-10-02-elk-cluster-install-manager/">
+                        <span class="hidden-mobile">ELK集群管理及Kibana使用相关</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

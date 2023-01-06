@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      280 字
+      517 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      4
+      8
        分钟
     </span>
   
@@ -239,7 +239,7 @@
 <td>Elasticsearch Migration</td>
 <td>是</td>
 <td>简单，二进制下载即可用</td>
-<td>5.0-&gt;5.0</td>
+<td>见工具地址Versions支持</td>
 <td><a target="_blank" rel="noopener" href="https://github.com/medcl/esm-abandoned">https://github.com/medcl/esm-abandoned</a></td>
 </tr>
 <tr>
@@ -253,13 +253,15 @@
 <td>Elasticsearch-Exporter</td>
 <td>否</td>
 <td>node环境依赖，复杂</td>
+<td></td>
 <td><a target="_blank" rel="noopener" href="https://github.com/mallocator/Elasticsearch-Exporter">https://github.com/mallocator/Elasticsearch-Exporter</a></td>
 </tr>
 </tbody>
 </table>
 <p>小结：对比选择使用esm，logstash辅助。</p>
 <a id="more"></a>
-<p>esm迁移脚本<br><pre class="language-none"><code class="language-none">#!&#x2F;bin&#x2F;sh 
+<p><strong>esm迁移脚本</strong></p>
+<pre class="language-none"><code class="language-none">#!&#x2F;bin&#x2F;sh 
 
 dir&#x3D;&quot;&#x2F;data&#x2F;apps&#x2F;opt&quot;
 cd $dir
@@ -273,17 +275,57 @@ for i in $esindex;
 do
 	.&#x2F;esm  -s http:&#x2F;&#x2F;127.0.0.1:9200 -x $i  -d http:&#x2F;&#x2F;192.168.1.100:9200 -x $i  -w&#x3D;5 -b&#x3D;10 -c 10000
 
-done</code></pre></p>
-<p>es保留30的数据<br><pre class="language-none"><code class="language-none">#!&#x2F;bin&#x2F;bash
+done
+
+migrator-linux-amd64使用参数说明
+-s 源es集群地址
+-d 目的es集群地址
+-x --src_index 源索引名称
+-y --dest_index 目的索引名称
+-n username:passwd 目的es权限
+-w bulk workers (default: 1) 默认为1
+-b --bulk_size&#x3D; bulk size in MB (default: 5) 默认为5MB
+
+
+screen -R esm
+
+.&#x2F;migrator-linux-amd64 -s http:&#x2F;&#x2F;es_src:port   -d http:&#x2F;&#x2F;es_dest:port -x index_name -y sns_op_feeds -n username:passwd -w&#x3D;5 -b&#x3D;10 -c 5000
+</code></pre>
+<p><strong>logstash迁移es数据</strong></p>
+<pre class="language-none"><code class="language-none">migrate-index.conf
+
+input &#123;
+    elasticsearch &#123;
+        hosts &#x3D;&gt; &quot;http:&#x2F;&#x2F;es_src:port&quot;
+        index &#x3D;&gt; &quot;index_name&quot;
+        size &#x3D;&gt; 10000
+    &#125;
+&#125;
+
+output &#123;
+    stdout&#123;codec &#x3D;&gt; rubydebug&#125;
+    elasticsearch &#123;
+        hosts &#x3D;&gt; &quot;http:&#x2F;&#x2F;es_dest:port&quot;
+        index &#x3D;&gt; &quot;index_name&quot;
+        user &#x3D;&gt; &quot;username&quot;
+        password &#x3D;&gt; &quot;password&quot;
+    &#125;
+&#125;</code></pre>
+<p>es保留30的数据</p>
+<pre class="language-none"><code class="language-none">#!&#x2F;bin&#x2F;bash
 DATE&#x3D;&#96;date +%Y.%m.%d.%I&#96;
 DATA1&#x3D;&#96;date +%Y.%m.%d -d&#39;-30 day&#39;&#96;
 DATA2&#x3D;&#96;date +%Y.%m.%d -d&#39;-30 day&#39;&#96;
+today&#x3D;&#96;date +%Y%m%d&#96;
+dd90&#x3D;$(date -d&#39;-90 day&#39; &quot;+%Y.%m.%d&quot;)
 
 #关闭索引
 curl -XPOST &quot;http:&#x2F;&#x2F;localhost:9200&#x2F;logstash*$&#123;DATA1&#125;*&#x2F;_close?pretty&quot;
 #删除索引
-curl -XDELETE &quot;http:&#x2F;&#x2F;localhost:9200&#x2F;logstash*$&#123;DATA2&#125;*?pretty</code></pre></p>
+curl -XDELETE &quot;http:&#x2F;&#x2F;localhost:9200&#x2F;logstash*$&#123;DATA2&#125;*?pretty
 
+#保持3月的数据
+curl -s -XDELETE &quot;http:&#x2F;&#x2F;localhost:9200&#x2F;logstash-log*$dd90&quot; &gt;&gt; &#x2F;opt&#x2F;scripts&#x2F;clear_es_index&#x2F;delete_index-$&#123;today&#125;.log</code></pre>
             </div>
             <hr>
             <div>
