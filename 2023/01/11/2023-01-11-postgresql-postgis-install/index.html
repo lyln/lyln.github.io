@@ -1,0 +1,623 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;light&#34;>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Lyln">
+  <meta name="keywords" content="">
+  <title>RHEL8 PostgreSQL源码安装PostGIS并配置主从同步 - 落影流年</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      
+        
+      
+      <link  rel="stylesheet" href="https://cdn.staticfile.org/prism/1.21.0/themes/prism.min.css" />
+      
+    
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_pf9vaxs7x7b.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>落影流年</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner intro-2" id="background" parallax=true
+         style="background: url('https://static.zkqiang.cn/images/20190728030406.jpeg-slim') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container page-header text-center fade-in-up">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2023-01-11 00:00" pubdate>
+        2023年1月11日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      18
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto" id="post">
+            <!-- SEO header -->
+            <h1 style="display: none">RHEL8 PostgreSQL源码安装PostGIS并配置主从同步</h1>
+            
+            <div class="markdown-body" id="post-body">
+              <p>尝试用二进制yum源安装没有成功，遂尝试源码编译安装。</p>
+<p><img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/postgresql.jpeg" srcset="/img/loading.gif" alt="postgresql"></p>
+<h3 id="PostgreSQL编译安装"><a href="#PostgreSQL编译安装" class="headerlink" title="PostgreSQL编译安装"></a>PostgreSQL编译安装</h3><h4 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h4><pre class="language-none"><code class="language-none">Red Hat Enterprise Linux release 8.7 (Ootpa)
+
+PostgreSQL 15.1</code></pre>
+<h4 id="yum源"><a href="#yum源" class="headerlink" title="yum源"></a>yum源</h4><pre class="language-none"><code class="language-none">关闭官方订阅
+vim &#x2F;etc&#x2F;yum&#x2F;pluginconf.d&#x2F;subscription-manager.conf
+enabled&#x3D;0
+
+RedHat8更换CentOS阿里云镜像源
+mv &#x2F;etc&#x2F;yum.repos.d&#x2F;redhat.repo &#x2F;etc&#x2F;yum.repos.d&#x2F;redhat.repo.bak
+
+wget -O &#x2F;etc&#x2F;yum.repos.d&#x2F;redhat.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-8.repo
+#或者
+curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;redhat.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-8.repo
+
+生存缓存
+yum clean all &amp;&amp; yum makecache
+</code></pre>
+<h4 id="所需安装包"><a href="#所需安装包" class="headerlink" title="所需安装包"></a>所需安装包</h4><pre class="language-none"><code class="language-none">postgresql-15.1.tar.gz
+postgis-3.2.4.tar.gz
+gdal-3.5.3.tar.gz
+
+编译环境依赖
+yum install gcc gcc-c++ make
+
+安装gdal依赖
+yum install -y proj proj-devel
+</code></pre>
+<h4 id="安装gdal"><a href="#安装gdal" class="headerlink" title="安装gdal"></a>安装gdal</h4><pre class="language-none"><code class="language-none">tar -zxvf gdal-3.5.3.tar.gz
+cd gdal-3.5.3
+.&#x2F;configure &amp;&amp; make -j4 &amp;&amp; make install
+
+编译编译过程比较长
+</code></pre>
+<h4 id="安装postgresql"><a href="#安装postgresql" class="headerlink" title="安装postgresql"></a>安装postgresql</h4><pre class="language-none"><code class="language-none">tar -zxvf postgresql-15.1.tar.gz
+cd postgresql-15.1
+.&#x2F;configure &amp;&amp; make -j4 &amp;&amp; make install
+
+默认安装在&#x2F;usr&#x2F;local&#x2F;pgsql
+
+初始化库到指定数据目录
+
+mkdir &#x2F;data&#x2F;apps&#x2F;postgresql&#x2F;pgdata
+chown -R postgres:postgres &#x2F;data&#x2F;apps&#x2F;postgresql&#x2F;pgdata
+
+&#x2F;usr&#x2F;local&#x2F;pgsql&#x2F;bin&#x2F;initdb -D &#x2F;data&#x2F;apps&#x2F;postgresql&#x2F;pgdata</code></pre>
+<h4 id="安装pg-config"><a href="#安装pg-config" class="headerlink" title="安装pg_config"></a>安装pg_config</h4><pre class="language-none"><code class="language-none">yum install postgresql15-devel
+
+#安装官方yum源
+#sudo dnf install -y https:&#x2F;&#x2F;download.postgresql.org&#x2F;pub&#x2F;repos&#x2F;yum&#x2F;reporpms&#x2F;EL-8-x86_64&#x2F;pgdg-redhat-repo-latest.noarch.rpm
+
+安装目录：&#x2F;usr&#x2F;pgsql-15
+
+ln -s &#x2F;usr&#x2F;local&#x2F;pgsql&#x2F;bin&#x2F;pg_config &#x2F;usr&#x2F;bin&#x2F;pg_config
+</code></pre>
+<h4 id="安装postgis"><a href="#安装postgis" class="headerlink" title="安装postgis"></a>安装postgis</h4><pre class="language-none"><code class="language-none">安装依赖
+yum install -y libxml2.x86_64 libxml2-devel.x86_64
+
+编译安装
+
+tar -zxvf postgis-3.2.4.tar.gz
+cd postgis-3.2.4
+
+.&#x2F;configure之前安装如下依赖
+
+yum install geos311 geos311-devel -y
+yum install protobuf-c.x86_64 protobuf-c-devel.x86_64 -y
+
+#ln -s &#x2F;usr&#x2F;local&#x2F;pgsql&#x2F;bin&#x2F;pg_config &#x2F;usr&#x2F;bin&#x2F;pg_config
+ln -s &#x2F;usr&#x2F;geos311&#x2F;bin&#x2F;geos-config &#x2F;usr&#x2F;bin&#x2F;geos-config
+
+.&#x2F;configure &amp;&amp; make -j4 &amp;&amp; make install
+
+数据库启动&#x2F;停止&#x2F;重启
+&#x2F;usr&#x2F;local&#x2F;pgsql&#x2F;bin&#x2F;pg_ctl -D &#x2F;data&#x2F;apps&#x2F;postgresql&#x2F;pgdata&#x2F; start
+&#x2F;usr&#x2F;local&#x2F;pgsql&#x2F;bin&#x2F;pg_ctl -D &#x2F;data&#x2F;apps&#x2F;postgresql&#x2F;pgdata&#x2F; stop
+&#x2F;usr&#x2F;local&#x2F;pgsql&#x2F;bin&#x2F;pg_ctl -D &#x2F;data&#x2F;apps&#x2F;postgresql&#x2F;pgdata&#x2F; restart
+</code></pre>
+<h4 id="启用postgis插件"><a href="#启用postgis插件" class="headerlink" title="启用postgis插件"></a>启用postgis插件</h4><pre class="language-none"><code class="language-none">DO NOT INSTALL it in the database called postgres
+不要将扩展安装的postgres库上
+
+su - postgres
+psql
+
+create database test;
+\c test;
+
+\l  列出库名
+\c  dbname 切换数据库
+
+\du 当前数据库所有的用户以及对应的权限
+\db list tablespaces
+\di 查看索引
+
+\conninfo：列出当前数据库和连接的信息。
+
+
+CREATE EXTENSION postgis;
+</code></pre>
+<h3 id="主从同步"><a href="#主从同步" class="headerlink" title="主从同步"></a>主从同步</h3><p>从库和主库安装相同的环境</p>
+<h4 id="创建同步数据账号"><a href="#创建同步数据账号" class="headerlink" title="创建同步数据账号"></a>创建同步数据账号</h4><p>在主库上创建同步账号<br><pre class="language-none"><code class="language-none">psql -U  postgres
+postgres&#x3D;# CREATE ROLE replica login replication encrypted password &#39;123456&#39;;
+
+create role repl login replication encrypted password &#39;123456&#39;;</code></pre></p>
+<h4 id="主库-pg-hba-conf-文件增加备库访问控制"><a href="#主库-pg-hba-conf-文件增加备库访问控制" class="headerlink" title="主库 pg_hba.conf 文件增加备库访问控制"></a>主库 pg_hba.conf 文件增加备库访问控制</h4><pre class="language-none"><code class="language-none">host    replication     replica         192.168.1.28&#x2F;32      trust</code></pre>
+<h4 id="主库-postgresql-conf-文件添加主从同步参数"><a href="#主库-postgresql-conf-文件添加主从同步参数" class="headerlink" title="主库 postgresql.conf 文件添加主从同步参数"></a>主库 postgresql.conf 文件添加主从同步参数</h4><pre class="language-none"><code class="language-none">wal_level &#x3D; hot_standby 
+max_wal_senders &#x3D; 8 
+#wal_keep_segments &#x3D; 64 
+wal_sender_timeout &#x3D; 60s
+max_connections &#x3D; 100</code></pre>
+<h4 id="主库重启"><a href="#主库重启" class="headerlink" title="主库重启"></a>主库重启</h4><p><code>/usr/local/pgsql/bin/pg_ctl -D /data/apps/postgresql/pgdata/ restart</code></p>
+<h4 id="从库验证可访问主库"><a href="#从库验证可访问主库" class="headerlink" title="从库验证可访问主库"></a>从库验证可访问主库</h4><pre class="language-none"><code class="language-none">$ psql -h 192.168.1.27 -U postgres
+Password for user postgres:
+
+停止从库
+&#x2F;usr&#x2F;local&#x2F;pgsql&#x2F;bin&#x2F;pg_ctl -D &#x2F;data&#x2F;apps&#x2F;postgresql&#x2F;pgdata&#x2F; stop</code></pre>
+<h4 id="清空从库数据，拉取主库数据文件"><a href="#清空从库数据，拉取主库数据文件" class="headerlink" title="清空从库数据，拉取主库数据文件"></a>清空从库数据，拉取主库数据文件</h4><p>从主库上备份数据<br><pre class="language-none"><code class="language-none">&#x2F;data&#x2F;apps&#x2F;postgresql&#x2F;pgdata&#x2F;*
+
+pg_basebackup -h 192.168.1.27 -D &#x2F;data&#x2F;apps&#x2F;postgresql&#x2F;pgdata&#x2F; -p 5432 -U replica -Fp -Xs -Pv -R --checkpoint&#x3D;fast
+Password:</code></pre></p>
+<h4 id="从库-postgresql-conf-文件修改主从同步参数"><a href="#从库-postgresql-conf-文件修改主从同步参数" class="headerlink" title="从库 postgresql.conf 文件修改主从同步参数"></a>从库 postgresql.conf 文件修改主从同步参数</h4><pre class="language-none"><code class="language-none">primary_conninfo &#x3D; &#39;host&#x3D;192.168.1.27 port&#x3D;5432 user&#x3D;replica password&#x3D;123456&#39;
+recovery_target_timeline &#x3D; latest 
+hot_standby &#x3D; on
+max_standby_streaming_delay &#x3D; 30s
+wal_receiver_status_interval &#x3D; 10s
+hot_standby_feedback &#x3D; on
+max_connections &#x3D; 200  #大于主节点
+max_worker_processes &#x3D; 20</code></pre>
+<p>启动从库<br><code>/usr/local/pgsql/bin/pg_ctl -D /data/apps/postgresql/pgdata/ start</code></p>
+<p>注意：备份的配置和主完全相同，启动前注意修改listen端口和配置信息。</p>
+<h4 id="主库验证同步"><a href="#主库验证同步" class="headerlink" title="主库验证同步"></a>主库验证同步</h4><pre class="language-none"><code class="language-none">select client_addr,usename,backend_start,application_name,sync_state,sync_priority FROM pg_stat_replication;
+
+测试创建删除数据库观察从库是否同步
+create database test;</code></pre>
+<p>ps: yum安装可参考文末最后一篇链接，由于rhel8 系统上未成功启用 PowerTools 存储库。所以才尝试编译安装。</p>
+<h4 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h4><p><a target="_blank" rel="noopener" href="https://www.postgresql.org/download/linux/redhat/">https://www.postgresql.org/download/linux/redhat/</a><br>PostgreSQL 扩展之 PostGIS<br><a target="_blank" rel="noopener" href="https://juejin.cn/post/6875966571978850317">https://juejin.cn/post/6875966571978850317</a><br>PostgreSql 主从同步搭建<br><a target="_blank" rel="noopener" href="https://juejin.cn/post/6999935606738403342">https://juejin.cn/post/6999935606738403342</a><br>linux安装postgresql+postgis全流程<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/25385623ca1d">https://www.jianshu.com/p/25385623ca1d</a></p>
+<p>如何在 CentOS/RHEL 8 上为 PostgreSQL安装 PostGIS<br><a target="_blank" rel="noopener" href="https://www.onitroad.com/jc/linux/centos/faq/how-to-install-postgis-for-postgresql-on-centos-rhel-8.html">https://www.onitroad.com/jc/linux/centos/faq/how-to-install-postgis-for-postgresql-on-centos-rhel-8.html</a></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Linux/">Linux</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/postgresql-postgis/">postgresql postgis</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/12/28/2022-12-28-apisix-use-notes/">
+                        <span class="hidden-mobile">apisix初体验</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://inshub.cn/" target="_blank" rel="nofollow noopener">
+        <span>lyln</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  
+    
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: '#post-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "RHEL8 PostgreSQL源码安装PostGIS并配置主从同步&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

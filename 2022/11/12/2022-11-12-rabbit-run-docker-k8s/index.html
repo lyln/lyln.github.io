@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      20
+      21
        分钟
     </span>
   
@@ -300,6 +300,8 @@ AUTOCLUSTER_LOG_LEVEL	debug
 RABBITMQ_NODENAME	rabbit@$(MY_POD_IP)</code></pre>
 <p>部署过程可参考</p>
 <p><a target="_blank" rel="noopener" href="https://blog.frognew.com/2017/09/kubernetes-rabbitmq-stateful-set.html#">https://blog.frognew.com/2017/09/kubernetes-rabbitmq-stateful-set.html#</a></p>
+<p><strong>修改用户密码</strong></p>
+<pre class="language-none"><code class="language-none">rabbitmqctl change_password &#123;userName&#125; &#123;newPassword&#125;</code></pre>
 <h4 id="rabbitmq备份还原"><a href="#rabbitmq备份还原" class="headerlink" title="rabbitmq备份还原"></a>rabbitmq备份还原</h4><p>由于这边只做元数据备份和还原。参考如下链接</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/heruiguo/p/11045288.html#_label1">https://www.cnblogs.com/heruiguo/p/11045288.html#_label1</a></p>
 <h4 id="rabbitmq监控"><a href="#rabbitmq监控" class="headerlink" title="rabbitmq监控"></a>rabbitmq监控</h4><p>选择单独部署rabbitmq_exporter监控rabbit集群</p>
