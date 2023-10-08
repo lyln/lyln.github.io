@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      974 字
+      1k 字
     </span>
   
 
@@ -266,9 +266,10 @@ www.test-apisix.com  &#x2F;nginx&#x2F;*</code></pre>
 <p><strong>basic-auth插件</strong><br>适用于简单的登录校验<br>basic-auth 是一个认证插件，它需要与 consumer 一起配合才能工作。<br>添加 Basic Authentication 到一个 service 或 route。 然后 consumer 将其用户名和密码添加到请求头中以验证其请求。</p>
 <p><strong>proxy-rewrite插件</strong></p>
 <p>proxy-rewrite 插件可以针对我们的请求进行各种策略的转发。</p>
+<p>proxy-rewrite默认在路由配置的【请求改写 】模块，对应静态改写和正则改写。</p>
 <p>要注意 regex_uri 和 uri是互斥的，一起配置后regex_uri 是无效的。也就是说当同时配置 uri 和 regex_uri 属性时，优先使用 uri<br>可以从regex_uri 第一个参数中提取数据用于第二个参数<br>proxy rewrite 插件也支持REST API的形式<br>可以通过proxy rewrite 插件 增加公共的header</p>
 <p>插件配置参考</p>
-<p>uri方式</p>
+<p>uri方式-静态改写</p>
 <pre class="language-none"><code class="language-none">&#123;
   &quot;name&quot;: &quot;xxx&quot;,
   &quot;upstream_id&quot;: &quot;xxx&quot;,
@@ -280,7 +281,7 @@ www.test-apisix.com  &#x2F;nginx&#x2F;*</code></pre>
     &#125;
   &#125;
 &#125;</code></pre>
-<p>regex_uri方式</p>
+<p>regex_uri方式-正则改写</p>
 <pre class="language-none"><code class="language-none">&#123;
   &quot;name&quot;: &quot;xxx&quot;,
   &quot;upstream_id&quot;: &quot;xxx&quot;,

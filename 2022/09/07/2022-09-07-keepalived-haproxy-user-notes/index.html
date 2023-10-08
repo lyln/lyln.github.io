@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      745 字
+      1.4k 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      9
+      21
        分钟
     </span>
   
@@ -287,6 +287,155 @@ fi</code></pre>
 <p><code>LVS_Z2 state BACKUP</code></p>
 <p>LVS_Z1 上停止keepalived模拟故障,发现vip切换到LVS_Z2，当LVS_Z1重新启动后，由于LVS_Z1 state BACKUP，vip并不会漂移到LVS_Z1, LVS_Z1会作为backup。</p>
 <p>上面配置使用了keepalived的自动切换功能。</p>
+<h4 id="部署keepalived"><a href="#部署keepalived" class="headerlink" title="部署keepalived"></a>部署keepalived</h4><pre class="language-none"><code class="language-none">yum install keepalived</code></pre>
+<p>keepalived配置参考</p>
+<pre class="language-none"><code class="language-none">! Configuration File for keepalived
+
+global_defs &#123;
+   notification_email &#123;
+     root@localhost
+   &#125;
+   #notification_email_from Alexandre.Cassen@firewall.loc
+   #smtp_server 192.168.200.1
+   #smtp_connect_timeout 30
+   router_id KEEPALIVED_TEST_192.168.1.11 #名称区别
+   #vrrp_skip_check_adv_addr
+   #vrrp_strict
+   #vrrp_garp_interval 0
+   #vrrp_gna_interval 0
+&#125;
+
+vrrp_script chk_haproxy &#123;
+        script &quot;killall -0 haproxy&quot;    #服务探测，返回0说明服务是正常的
+        interval 3    #每隔1秒探测一次
+        weight 10     #haproxy上线，权重加10；下线，权重减10
+&#125;
+
+vrrp_instance VI_1 &#123;
+    state MASTER
+    interface eth0
+    virtual_router_id 110
+    priority 100    #100-99 m-s 区别处
+    advert_int 1
+    authentication &#123;
+        auth_type PASS
+        auth_pass abc
+    &#125;
+    virtual_ipaddress &#123;
+        192.168.1.61&#x2F;22 dev eth0
+    &#125;
+    track_interface &#123;
+        eth0
+    &#125;
+    track_script &#123;        #脚本追踪
+        chk_haproxy
+    &#125;
+&#125;
+vrrp_instance VI_2 &#123;
+    state BACKUP
+    interface eth0
+    virtual_router_id 120
+    priority 99  #99-100 s-m
+    advert_int 1
+    authentication &#123;
+        auth_type PASS
+        auth_pass abc
+    &#125;
+    virtual_ipaddress &#123;
+        192.168.1.62&#x2F;22 dev eth0
+    &#125;
+    track_interface &#123;
+        eth0
+    &#125;
+    track_script &#123;        #脚本追踪
+        chk_haproxy
+    &#125;
+&#125;</code></pre>
+<h4 id="部署haproxy"><a href="#部署haproxy" class="headerlink" title="部署haproxy"></a>部署haproxy</h4><pre class="language-none"><code class="language-none">yum install haproxy</code></pre>
+<p>haproxy配置参考</p>
+<pre class="language-none"><code class="language-none">global
+    # to have these messages end up in &#x2F;var&#x2F;log&#x2F;haproxy.log you will
+    # need to:
+    #
+    # 1) configure syslog to accept network log events.  This is done
+    #    by adding the &#39;-r&#39; option to the SYSLOGD_OPTIONS in
+    #    &#x2F;etc&#x2F;sysconfig&#x2F;syslog
+    #
+    # 2) configure local2 events to go to the &#x2F;var&#x2F;log&#x2F;haproxy.log
+    #   file. A line like the following can be added to
+    #   &#x2F;etc&#x2F;sysconfig&#x2F;syslog
+    #
+    #    local2.*                       &#x2F;var&#x2F;log&#x2F;haproxy.log
+    #
+    log         127.0.0.1 local2
+    chroot      &#x2F;var&#x2F;lib&#x2F;haproxy
+    pidfile     &#x2F;var&#x2F;run&#x2F;haproxy.pid
+    maxconn     520000
+    user        haproxy
+    group       haproxy
+    # apisix add
+    tune.bufsize           163840
+    tune.ssl.default-dh-param 2048
+    daemon
+    # turn on stats unix socket
+    stats socket &#x2F;var&#x2F;lib&#x2F;haproxy&#x2F;stats
+defaults
+    mode                    http
+    log                     global
+    option                  httplog
+    option                  dontlognull
+    option http-server-close
+    option forwardfor       except 127.0.0.0&#x2F;8
+    option                  redispatch
+    retries                 3
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          1m
+    timeout server          1m
+    timeout http-keep-alive 10s
+    timeout check           10s
+    maxconn                65535
+listen webservers
+        bind 0.0.0.0:8000
+        mode http
+        stats enable
+        stats hide-version
+        stats uri &#x2F;haproxy?stats
+	stats refresh 5s
+        stats realm HAProxy\ Stats
+        stats auth admin:123
+        no log
+listen apps
+       bind 0.0.0.0:80
+       #bind 0.0.0.0:443 ssl crt &#x2F;etc&#x2F;ssl&#x2F;key.crt
+       #reqadd X-Forwarded-Proto:\ https
+       option forwardfor
+       balance     roundrobin
+       option accept-invalid-http-request
+       mode http
+       capture request header Host len 50
+       log-format %[capture.req.hdr(0)]\ %ci:%cp\ [%t]\ %ft\ %b&#x2F;%s\ %si:%sp\ %Tq&#x2F;%Tw&#x2F;%Tc&#x2F;%Tr&#x2F;%Tt\ %ST\ %B\ %CC\ %CS\ %tsc\ %ac&#x2F;%fc&#x2F;%bc&#x2F;%sc&#x2F;%rc\ %sq&#x2F;%bq\ %H\ %hr\ %hs\ %&#123;+Q&#125;r
+       server test1 192.168.1.11:9080 maxconn 65535 check inter 1500 rise 3 fall 1 weight 10
+       server test2 192.168.1.12:9080 maxconn 65535 check inter 1500 rise 3 fall 1 weight 10
+</code></pre>
+<h4 id="haproxy配置日志"><a href="#haproxy配置日志" class="headerlink" title="haproxy配置日志"></a>haproxy配置日志</h4><p>haproxy.cfg:</p>
+<pre class="language-none"><code class="language-none">开启haproxy日志记录
+
+log 127.0.0.1 local2
+
+   log-format %[capture.req.hdr(0)]\ %ci:%cp\ [%t]\ %ft\ %b&#x2F;%s\ %si:%sp\ %Tq&#x2F;%Tw&#x2F;%Tc&#x2F;%Tr&#x2F;%Tt\ %ST\ %B\ %CC\ %CS\ %tsc\ %ac&#x2F;%fc&#x2F;%bc&#x2F;%sc&#x2F;%rc\ %sq&#x2F;%bq\ %H\ %hr\ %hs\ %&#123;+Q&#125;r</code></pre>
+<p>利用rsyslog接收日志</p>
+<p><code>/etc/rsyslog.conf</code></p>
+<pre class="language-none"><code class="language-none">去掉这两行的注释：
+$ModLoad imudp    
+$UDPServerRun 514
+新增这一行：
+local2.* &#x2F;data&#x2F;log&#x2F;haproxy.log
+
+mkdir &#x2F;data&#x2F;log
+重启
+systemctl restart rsyslog</code></pre>
 
             </div>
             <hr>

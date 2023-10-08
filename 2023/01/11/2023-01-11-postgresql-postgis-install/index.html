@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.1k 字
+      1.2k 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      18
+      19
        分钟
     </span>
   
@@ -360,6 +360,12 @@ max_worker_processes &#x3D; 20</code></pre>
 测试创建删除数据库观察从库是否同步
 create database test;</code></pre>
 <p>ps: yum安装可参考文末最后一篇链接，由于rhel8 系统上未成功启用 PowerTools 存储库。所以才尝试编译安装。</p>
+<h4 id="pgadmin4部署"><a href="#pgadmin4部署" class="headerlink" title="pgadmin4部署"></a>pgadmin4部署</h4><pre class="language-none"><code class="language-none">wget https:&#x2F;&#x2F;ftp.postgresql.org&#x2F;pub&#x2F;pgadmin&#x2F;pgadmin4&#x2F;v6.18&#x2F;source&#x2F;pgadmin4-6.18.tar.gz
+tar -zxvf pgadmin4-6.18.tar.gz
+cd pgadmin4-6.18
+pip3 install -r requirements.txt
+nohup python3 pgAdmin4.py &gt; pgadmin.log 2&gt;&amp;1 &amp;
+推荐用wsgi启动管理</code></pre>
 <h4 id="参考地址"><a href="#参考地址" class="headerlink" title="参考地址"></a>参考地址</h4><p><a target="_blank" rel="noopener" href="https://www.postgresql.org/download/linux/redhat/">https://www.postgresql.org/download/linux/redhat/</a><br>PostgreSQL 扩展之 PostGIS<br><a target="_blank" rel="noopener" href="https://juejin.cn/post/6875966571978850317">https://juejin.cn/post/6875966571978850317</a><br>PostgreSql 主从同步搭建<br><a target="_blank" rel="noopener" href="https://juejin.cn/post/6999935606738403342">https://juejin.cn/post/6999935606738403342</a><br>linux安装postgresql+postgis全流程<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/25385623ca1d">https://www.jianshu.com/p/25385623ca1d</a></p>
 <p>如何在 CentOS/RHEL 8 上为 PostgreSQL安装 PostGIS<br><a target="_blank" rel="noopener" href="https://www.onitroad.com/jc/linux/centos/faq/how-to-install-postgis-for-postgresql-on-centos-rhel-8.html">https://www.onitroad.com/jc/linux/centos/faq/how-to-install-postgis-for-postgresql-on-centos-rhel-8.html</a></p>
 
@@ -391,6 +397,12 @@ create database test;</code></pre>
                 <div class="post-prevnext row">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2023/01/29/2023-01-29-nginx-upstream-check-module/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">nginx主动检测被动监测</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

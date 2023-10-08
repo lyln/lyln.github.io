@@ -175,6 +175,68 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2023/01/29/2023-01-29-nginx-upstream-check-module/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/elk-cluster.png" srcset="/img/loading.gif" alt="nginx主动检测被动监测">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2023/01/29/2023-01-29-nginx-upstream-check-module/">nginx主动检测被动监测</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2023/01/29/2023-01-29-nginx-upstream-check-module/">
+          
+          
+            
+          
+          被动检测Nginx 将请求传递给 Upstream Server处理时，默认会根据单位时间、失败次数，判定 Upstream Server 是否故障 
+相关参数：
+
+fail_timeout
+该时间范围内，产生 max_fails 次数的失败后，Nginx 会认为该 Upstream Server 故障，并将其摘除相同的时间
+默认值：10s
+
+
+max_fails
+失败的最大次数，设置为 0 则为
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2023-01-29 00:00" pubdate>
+              2023-01-29
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Nginx/">Nginx</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/nginx/">nginx</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2023/01/11/2023-01-11-postgresql-postgis-install/" target="_self">
           <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/postgresql.jpeg" srcset="/img/loading.gif" alt="RHEL8 PostgreSQL源码安装PostGIS并配置主从同步">
         </a>
@@ -392,6 +454,61 @@ rabbitmq cluster
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/rabbit-k8s-docker/">rabbit k8s docker</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/11/03/2022-11-3-nginx-stu-notes/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/elk-cluster.png" srcset="/img/loading.gif" alt="nginx 笔记小结">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2022/11/03/2022-11-3-nginx-stu-notes/">nginx 笔记小结</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/11/03/2022-11-3-nginx-stu-notes/">
+          
+          
+            
+          
+          nginx日志nginx的日志有两种：error_log是错误日志access_log是使用日志
+日志级别: debug &gt; info &gt; notice &gt; warn &gt; error &gt; crit &gt; alert &gt; emerg
+error_log: nginx处理http请求错误状态,以及nginx服务本身运行错误的状态,以不同错误级别记录到error_
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-11-03 00:00" pubdate>
+              2022-11-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/nginx/">nginx</a>
             
           </div>
         
@@ -635,118 +752,6 @@ mv &#x2F;etc&#x2F;yu
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/ffmpeg-gl-transitions/">ffmpeg gl-transitions</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2022/09/01/2022-09-01-zabbix-update-3.2-5.0/" target="_self">
-          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/Grafana-Zabbix.png" srcset="/img/loading.gif" alt="zabbix跨版本升级避坑指南(3.2-5.0)">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2022/09/01/2022-09-01-zabbix-update-3.2-5.0/">zabbix跨版本升级避坑指南(3.2-5.0)</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/09/01/2022-09-01-zabbix-update-3.2-5.0/">
-          
-          
-            
-          
-          由于最近zabbix服务需要迁移，在运行的zabbix版本为Zabbix 3.2.4,所以趁这次迁移也把Zabbix版本。本计划直接升级为zabbix6.0(zabbix6.0支持原生高可用集群），但是由于这边db版本问题（zabbix6.0需要mysql8）。暂且升级为zabbix5版本。
-
-升级流程升级流程大致如下：1.搭建ha环境2.搭建新的zabbix5 server环境3.备份旧zabb
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-09-01 00:00" pubdate>
-              2022-09-01
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/zabbix/">zabbix</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2022/05/21/2021-08-10-fastapi-vue/" target="_self">
-          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/freepd-vue.png" srcset="/img/loading.gif" alt="Fastapi+Vue前后端分离">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2022/05/21/2021-08-10-fastapi-vue/">Fastapi+Vue前后端分离</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2022/05/21/2021-08-10-fastapi-vue/">
-          
-          
-            
-          
-          Fastapi+Vue前后端分离-Vue环境搭建nodejs环境安装nvm多版本管理工具
-https://github.com/nvm-sh/nvm (linux/mac)
-https://github.com/coreybutler/nvm-windows/releases (win)
-nvm常用命令
-nvm off                     &#x2F;&#x2F; 禁用node
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2022-05-21 00:00" pubdate>
-              2022-05-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Python/">Python</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Fastapi-vue/">Fastapi vue</a>
             
           </div>
         

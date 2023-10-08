@@ -175,6 +175,123 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/11/21/2020-11-21-etcd-migrate-data/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/etcd.jpg" srcset="/img/loading.gif" alt="etcd部署及数据迁移">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/11/21/2020-11-21-etcd-migrate-data/">etcd部署及数据迁移</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/11/21/2020-11-21-etcd-migrate-data/">
+          
+          
+            
+          
+          环境概况etcdctl version 2.3.7
+最近迁移没人维护的老项目，涉及etcd2 服务的迁移，项目代码没人维护，所以只能平迁到etcd2版本。本来很简单的问题，结果快被整崩溃了。遂记录下迁移过程。
+问题：
+etcd[7663]: request cluster ID mismatch (got 75dea77f7702 want bfa24343767ba2e5)
+
+迁移顺序不对就如上
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-11-21 00:00" pubdate>
+              2020-11-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/etcd/">etcd</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2020/10/21/2020-10-21-docker-install-develop/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/docker.png" srcset="/img/loading.gif" alt="Docker快速构建测试环境">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2020/10/21/2020-10-21-docker-install-develop/">Docker快速构建测试环境</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/10/21/2020-10-21-docker-install-develop/">
+          
+          
+            
+          
+          快速构建各种开发测试环境汇总
+MySQL5.7开发环境docker run --name&#x3D;my-db -p3306:3306 -d mysql&#x2F;mysql-server:5.7
+获取临时密码
+持久化数据库
+-v &#x2F;opt&#x2F;mysql&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql 
+配置文件挂载
+-v &#x2F;opt&#x
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-10-21 00:00" pubdate>
+              2020-10-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Docker/">Docker</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/docker-mysql-redis/">docker mysql redis</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2020/09/27/2020-09-27-springboot-nacos-guide/" target="_self">
           <img src="https://nacos.io/img/nacosMap.jpg" srcset="/img/loading.gif" alt="SpringBoot使用Nacos配置中心">
         </a>
@@ -616,127 +733,6 @@ Description&#x3D;no
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/grafana-node-exporter/">grafana node_exporter</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2019/10/27/2019-10-27-redis-cluster-install-manual/" target="_self">
-          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/redis.jpg" srcset="/img/loading.gif" alt="Redis Cluster搭建、扩容、缩容">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2019/10/27/2019-10-27-redis-cluster-install-manual/">Redis Cluster搭建、扩容、缩容</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/10/27/2019-10-27-redis-cluster-install-manual/">
-          
-          
-            
-          
-          集群机器列表redis版本 redis-cli 3.2.11192.168.1.116
-192.168.1.117
-192.168.1.119
-
-集群安装跑ansible脚本
-
-master 
-192.168.1.116:6000  	
-192.168.1.117:6000  
-192.168.1.119:6000    
-
-slave
-192.168.1.116:7000
-192.168.1.1
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-10-27 00:00" pubdate>
-              2019-10-27
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Redis/">Redis</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/Redis/">Redis</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2019/08/25/2019-08-25-redis-migrate-tool/">redis-migrate-tool使用详解</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/08/25/2019-08-25-redis-migrate-tool/">
-          
-          
-            
-          
-          rmt介绍redis-migrate-tool 是维品会开源的一款redis数据迁移工具，基于redis复制，快速，稳定，github地址为：https://github.com/vipshop/redis-migrate-tool 。
-
-快速。
-多线程。
-基于redis复制。
-实时迁移。
-迁移过程中，源集群不影响对外提供服务。
-异构迁移。
-支持Twemproxy集群，redis cluster集
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-08-25 00:00" pubdate>
-              2019-08-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Redis/">Redis</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/redis/">redis</a>
             
           </div>
         

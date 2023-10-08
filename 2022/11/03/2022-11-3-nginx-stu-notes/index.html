@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="Lyln">
   <meta name="keywords" content="">
-  <title>ELK集群管理及Kibana使用相关 - 落影流年</title>
+  <title>nginx 笔记小结 - 落影流年</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -169,8 +169,8 @@
   
     <span class="post-meta">
       <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-10-02 00:00" pubdate>
-        2022年10月2日 凌晨
+      <time datetime="2022-11-03 00:00" pubdate>
+        2022年11月3日 凌晨
       </time>
     </span>
   
@@ -181,7 +181,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.5k 字
+      365 字
     </span>
   
 
@@ -191,7 +191,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      25
+      5
        分钟
     </span>
   
@@ -221,226 +221,42 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto" id="post">
             <!-- SEO header -->
-            <h1 style="display: none">ELK集群管理及Kibana使用相关</h1>
+            <h1 style="display: none">nginx 笔记小结</h1>
             
             <div class="markdown-body" id="post-body">
-              <p><img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/elk-cluster.png" srcset="/img/loading.gif" alt="elk-cluster"></p>
-<ul>
-<li>不同集群通过名称区分</li>
-<li>Coordinating node 处理请求的节点。默认为Coordinating node<br>每个节点都保存集群的状态信息，但是只有Master节点才能修改集群的状态信息。</li>
-</ul>
-<p><strong>es集群状态</strong></p>
-<p>Green: 监控状态 所有主分片和副本分片都可以用<br>Yellow: 亚健康状态 所有主分片可用，部分副本分片不可用。<br>Red: 不健康状态，部分主分片不可用。</p>
-<p>es索引的生命周期可通过kibana管理</p>
-<p><strong>es迁移</strong></p>
-<p><a target="_blank" rel="noopener" href="https://www.inshub.cn/2019/04/22/2019-04-22-elasticsearch-migration-notes/">es数据迁移参考</a></p>
-<h4 id="软件版本信息"><a href="#软件版本信息" class="headerlink" title="软件版本信息"></a>软件版本信息</h4><pre class="language-none"><code class="language-none">jdk-8u202
-elasticsearch-7.17.5
-filebeat-7.17.5
-kibana-7.17.5
-logstash-7.17.5</code></pre>
-<h4 id="设置系统配置"><a href="#设置系统配置" class="headerlink" title="设置系统配置"></a>设置系统配置</h4><pre class="language-none"><code class="language-none">#添加系统用户
-useradd elastic
+              <h4 id="nginx日志"><a href="#nginx日志" class="headerlink" title="nginx日志"></a>nginx日志</h4><p><strong>nginx的日志有两种：</strong><br>error_log是错误日志<br>access_log是使用日志</p>
+<p>日志级别: debug &gt; info &gt; notice &gt; warn &gt; error &gt; crit &gt; alert &gt; emerg</p>
+<p>error_log: nginx处理http请求错误状态,以及nginx服务本身运行错误的状态,以不同错误级别记录到error_log内.</p>
+<pre class="language-none"><code class="language-none">Syntax:error_log file [level];
 
-#最大可创建文件数太小
-echo &quot;elastic soft nofile 655350&quot; &gt;&gt;&#x2F;etc&#x2F;security&#x2F;limits.conf
-echo &quot;elastic hard nofile 655350&quot; &gt;&gt;&#x2F;etc&#x2F;security&#x2F;limits.conf
+Default: error_log logs&#x2F;error.log error;
 
-#最大虚拟内存太小
-echo &quot;vm.max_map_count &#x3D; 655360&quot; &gt;&gt;&#x2F;etc&#x2F;sysctl.conf
-sysctl -p &gt;&#x2F;dev&#x2F;null 2&gt;&amp;1
-
-sudo swapoff -a
-
-要永久禁用它，您将需要编辑 &#x2F;etc&#x2F;fstab 文件并注释包含 swap 单词的所有行。</code></pre>
-<h4 id="创建数据目录"><a href="#创建数据目录" class="headerlink" title="创建数据目录"></a>创建数据目录</h4><pre class="language-none"><code class="language-none">mkdir &#x2F;data&#x2F;apps&#x2F;elastic&#x2F;&#123;data,tmp&#125;
-
-chown -R elastic.elastic &#x2F;data&#x2F;apps&#x2F;elastic
-chown -R elastic.elastic &#x2F;data&#x2F;apps&#x2F;elastic&#x2F;*
-
-#JVM 参数设置
-config&#x2F;jvm.options
--Xms2g 
--Xmx2g 
-
-#临时文件
-bin&#x2F;elasticsearch-env
-#JVM temporary directory
-ES_TMPDIR&#x3D;&quot;&#x2F;data&#x2F;apps&#x2F;elastic&#x2F;tmp&quot;</code></pre>
-<p>其他节点上面操作一种，替换配置文件node.name</p>
-<p><strong>elasticsearch配置参考</strong></p>
-<pre class="language-none"><code class="language-none">es集群配置文件参考
-cluster.name: es-cluster
-node.name: es-node1
-node.master: true
-node.data: true
-path.data: &#x2F;data&#x2F;apps&#x2F;elastic&#x2F;data
-path.logs: &#x2F;data&#x2F;apps&#x2F;elastic&#x2F;logs
-
-network.host: 0.0.0.0
-http.port: 9200
-transport.tcp.port: 9300
-discovery.seed_hosts: [&quot;es-node1:9300&quot;,&quot;es-node2:9300&quot;,&quot;es-node3:9300&quot;]
-cluster.initial_master_nodes: [&quot;es-node1:9300&quot;]
-
-http.cors.enabled: true
-http.cors.allow-origin: &quot;*&quot;
-
-bootstrap.memory_lock: true
-xpack.security.enabled: false
-
-node.attr.rack_id: rack_one
-cluster.routing.allocation.awareness.attributes: rack_id</code></pre>
-<p><strong>elasticsearch.service配置参考</strong></p>
-<pre class="language-none"><code class="language-none">配置参考地址：https:&#x2F;&#x2F;github.com&#x2F;elastic&#x2F;elasticsearch&#x2F;blob&#x2F;main&#x2F;distribution&#x2F;packages&#x2F;src&#x2F;common&#x2F;systemd&#x2F;elasticsearch.service
-&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;elasticsearch.service
-
-[Unit]
-Description&#x3D;Elasticsearch
-Documentation&#x3D;https:&#x2F;&#x2F;www.elastic.co
-Wants&#x3D;network-online.target
-After&#x3D;network-online.target
-
-[Service]
-WorkingDirectory&#x3D;&#x2F;data&#x2F;apps&#x2F;elastic
-ExecStart&#x3D;&#x2F;data&#x2F;apps&#x2F;elastic&#x2F;bin&#x2F;elasticsearch
-PIDFile&#x3D;&#x2F;var&#x2F;run&#x2F;elasticsearch.pid
-User&#x3D;elastic
-Group&#x3D;elastic
-Type&#x3D;simple
-Restart&#x3D;always
-
-# Specifies the maximum file descriptor number that can be opened by this process
-LimitNOFILE&#x3D;65535
-# Specifies the maximum number of processes
-LimitNPROC&#x3D;4096
-# Specifies the maximum size of virtual memory
-LimitAS&#x3D;infinity
-# Specifies the maximum file size
-LimitFSIZE&#x3D;infinity
-# Disable timeout logic and wait until process is stopped
-TimeoutStopSec&#x3D;0
-# SIGTERM signal is used to stop the Java process
-KillSignal&#x3D;SIGTERM
-# Send the signal only to the JVM rather than its control group
-KillMode&#x3D;process
-# Java process is never killed
-SendSIGKILL&#x3D;no
-# When a JVM receives a SIGTERM signal it exits with code 143
-SuccessExitStatus&#x3D;143
-LimitMEMLOCK&#x3D;infinity
-
-[Install]
-WantedBy&#x3D;multi-user.target</code></pre>
-<p>启动并查看日志</p>
-<pre class="language-none"><code class="language-none">systemctl daemon-reload 
-#其他服务类似
-systemctl start elasticsearch
-
-journalctl  -f -u elasticsearch</code></pre>
-<p><a target="_blank" rel="noopener" href="http://es-node1:9200/_cat/health?v">http://es-node1:9200/_cat/health?v</a> </p>
-<h4 id="集群增加节点"><a href="#集群增加节点" class="headerlink" title="集群增加节点"></a>集群增加节点</h4><p>es增加node节点，原来集群配置保存不变，新增节点配置增加discovery.seed_hosts集群会自动发现节点。</p>
-<p>注意：集群名称保持一致。</p>
-<h4 id="cerebro安装"><a href="#cerebro安装" class="headerlink" title="cerebro安装"></a>cerebro安装</h4><p>es管理工具</p>
-<pre class="language-none"><code class="language-none">&#x2F;data&#x2F;apps&#x2F;cerebro
-
-ln -s cerebro-0.9.4 cerebro</code></pre>
-<p><strong>cerebro.service配置参考</strong></p>
-<pre class="language-none"><code class="language-none">&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;cerebro.service
-[Unit]
-Description&#x3D;Cerebro
-After&#x3D;network.target
-
-[Service]
-WorkingDirectory&#x3D;&#x2F;data&#x2F;apps&#x2F;cerebro
-ExecStart&#x3D;&#x2F;data&#x2F;apps&#x2F;cerebro&#x2F;bin&#x2F;cerebro
-Type&#x3D;simple
-PIDFile&#x3D;&#x2F;var&#x2F;run&#x2F;cerebro.pid
-Restart&#x3D;always
-#User&#x3D;elastic
-#Group&#x3D;elastic
-
-[Install]
-WantedBy&#x3D;default.target
+Context:main,http,mail,stream,server,location
 </code></pre>
-<h4 id="Kibana安装"><a href="#Kibana安装" class="headerlink" title="Kibana安装"></a>Kibana安装</h4><pre class="language-none"><code class="language-none">
-tar -zxvf kibana-7.17.5-linux-x86_64.tar.gz
-ln  -s kibana-7.17.5-linux-x86_64 kibana
+<p>access_log: 记录nginx每一次的http请求的访问状态,主要用于去分析每一次http的请求和客户端的交互以及对行为的一些分析</p>
+<pre class="language-none"><code class="language-none">Syntax:access_log path [format [buffer&#x3D;size] [gzip[&#x3D;level]] [flush&#x3D;time] [if&#x3D;condition]];
 
-chown -R elastic.elastic &#x2F;data&#x2F;apps&#x2F;kibana
-chown -R elastic.elastic &#x2F;data&#x2F;apps&#x2F;kibana&#x2F;*
-</code></pre>
-<p><strong>kibana.yml配置参考</strong></p>
-<pre class="language-none"><code class="language-none">server.port: 5601
-server.host: &quot;0.0.0.0&quot;
-server.name: &quot;kibana-cluster&quot;
-elasticsearch.hosts: [&quot;http:&#x2F;&#x2F;es-node1:9200&quot;,&quot;http:&#x2F;&#x2F;es-node2:9200&quot;,&quot;http:&#x2F;&#x2F;es-node3:9200&quot;]
-elasticsearch.requestTimeout: 99999
-#支持中文
-i18n.locale: &quot;zh-CN&quot;
-</code></pre>
-<p><strong>kibana.service配置参考</strong></p>
-<pre class="language-none"><code class="language-none">&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;kibana.service
-[Unit]
-Description&#x3D;Kibana
-After&#x3D;network.target
+access_log off;
 
-[Service]
-ExecStart&#x3D;&#x2F;data&#x2F;apps&#x2F;kibana&#x2F;bin&#x2F;kibana
-Type&#x3D;simple
-PIDFile&#x3D;&#x2F;var&#x2F;run&#x2F;kibana.pid
-Restart&#x3D;always
-User&#x3D;elastic
-Group&#x3D;elastic
+Default:access_log logs&#x2F;access.log combined;
 
-[Install]
-WantedBy&#x3D;default.target</code></pre>
-<h4 id="安装ik分词器"><a href="#安装ik分词器" class="headerlink" title="安装ik分词器"></a>安装ik分词器</h4><pre class="language-none"><code class="language-none">在线安装
-cd &#x2F;data&#x2F;apps&#x2F;elastic&#x2F;
-.&#x2F;bin&#x2F;elasticsearch-plugin install https:&#x2F;&#x2F;github.com&#x2F;medcl&#x2F;elasticsearch-analysis-ik&#x2F;releases&#x2F;download&#x2F;v7.17.5&#x2F;elasticsearch-analysis-ik-7.17.5.zip</code></pre>
-<h4 id="docker-elk部署测试环境"><a href="#docker-elk部署测试环境" class="headerlink" title="docker elk部署测试环境"></a>docker elk部署测试环境</h4><pre class="language-none"><code class="language-none">docker run --name elasticsearch -p 9200:9200 -p 9300:9300 \
--e &quot;discovery.type&#x3D;single-node&quot; \
--v $PWD&#x2F;elastic&#x2F;config&#x2F;elasticsearch.yml:&#x2F;usr&#x2F;share&#x2F;elasticsearch&#x2F;config&#x2F;elasticsearch.yml \
--d elasticsearch:7.17.5
-</code></pre>
-<p>容器内安装ik分词器</p>
-<pre class="language-none"><code class="language-none">docker exec -it elasticsearch sh
-cd &#x2F;usr&#x2F;share&#x2F;elasticsearch&#x2F;plugins&#x2F;
-elasticsearch-plugin install https:&#x2F;&#x2F;github.com&#x2F;medcl&#x2F;elasticsearch-analysis-ik&#x2F;releases&#x2F;download&#x2F;v7.17.5&#x2F;elasticsearch-analysis-ik-7.17.5.zip
-exit
-docker restart elasticsearch </code></pre>
-<p>docker启动kibana</p>
-<pre class="language-none"><code class="language-none">docker run --name kibana --link&#x3D;elasticsearch:elk-1  -p 5601:5601 -d kibana:7.17.5
-docker start kibana</code></pre>
-<h4 id="问题汇总"><a href="#问题汇总" class="headerlink" title="问题汇总"></a>问题汇总</h4><p>问题描述：elasticsearch-5.4.3启动报错，bootstrap checks failed : system call filters failed to install;</p>
-<p>问题解决：配置增加<code>bootstrap.system_call_filter: false</code></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/RUIMENG061511332/article/details/90548390">https://blog.csdn.net/RUIMENG061511332/article/details/90548390</a></p>
-<p>问题描述：</p>
-<pre class="language-none"><code class="language-none">[INFO ][logstash.outputs.elasticsearch][main] retrying failed action with response code: 403 (&#123;&quot;type&quot;&#x3D;&gt;&quot;cluster_block_exception&quot;, &quot;reason&quot;&#x3D;&gt;&quot;blocked by: [FORBIDDEN&#x2F;8&#x2F;index write (api)];&quot;&#125;)
-501
-[INFO ][logstash.outputs.elasticsearch][main] Retrying individual bulk actions that failed or were rejected by the previous bulk request. &#123;:count&#x3D;&gt;1&#125;</code></pre>
-<p>问题解决：es集群磁盘空间达到阈值，索引只读或者索引策略导致的索引冻结导致。</p>
-<p><strong>es迁移logstash开启双写</strong></p>
-<p>logstash双写配置参考</p>
-<pre class="language-none"><code class="language-none">output&#123;
-# 	stdout&#123;
-#    	codec &#x3D;&gt; &quot;rubydebug&quot;
-#   &#125;
-    elasticsearch &#123;
-        hosts &#x3D;&gt; [&quot;192.168.1.111:9200&quot;]
-        index &#x3D;&gt; &quot;logstash-old-test-%&#123;+YYYY.MM.dd&#125;&quot;
-        
-    &#125;
+Context:http,server,location,if in location,limit_except</code></pre>
+<p><strong>nginx日志配置参考</strong><br><pre class="language-none"><code class="language-none">log_format nginx_upload_log &#39;$time_local,$msec,$request_length,$request_time,&quot;$upstream_response_time&quot;,$body_bytes_sent,$status,$remote_addr-&quot;$http_x_forwarded_for&quot;,$request,&quot;$request_body&quot;,UPS&#x2F;&quot;$upstream_addr&quot;,&quot;$http_user_agent&quot;,$http_referer,$host,&quot;$http_s_cid&quot;,&quot;$http_s_pid&quot;,&quot;$http_s_ppid&quot;,&quot;$http_p_appid&quot;,$upstream_response_length,$upstream_status&#39;;
+
+access_log  &#x2F;opt&#x2F;logs&#x2F;nginx&#x2F;access_$&#123;host&#125;.log  nginx_upload_log;
+#access_log  &#x2F;opt&#x2F;logs&#x2F;nginx&#x2F;access_$&#123;server_name&#125;.log  nginx_upload_log;</code></pre></p>
+<h4 id="nginx忽略favicon-ico日志"><a href="#nginx忽略favicon-ico日志" class="headerlink" title="nginx忽略favicon.ico日志"></a>nginx忽略favicon.ico日志</h4><pre class="language-none"><code class="language-none">location &#x3D; &#x2F;favicon.ico &#123;
+	log_not_found off;
+	access_log off;
 &#125;
-output &#123;
-    elasticsearch &#123;
-        hosts &#x3D;&gt; [&quot;192.168.1.168:9200&quot;]
-        index &#x3D;&gt; &quot;logstash-new-test-%&#123;+yyyy.MM&#125;&quot;
-        user &#x3D;&gt; &quot;username&quot;
-        password &#x3D;&gt; &quot;password&quot;
-    &#125;
-&#125;</code></pre>
-<p><strong>logstash匹配日志时间</strong></p>
+&#x2F;&#x2F;log_not_found on|off，默认为on：启用或禁用404错误日志，
+这个指令可以用来禁止nginx记录找不到rebots.txt或favicon.ico这类文件的错误信息。</code></pre>
+<h3 id="负载均衡策略"><a href="#负载均衡策略" class="headerlink" title="负载均衡策略"></a>负载均衡策略</h3><ul>
+<li>Round-Robin 默认</li>
+<li>ip_hash<br>ip_hash; #保证每个访客固定访问一个后端服务器</li>
+<li>一致性hash<br>hash consistent</li>
+<li>least_conn<br>least_conn; #把请求转发给连接数较少的后端服务器</li>
+</ul>
 
             </div>
             <hr>
@@ -458,7 +274,7 @@ output &#123;
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/elk-elastic-logstash-kibana/">elk elastic logstash kibana</a>
+                      <a class="hover-with-bg" href="/tags/nginx/">nginx</a>
                     
                   </div>
                 
@@ -471,9 +287,9 @@ output &#123;
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/11/03/2022-11-3-nginx-stu-notes/">
+                      <a href="/2022/11/12/2022-11-12-rabbit-run-docker-k8s/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">nginx 笔记小结</span>
+                        <span class="hidden-mobile">RabbitMq容器化部署</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -481,8 +297,8 @@ output &#123;
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/10/01/2022-10-01-win-server-install-elk/">
-                        <span class="hidden-mobile">Windows Server2008 elk监控服务器日志和防火墙日志</span>
+                      <a href="/2022/10/02/2022-10-02-elk-cluster-install-manager/">
+                        <span class="hidden-mobile">ELK集群管理及Kibana使用相关</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -627,7 +443,7 @@ output &#123;
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "ELK集群管理及Kibana使用相关&nbsp;",
+        "nginx 笔记小结&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

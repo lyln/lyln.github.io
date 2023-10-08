@@ -175,6 +175,118 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/09/01/2022-09-01-zabbix-update-3.2-5.0/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/Grafana-Zabbix.png" srcset="/img/loading.gif" alt="zabbix跨版本升级避坑指南(3.2-5.0)">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2022/09/01/2022-09-01-zabbix-update-3.2-5.0/">zabbix跨版本升级避坑指南(3.2-5.0)</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/09/01/2022-09-01-zabbix-update-3.2-5.0/">
+          
+          
+            
+          
+          由于最近zabbix服务需要迁移，在运行的zabbix版本为Zabbix 3.2.4,所以趁这次迁移也把Zabbix版本。本计划直接升级为zabbix6.0(zabbix6.0支持原生高可用集群），但是由于这边db版本问题（zabbix6.0需要mysql8）。暂且升级为zabbix5版本。
+
+升级流程升级流程大致如下：1.搭建ha环境2.搭建新的zabbix5 server环境3.备份旧zabb
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-09-01 00:00" pubdate>
+              2022-09-01
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Linux/">Linux</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/zabbix/">zabbix</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2022/05/21/2021-08-10-fastapi-vue/" target="_self">
+          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/freepd-vue.png" srcset="/img/loading.gif" alt="Fastapi+Vue前后端分离">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h1 class="index-header">
+        <a href="/2022/05/21/2021-08-10-fastapi-vue/">Fastapi+Vue前后端分离</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2022/05/21/2021-08-10-fastapi-vue/">
+          
+          
+            
+          
+          Fastapi+Vue前后端分离-Vue环境搭建nodejs环境安装nvm多版本管理工具
+https://github.com/nvm-sh/nvm (linux/mac)
+https://github.com/coreybutler/nvm-windows/releases (win)
+nvm常用命令
+nvm off                     &#x2F;&#x2F; 禁用node
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-05-21 00:00" pubdate>
+              2022-05-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Python/">Python</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Fastapi-vue/">Fastapi vue</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2022/05/21/2022-05-21-configure-access-multiple-clusters-and-kubectl/" target="_self">
           <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/kubecolor.png" srcset="/img/loading.gif" alt="k8s配置多集群访问和kubectl自动补全">
         </a>
@@ -637,124 +749,6 @@ Loki部署$ curl -O -L &quot;wget https:&#x2F;&#x2F;github.91chifun.workers.dev&
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/Loki/">Loki</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/11/21/2020-11-21-etcd-migrate-data/" target="_self">
-          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/etcd.jpg" srcset="/img/loading.gif" alt="etcd部署及数据迁移">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/11/21/2020-11-21-etcd-migrate-data/">etcd部署及数据迁移</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/11/21/2020-11-21-etcd-migrate-data/">
-          
-          
-            
-          
-          环境概况etcdctl version 2.3.7
-最近迁移没人维护的老项目，涉及etcd2 服务的迁移，项目代码没人维护，所以只能平迁到etcd2版本。本来很简单的问题，结果快被整崩溃了。遂记录下迁移过程。
-问题：
-etcd[7663]: request cluster ID mismatch (got 75dea77f7702 want bfa24343767ba2e5)
-
-迁移顺序不对就如上
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-11-21 00:00" pubdate>
-              2020-11-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Linux/">Linux</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/etcd/">etcd</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2020/10/21/2020-10-21-docker-install-develop/" target="_self">
-          <img src="https://inshub.oss-cn-beijing.aliyuncs.com/blog/docker.png" srcset="/img/loading.gif" alt="Docker快速构建测试环境">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h1 class="index-header">
-        <a href="/2020/10/21/2020-10-21-docker-install-develop/">Docker快速构建测试环境</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/10/21/2020-10-21-docker-install-develop/">
-          
-          
-            
-          
-          快速构建各种开发测试环境汇总
-MySQL5.7开发环境docker run --name=my-db -p3306:3306 -d mysql/mysql-server:5.7
-获取临时密码
-持久化数据库
--v /opt/mysql/data:/var/lib/mysql 
-配置文件挂载
--v /opt/data/my.cnf:/etc/my.cnf
-docker logs mysql1 2>&a
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-10-21 00:00" pubdate>
-              2020-10-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Docker/">Docker</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/docker-mysql-redis/">docker mysql redis</a>
             
           </div>
         
